@@ -1,13 +1,11 @@
 package com.bookstoreapplication.bookstore.user.account;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Embeddable
-@NoArgsConstructor
-public class UserAudit {
+class UserAudit {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private LocalDateTime lastLogin;

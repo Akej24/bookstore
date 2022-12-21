@@ -6,26 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
-
-@Getter
-@AllArgsConstructor
-public class RegistrationRequest {
-    @NotNull
-    private final String email;
-    @NotNull
-    private final String username;
-    @NotNull
-    private final String password;
-    @NotNull
-    private final String name;
-    @NotNull
-    private final String surname;
-    @NotNull
-    private final LocalDate dateOfBirth;
-    @NotNull
-    private final UserRole role;
-    @NotNull
-    private final boolean locked;
-    @NotNull
-    private final boolean enabled;
+record RegistrationRequest(
+        @NotNull String email, @NotNull String username, @NotNull String password,
+        @NotNull String name, @NotNull String surname, @NotNull LocalDate dateOfBirth,
+        @NotNull UserRole role, @NotNull boolean locked, @NotNull boolean enabled) {
 }

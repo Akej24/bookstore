@@ -1,4 +1,7 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-public class UserController {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+class UserController {
 }
