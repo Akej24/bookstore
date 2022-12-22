@@ -2,8 +2,6 @@ package com.bookstoreapplication.bookstore.user.registration;
 
 import com.bookstoreapplication.bookstore.user.account.UserRole;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.time.LocalDate;
 record RegistrationRequest(

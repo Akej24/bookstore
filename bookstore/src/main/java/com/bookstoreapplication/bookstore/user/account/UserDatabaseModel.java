@@ -38,8 +38,6 @@ public class UserDatabaseModel implements UserDetails {
     @NotNull
     private String username;
     @NotNull
-    @Size(min = 8, message = "Hasło musi mieć co najmniej 8 znaków")
-    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", message = "Hasło musi zawierać co najmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jeden znak specjalny")
     private String password;
     @NotNull
     private String name;
