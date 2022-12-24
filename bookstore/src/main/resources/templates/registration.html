@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+<!--/*@thymesVar id="registrationRequest" type="com.bookstoreapplication.bookstore.user.registration.RegistrationRequest"*/-->
+<form method="post" th:action="@{/register}" th:object="${registrationRequest}">
+
+    <label>
+        Email:<br><input type="text" name="email" field="*{email}">
+    </label>
+    <label>
+        Username:<br><input type="text" name="username" field="*{username}">
+    </label>
+    <label>
+        Password:<br><input type="password" name="password" field="*{password}">
+    </label>
+    <label>
+        Name:<br><input type="text" name="name" field="*{name}">
+    </label>
+    <label>
+        Surname:<br><input type="text" name="surname" field="*{surname}">
+    </label>
+    <label>
+        Date of birth:<br><input type="date" name="dateOfBirth" field="*{dateOfBirth}">
+    </label>
+    <label>
+        User role:<br>
+        <label><input type="radio" name="USER" field="*{role}">USER</label>
+        <label><input type="radio" name="ADMIN" field="*{role}">ADMIN</label><br>
+    </label>
+    <div>
+    <button type="submit">Submit</button>
+    </div>
+    <button type="Reset">Reset</button>
+    <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+    <h1 th:if="${message != null}" th:text="${message}"></h1>
+
+</form>
+</body>
+</html>

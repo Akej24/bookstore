@@ -29,8 +29,6 @@ public class WebSecurityConfig{
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
-                .and()
                 .httpBasic()
                 .and()
                 .build();
@@ -45,5 +43,4 @@ public class WebSecurityConfig{
                 .and()
                 .build();
     }
-
 }

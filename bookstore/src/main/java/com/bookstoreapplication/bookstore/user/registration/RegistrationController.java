@@ -1,21 +1,28 @@
 package com.bookstoreapplication.bookstore.user.registration;
 
-
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping(path = "/registration")
+@Controller
+@RequestMapping( "/register")
 @AllArgsConstructor
 class RegistrationController {
 
     private RegistrationService registrationService;
 
+    @GetMapping
+    String showRegistrationForm(Model model){
+        model.addAttribute("userToRegister", new RegistrationRequest());
+        return "registration";
+    }
+
     @PostMapping
-    public String register(@RequestBody RegistrationRequest request) throws Exception {
-        return registrationService.register(request);
+    String registerUser(@ModelAttribute("userToRegister") RegistrationRequest request, Model model){
+        registrationService.registerUser(request);
+        model.addAttribute("message", "Successfully");
+        return "registration";
+
     }
 }

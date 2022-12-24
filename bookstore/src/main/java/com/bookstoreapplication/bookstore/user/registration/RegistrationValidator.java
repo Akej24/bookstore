@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-class Validator {
+class RegistrationValidator {
 
     public boolean validatePassword(String password) {
         List<Rule> rules = new ArrayList<>();

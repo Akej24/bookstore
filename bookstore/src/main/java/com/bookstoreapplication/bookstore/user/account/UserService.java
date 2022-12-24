@@ -22,14 +22,13 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String signUpUser(UserDatabaseModel userDatabaseModel){
+    public boolean signUpUser(UserDatabaseModel userDatabaseModel){
         boolean userExists = userRepository.findByEmail(userDatabaseModel.getEmail()).isPresent();
         if(userExists){
             throw new IllegalStateException("email already taken");
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(userDatabaseModel.getPassword());
-        userDatabaseModel.setPassword(encodedPassword);
+        userDatabaseModel.setPassword(bCryptPasswordEncoder.encode(userDatabaseModel.getPassword()));
         userRepository.save(userDatabaseModel);
-        return "works";
+        return true;
     }
 }
