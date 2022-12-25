@@ -14,12 +14,12 @@ class RegistrationController {
 
     @GetMapping
     String showRegistrationForm(Model model){
-        model.addAttribute("userToRegister", new RegistrationRequest());
+        model.addAttribute("registrationRequest", new RegistrationRequest());
         return "registration";
     }
 
     @PostMapping
-    String registerUser(@ModelAttribute("userToRegister") RegistrationRequest request, Model model) throws Exception{
+    String registerUser(@ModelAttribute("registrationRequest") RegistrationRequest request, Model model) throws Exception{
         registrationService.registerUserIfPasswordValidAndEmailNotTaken(request);
         model.addAttribute("message", "Successfully");
         return "registration";
