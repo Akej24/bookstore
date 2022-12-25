@@ -23,11 +23,15 @@ public class WebSecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
+                //
                 .authorizeHttpRequests()
-                .requestMatchers("/api/registration")
+                //
+                .requestMatchers("/register")
                 .permitAll()
+                //
                 .anyRequest()
                 .authenticated()
+                //
                 .and()
                 .httpBasic()
                 .and()

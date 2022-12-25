@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationRequest {
+class RegistrationRequest {
 
     @NotNull
     private String email;
@@ -27,9 +27,5 @@ public class RegistrationRequest {
     private LocalDate dateOfBirth;
     @NotNull
     private UserRole role;
-    @NotNull
-    private boolean locked;
-    @NotNull
-    private boolean enabled;
 
 }
