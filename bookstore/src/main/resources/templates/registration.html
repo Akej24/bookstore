@@ -11,32 +11,20 @@
 <form method="post" th:action="@{/register}" th:object="${registrationRequest}">
 
     <label>
-        Email:<br><input type="text" name="email" field="*{email}">
-    </label>
-    <label>
-        Username:<br><input type="text" name="username" field="*{username}">
-    </label>
-    <label>
-        Password:<br><input type="password" name="password" field="*{password}">
-    </label>
-    <label>
-        Name:<br><input type="text" name="name" field="*{name}">
-    </label>
-    <label>
-        Surname:<br><input type="text" name="surname" field="*{surname}">
-    </label>
-    <label>
-        Date of birth:<br><input type="date" name="dateOfBirth" field="*{dateOfBirth}">
-    </label>
-    <label>
+        Email:<br><input type="text" name="email" th:field="*{email}">
+        Username:<br><input type="text" name="username" th:field="*{username}">
+        Password:<br><input type="password" name="password" th:field="*{password}">
+        Name:<br><input type="text" name="name" th:field="*{name}">
+        Surname:<br><input type="text" name="surname" th:field="*{surname}">
+        Date of birth:<br><input type="date" name="dateOfBirth" th:field="*{dateOfBirth}">
         User role:<br>
-        <label><input type="radio" name="USER" field="*{role}">USER</label>
-        <label><input type="radio" name="ADMIN" field="*{role}">ADMIN</label><br>
+        <input type="radio" value="USER" th:field="*{role}">USER
+        <input type="radio" value="ADMIN" th:field="*{role}">ADMIN<br>
     </label>
-    <div>
+
     <button type="submit">Submit</button>
-    </div>
     <button type="Reset">Reset</button>
+
     <!--/*@thymesVar id="message" type="java.lang.String"*/-->
     <h1 th:if="${message != null}" th:text="${message}"></h1>
 
