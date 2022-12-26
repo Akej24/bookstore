@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class RegistrationService {
+class RegistrationService {
 
     private final UserRepository userRepository;
     private final RegistrationValidator registrationValidator;
@@ -24,7 +24,7 @@ public class RegistrationService {
         }
     }
 
-    public void registerUserByRequestModel(RegistrationRequest request) {
+    private void registerUserByRequestModel(RegistrationRequest request) {
         var modelToSave = new UserDatabaseModel(
                 request.getEmail(),
                 request.getUsername(),

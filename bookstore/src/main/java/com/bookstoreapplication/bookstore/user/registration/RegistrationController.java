@@ -23,6 +23,5 @@ class RegistrationController {
         registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest);
         model.addAttribute("message", "Successfully");
         return "registration";
-
     }
 }

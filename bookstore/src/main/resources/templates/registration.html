@@ -10,17 +10,29 @@
 <!--/*@thymesVar id="registrationRequest" type="com.bookstoreapplication.bookstore.user.registration.RegistrationRequest"*/-->
 <form action="#" method="post" th:action="@{/register}" th:object="${registrationRequest}">
 
-    <label>
-        Email:<br><input type="text" name="email" th:field="*{email}">
-        Username:<br><input type="text" name="username" th:field="*{username}">
-        Password:<br><input type="password" name="password" th:field="*{password}">
-        Name:<br><input type="text" name="name" th:field="*{name}">
-        Surname:<br><input type="text" name="surname" th:field="*{surname}">
-        Date of birth:<br><input type="date" name="dateOfBirth" th:field="*{dateOfBirth}">
-        User role:<br>
-        <input type="radio" name="role" value="USER" th:field="*{role}">USER
-        <input type="radio" name="role" value="ADMIN" th:field="*{role}">ADMIN
-    </label>
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" th:field="*{email}">
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:field="*{username}">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}">
+
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" th:field="*{surname}">
+
+    <label for="dateOfBirth">Date of birth:</label>
+    <input type="date" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}">
+
+    <label>User role:</label>
+    <div th:each="userRole : ${T(com.bookstoreapplication.bookstore.user.account.UserRole).values()}">
+        <label th:for="${'radioBtn' + userRole.name()}" th:text="${userRole}">Role</label>
+        <label><input type="radio" th:id="${'radioBtn' + userRole.name()}" th:field="*{role}" th:value="${userRole}"></label>
+    </div>
 
     <button type="submit">Submit</button>
     <button type="Reset">Reset</button>
