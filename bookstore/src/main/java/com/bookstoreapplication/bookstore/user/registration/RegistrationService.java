@@ -27,7 +27,7 @@ public class RegistrationService {
     public void registerUserByRequestModel(RegistrationRequest request) {
         var modelToSave = new UserDatabaseModel(
                 request.getEmail(),
-                request.getSurname(),
+                request.getUsername(),
                 bCryptPasswordEncoder.encode(request.getPassword()),
                 request.getName(),
                 request.getSurname(),

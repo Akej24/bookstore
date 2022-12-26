@@ -20,6 +20,7 @@ class RegistrationController {
 
     @PostMapping
     String registerUser(@ModelAttribute("registrationRequest") RegistrationRequest request, Model model) throws Exception{
+        model.addAttribute("registrationRequest", request);
         registrationService.registerUserIfPasswordValidAndEmailNotTaken(request);
         model.addAttribute("message", "Successfully");
         return "registration";

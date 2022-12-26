@@ -8,7 +8,7 @@
 </head>
 <body>
 <!--/*@thymesVar id="registrationRequest" type="com.bookstoreapplication.bookstore.user.registration.RegistrationRequest"*/-->
-<form method="post" th:action="@{/register}" th:object="${registrationRequest}">
+<form action="#" method="post" th:action="@{/register}" th:object="${registrationRequest}">
 
     <label>
         Email:<br><input type="text" name="email" th:field="*{email}">
@@ -18,8 +18,8 @@
         Surname:<br><input type="text" name="surname" th:field="*{surname}">
         Date of birth:<br><input type="date" name="dateOfBirth" th:field="*{dateOfBirth}">
         User role:<br>
-        <input type="radio" value="USER" th:field="*{role}">USER
-        <input type="radio" value="ADMIN" th:field="*{role}">ADMIN<br>
+        <input type="radio" name="role" value="USER" th:field="*{role}">USER
+        <input type="radio" name="role" value="ADMIN" th:field="*{role}">ADMIN
     </label>
 
     <button type="submit">Submit</button>
