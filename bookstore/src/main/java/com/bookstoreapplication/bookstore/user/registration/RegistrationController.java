@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 class RegistrationController {
 
     private RegistrationService registrationService;
+    private static final String INVALID_PASSWORD_OR_EMAIL_MSG = "The password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number and email must be not taken";
 
     @GetMapping
     String showRegistrationForm(Model model){
@@ -19,9 +20,12 @@ class RegistrationController {
     }
 
     @PostMapping
-    String registerUser(@ModelAttribute("registrationRequest") RegistrationRequest registrationRequest, Model model) throws Exception{
-        registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest);
-        model.addAttribute("message", "Successfully");
+    String registerUser(@ModelAttribute("registrationRequest") RegistrationRequest registrationRequest, Model model){
+        if(registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest)){
+            model.addAttribute("message", "Successfully");
+        }else {
+            model.addAttribute("message", INVALID_PASSWORD_OR_EMAIL_MSG);
+        }
         return "registration";
     }
 }

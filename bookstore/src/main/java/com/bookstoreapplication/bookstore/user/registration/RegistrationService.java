@@ -13,14 +13,13 @@ class RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationValidator registrationValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private static final String INVALID_PASSWORD_OR_EMAIL_MSG = "The password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number and email must be not taken";
 
-
-    public void registerUserIfPasswordValidAndEmailNotTaken(RegistrationRequest request) throws Exception {
+    public boolean registerUserIfPasswordValidAndEmailNotTaken(RegistrationRequest request){
         if(isPasswordValid(request) && isEmailNotTaken(request)){
             registerUserByRequestModel(request);
+            return true;
         }else{
-            throw new Exception(INVALID_PASSWORD_OR_EMAIL_MSG);
+            return false;
         }
     }
 
