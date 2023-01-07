@@ -1,30 +1,28 @@
 package com.bookstoreapplication.bookstore.user.login;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping( "/login")
 @AllArgsConstructor
+@CrossOrigin("http://localhost:3000")
 class LoginController {
 
     private final LoginService loginService;
-
-    @GetMapping
-    String showLoginForm(Model model){
-        model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
-    }
+    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping
-    String loginUser(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model){
-        loginService.startUserSession(loginRequest);
-        model.addAttribute("message", "Successfully");
-        return "login";
+    ResponseEntity loginUser(@RequestBody LoginRequest loginRequest){
+        if(loginService.startUserSession(loginRequest)){
+            logger.info("Successfully logged in");
+            return ResponseEntity.ok("Successfully logged in");
+        }else{
+            logger.info("Unsuccessfully logged in");
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.Book;
+import com.bookstoreapplication.bookstore.book.BookDatabaseModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,7 +20,7 @@ public class PurchaseBook {
     @Id
     @ManyToOne
     @JoinColumn(name = "book_id")
-    Book bookId;
+    BookDatabaseModel bookId;
 
     @NotNull
     private int booksAmount;

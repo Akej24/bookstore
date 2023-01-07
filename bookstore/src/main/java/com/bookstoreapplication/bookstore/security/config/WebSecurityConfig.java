@@ -23,21 +23,20 @@ public class WebSecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
-                //
+                /*.authorizeHttpRequests()
+                    .requestMatchers("/register", "/login", "homepage")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()*/
                 .authorizeHttpRequests()
-                //
-                .requestMatchers("/register")
-                .permitAll()
-                //
-                .anyRequest()
-                .authenticated()
-                //
+                    .anyRequest()
+                    .permitAll()
                 .and()
-                .httpBasic()
+                    .httpBasic()
                 .and()
-                .build();
-
+                    .build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserService userService)
             throws Exception {
@@ -47,4 +46,5 @@ public class WebSecurityConfig{
                 .and()
                 .build();
     }
+
 }

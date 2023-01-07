@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.user.account;
 
 import com.bookstoreapplication.bookstore.purchase.Purchase;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,15 +32,15 @@ public class UserDatabaseModel implements UserDetails {
     @Column(name = "purchaseId")
     private Set<Purchase> purchases;
     ///
-    @NotNull
+    @NotBlank
     private String email;
-    @NotNull
+    @NotBlank
     private String username;
-    @NotNull
+    @NotBlank
     private String password;
-    @NotNull
+    @NotBlank
     private String name;
-    @NotNull
+    @NotBlank
     private String surname;
     @NotNull
     private LocalDate dateOfBirth;

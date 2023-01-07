@@ -3,6 +3,8 @@ package com.bookstoreapplication.bookstore.user.registration;
 import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +15,21 @@ class RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationValidator registrationValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String SUCCESSFULLY_REGISTERED = "Successfully registered - added to the database";
+    private static final String UNSUCCESSFULLY_REGISTERED = "Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number, email must be not taken and fields must be not blank";
+    private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
-    public boolean registerUserIfPasswordValidAndEmailNotTaken(RegistrationRequest request){
-        if(isPasswordValid(request) && isEmailNotTaken(request)){
-            registerUserByRequestModel(request);
-            return true;
+    public UserDatabaseModel registerUserIfPasswordValidAndEmailNotTaken(RegistrationRequest request) throws InvalidInputException{
+        if(isPasswordValid(request) && isEmailNotTaken(request) && areFieldsNotBlank(request)){
+            logger.info(SUCCESSFULLY_REGISTERED);
+            return registerUserByRequestModel(request);
         }else{
-            return false;
+            logger.info(UNSUCCESSFULLY_REGISTERED);
+            throw new InvalidInputException();
         }
     }
 
-    private void registerUserByRequestModel(RegistrationRequest request) {
+    private UserDatabaseModel registerUserByRequestModel(RegistrationRequest request) {
         var modelToSave = new UserDatabaseModel(
                 request.getEmail(),
                 request.getUsername(),
@@ -33,7 +39,7 @@ class RegistrationService {
                 request.getDateOfBirth(),
                 request.getRole()
         );
-        userRepository.save(modelToSave);
+        return userRepository.save(modelToSave);
     }
 
     private boolean isEmailNotTaken(RegistrationRequest request) {
@@ -42,6 +48,10 @@ class RegistrationService {
 
     private boolean isPasswordValid(RegistrationRequest request) {
         return registrationValidator.validatePassword(request.getPassword());
+    }
+
+    private boolean areFieldsNotBlank(RegistrationRequest request){
+        return registrationValidator.validateFields(request);
     }
 
 }

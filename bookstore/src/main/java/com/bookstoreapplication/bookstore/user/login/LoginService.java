@@ -12,16 +12,19 @@ public class LoginService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void startUserSession(LoginRequest request){
+    public boolean startUserSession(LoginRequest request){
         if(userExistsByEmail(request) && userPasswordMatchesEmail(request)){
             System.out.println("Session started...");
+            return true;
+        }else{
+            return false;
         }
     }
 
     private boolean userPasswordMatchesEmail(LoginRequest request) {
-       var passwordFromDatabase = userRepository.findByEmail(request.getEmail()).get().getPassword();
+       var passwordFromDatabase = userRepository.findByEmail(request.getEmail()).orElseThrow().getPassword();
        var passwordFromForm = request.getPassword();
-       return bCryptPasswordEncoder.matches(passwordFromDatabase, passwordFromForm);
+       return bCryptPasswordEncoder.matches(passwordFromForm, passwordFromDatabase);
     }
 
     private boolean userExistsByEmail(LoginRequest request) {
