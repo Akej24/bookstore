@@ -1,8 +1,8 @@
 package com.bookstoreapplication.bookstore.user.login;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 class LoginController {
 
     private final LoginService loginService;
-    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @PostMapping
-    ResponseEntity loginUser(@RequestBody LoginRequest loginRequest){
+    ResponseEntity<HttpSession> loginUser(@RequestBody LoginRequest loginRequest, HttpSession session){
         if(loginService.startUserSession(loginRequest)){
-            logger.info("Successfully logged in");
-            return ResponseEntity.ok("Successfully logged in");
+            System.out.println(session.getAttribute("userDatabaseModel"));
+            System.out.println(session.getAttribute("userEmail"));
+            System.out.println(session.getAttribute("test"));
+            return ResponseEntity.status(HttpStatus.OK).build();
         }else{
-            logger.info("Unsuccessfully logged in");
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
