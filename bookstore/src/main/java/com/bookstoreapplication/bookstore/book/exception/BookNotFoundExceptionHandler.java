@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.user.registration.exception;
+package com.bookstoreapplication.bookstore.book.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +12,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class InvalidInputExceptionHandler {
+public class BookNotFoundExceptionHandler {
 
     @ResponseBody
-    @ExceptionHandler(InvalidInputException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> handleInvalidInputException(InvalidInputException exception){
+    @ExceptionHandler(BookNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleBookNotFoundException(BookNotFoundException exception){
 
         Map<String, Object> errorMap = new HashMap<>();
-        errorMap.put("httpStatus", HttpStatus.BAD_REQUEST);
-        errorMap.put("exceptionName", InvalidInputException.class.getSimpleName());
+        errorMap.put("httpStatus", HttpStatus.NOT_FOUND);
+        errorMap.put("exceptionName", BookNotFoundException.class.getSimpleName());
         errorMap.put("errorMessage", exception.getMessage());
         errorMap.put("timestamp", ZonedDateTime.now());
 
-        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMap, HttpStatus.NOT_FOUND);
     }
-
 }
