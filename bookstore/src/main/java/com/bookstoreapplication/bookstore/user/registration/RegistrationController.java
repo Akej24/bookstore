@@ -1,9 +1,8 @@
 package com.bookstoreapplication.bookstore.user.registration;
 
-import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.bookstoreapplication.bookstore.config.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +14,15 @@ import org.springframework.web.bind.annotation.*;
 class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final JwtService jwtService;
 
     @PostMapping
-    ResponseEntity<UserDatabaseModel> registerUser(@RequestBody RegistrationRequest registrationRequest, HttpServletRequest request){
+    ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest){
         var registeredUser = registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest);
-        HttpSession session = request.getSession();
-
-        session.setAttribute("test", "test");
-        session.setAttribute("userDatabaseModel", registeredUser);
-        session.setAttribute("userEmail", registeredUser.getEmail());
-        System.out.println(session.getAttribute("userDatabaseModel"));
-        System.out.println(session.getAttribute("userEmail"));
-        System.out.println(session.getAttribute("test"));
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
-
+        var jwtToken = jwtService.generateToken(registeredUser);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + jwtToken);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(registeredUser);
     }
 
 }

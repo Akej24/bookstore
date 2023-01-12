@@ -4,9 +4,9 @@ import com.bookstoreapplication.bookstore.purchase.PurchaseBook;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -14,9 +14,9 @@ import java.util.Set;
 @Entity
 @Table(name = "books")
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BookDatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,15 +39,6 @@ public class BookDatabaseModel {
     @NotNull
     private double price;
     @Embedded
-    private BookAudit userAudit = new BookAudit();
+    private BookAudit bookAudit = new BookAudit();
 
-    public BookDatabaseModel(String title, String author, LocalDate releaseDate, int numberOfPages, boolean status, int availablePieces, double price) {
-        this.title = title;
-        this.author = author;
-        this.releaseDate = releaseDate;
-        this.numberOfPages = numberOfPages;
-        this.status = status;
-        this.availablePieces = availablePieces;
-        this.price = price;
-    }
 }

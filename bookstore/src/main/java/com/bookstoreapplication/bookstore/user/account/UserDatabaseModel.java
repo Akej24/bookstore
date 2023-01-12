@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -75,8 +75,7 @@ public class UserDatabaseModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
-        return Collections.singletonList(authority);
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

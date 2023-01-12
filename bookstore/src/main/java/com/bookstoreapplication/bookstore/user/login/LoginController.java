@@ -1,7 +1,8 @@
 package com.bookstoreapplication.bookstore.user.login;
 
-import jakarta.servlet.http.HttpSession;
+import com.bookstoreapplication.bookstore.config.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +14,14 @@ import org.springframework.web.bind.annotation.*;
 class LoginController {
 
     private final LoginService loginService;
+    private final JwtService jwtService;
 
     @PostMapping
-    ResponseEntity<HttpSession> loginUser(@RequestBody LoginRequest loginRequest, HttpSession session){
-        if(loginService.startUserSession(loginRequest)){
-            System.out.println(session.getAttribute("userDatabaseModel"));
-            System.out.println(session.getAttribute("userEmail"));
-            System.out.println(session.getAttribute("test"));
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest){
+        var loggedUser = loginService.loginUser(loginRequest);
+        var jwtToken = jwtService.generateToken(loggedUser);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + jwtToken);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(loggedUser);
     }
 }
