@@ -4,10 +4,7 @@ import com.bookstoreapplication.bookstore.purchase.Purchase;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +21,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDatabaseModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,18 +58,6 @@ public class UserDatabaseModel implements UserDetails {
     ///
     @Embedded
     private UserAudit userAudit = new UserAudit();
-
-    public UserDatabaseModel(String email, String username, String password, String name, String surname, LocalDate dateOfBirth, UserRole role) {
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
-        this.role = role;
-        this.locked = false;
-        this.enabled = true;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

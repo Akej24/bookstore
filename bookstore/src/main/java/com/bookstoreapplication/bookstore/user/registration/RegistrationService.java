@@ -31,15 +31,7 @@ class RegistrationService {
     }
 
     private UserDatabaseModel registerUserByRequestModel(RegistrationRequest request) {
-        var modelToSave = new UserDatabaseModel(
-                request.getEmail(),
-                request.getUsername(),
-                bCryptPasswordEncoder.encode(request.getPassword()),
-                request.getName(),
-                request.getSurname(),
-                request.getDateOfBirth(),
-                request.getRole()
-        );
+        var modelToSave = buildFromFormToDatabaseModel(request);
         return userRepository.save(modelToSave);
     }
 
@@ -53,6 +45,20 @@ class RegistrationService {
 
     private boolean areFieldsNotBlank(RegistrationRequest request){
         return registrationValidator.validateFields(request);
+    }
+
+    private UserDatabaseModel buildFromFormToDatabaseModel(RegistrationRequest request) {
+        return UserDatabaseModel.builder()
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .password(bCryptPasswordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .surname(request.getSurname())
+                .dateOfBirth(request.getDateOfBirth())
+                .role(request.getRole())
+                .locked(false)
+                .enabled(true)
+                .build();
     }
 
 }
