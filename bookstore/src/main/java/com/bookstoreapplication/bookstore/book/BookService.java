@@ -1,13 +1,11 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.exception.BookNotFoundException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 @AllArgsConstructor
@@ -30,7 +28,7 @@ class BookService {
             return result;
         }else{
             logger.warn("The book with given id does not exist");
-            throw new BookNotFoundException();
+            throw new IllegalArgumentException("Book with given id does not exist");
         }
     }
 
@@ -46,7 +44,7 @@ class BookService {
             logger.info("The book was successfully removed from the database");
         }else{
             logger.warn("The book with given id does not exist");
-            throw new BookNotFoundException();
+            throw new IllegalArgumentException("Book with given id does not exist");
         }
     }
 
@@ -61,7 +59,7 @@ class BookService {
             return bookRepository.save(bookToEdit);
         }else{
             logger.warn("The book with given id does not exist");
-            throw new BookNotFoundException();
+            throw new IllegalArgumentException("Book with given id does not exist");
         }
     }
 

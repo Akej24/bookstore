@@ -2,16 +2,15 @@ package com.bookstoreapplication.bookstore.user.login;
 
 import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
-import com.bookstoreapplication.bookstore.user.login.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
 @Service
-public class LoginService {
+@AllArgsConstructor
+class LoginService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -19,11 +18,11 @@ public class LoginService {
 
     public UserDatabaseModel loginUser(LoginRequest request){
         if(userExistsByEmail(request) && userPasswordMatchesEmail(request)){
-            logger.info("Successfully logged in - session loaded");
+            logger.info("Successfully logged in");
             return userRepository.findByEmail(request.getEmail()).get();
         }else{
-            logger.warn("Unsuccessfully logged in - session was not loaded");
-            throw new UserNotFoundException();
+            logger.warn("Unsuccessfully logged in");
+            throw new IllegalArgumentException("User with given email or password does not exist");
         }
     }
 

@@ -1,7 +1,6 @@
 package com.bookstoreapplication.bookstore.config;
 
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
-import com.bookstoreapplication.bookstore.user.login.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByEmail(username)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Bean

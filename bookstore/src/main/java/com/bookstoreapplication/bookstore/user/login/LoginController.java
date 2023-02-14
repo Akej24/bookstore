@@ -24,4 +24,5 @@ class LoginController {
         headers.add("Authorization", "Bearer " + jwtToken);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(loggedUser);
     }
+
 }

@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeHttpRequests()
-                    .requestMatchers("/registration", "/login")
+                    .requestMatchers("/registration", "/login", "/books", "/books/create", "/books/{id}")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
