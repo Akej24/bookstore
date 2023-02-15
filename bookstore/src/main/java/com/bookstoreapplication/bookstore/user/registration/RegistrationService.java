@@ -21,7 +21,7 @@ class RegistrationService {
     private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
     public UserDatabaseModel registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
-        if(isPasswordValid(request) && isEmailNotTaken(request)){
+        if(isPasswordValid(request) && isEmailNotTaken(request) && areFieldsNotBlank(request)){
             logger.info(SUCCESSFULLY_REGISTERED);
             return registerUserByRequestModel(request);
         }else{
