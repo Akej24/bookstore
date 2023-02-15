@@ -1,7 +1,6 @@
 package com.bookstoreapplication.bookstore.user.registration;
 
 import com.bookstoreapplication.bookstore.user.account.UserRole;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,15 +15,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 class RegistrationRequest {
 
-    @NotBlank
+    @NotNull(message="Email must be not null")
     private String email;
-    @NotBlank
+    @NotNull(message="Username must be not null")
     private String username;
-    @NotBlank
+    @NotNull(message="Password must be not null")
     private String password;
-    @NotBlank
+    @NotNull(message="Name must be not null")
     private  String name;
-    @NotBlank
+    @NotNull(message="Surname must be not null")
     private String surname;
     @NotNull
     private LocalDate dateOfBirth;

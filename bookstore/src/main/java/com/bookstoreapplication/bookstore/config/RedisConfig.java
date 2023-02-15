@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
-public class RedisConfig {
+class RedisConfig {
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {

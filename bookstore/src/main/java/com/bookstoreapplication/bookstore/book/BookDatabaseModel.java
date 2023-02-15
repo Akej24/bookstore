@@ -24,11 +24,11 @@ public class BookDatabaseModel {
     @OneToMany(mappedBy = "bookId")
     private Set<PurchaseBook> purchaseBooks;
     ///
-    @NotNull
+    @NotNull(message="Title must not be null")
     private String title;
-    @NotNull
+    @NotNull(message="Author must not be null")
     private String author;
-    @NotNull
+    @NotNull(message="Release date must not be null")
     private LocalDate releaseDate;
     @NotNull
     private int numberOfPages;

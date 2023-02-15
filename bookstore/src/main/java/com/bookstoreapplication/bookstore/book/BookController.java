@@ -15,7 +15,7 @@ class BookController {
 
     BookService bookService;
 
-    @PostMapping("/create")
+    @PostMapping("")
     ResponseEntity<BookDatabaseModel> addBookToDatabase(@RequestBody BookWriteModel bookWriteModel){
         var createdBook = bookService.addBookToDatabase(bookWriteModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);

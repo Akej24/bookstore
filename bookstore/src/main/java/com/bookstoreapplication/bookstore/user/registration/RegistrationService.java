@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.user.registration;
 
 import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,12 @@ class RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationValidator registrationValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private static final String SUCCESSFULLY_REGISTERED = "Successfully registered - added to the database - session created";
+    private static final String SUCCESSFULLY_REGISTERED = "Successfully registered and added to the database";
     private static final String UNSUCCESSFULLY_REGISTERED = "Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number, email must be not taken and fields must be not blank";
     private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
-    public UserDatabaseModel registerUserIfPasswordValidAndEmailNotTaken(RegistrationRequest request) {
-        if(isPasswordValid(request) && isEmailNotTaken(request) && areFieldsNotBlank(request)){
+    public UserDatabaseModel registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
+        if(isPasswordValid(request) && isEmailNotTaken(request)){
             logger.info(SUCCESSFULLY_REGISTERED);
             return registerUserByRequestModel(request);
         }else{

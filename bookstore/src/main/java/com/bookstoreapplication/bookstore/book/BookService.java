@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,10 @@ class BookService {
     private final BookRepository bookRepository;
     private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    public BookDatabaseModel addBookToDatabase(BookWriteModel bookWriteModel){
+    public BookDatabaseModel addBookToDatabase(@Valid BookWriteModel bookWriteModel){
         var bookToSave = buildFromWriteToDatabaseModel(bookWriteModel);
-        var savedBook=  bookRepository.save(bookToSave);
         logger.info("Successfully added to the database");
-        return savedBook;
+        return bookRepository.save(bookToSave);
     }
 
     public BookDatabaseModel getBookById(long bookId){
@@ -53,9 +53,10 @@ class BookService {
         logger.warn("All books have been removed from the database");
     }
 
-    public BookDatabaseModel updateBookById(long bookId, BookWriteModel bookWriteModel) {
+    public BookDatabaseModel updateBookById(@Valid long bookId, @Valid BookWriteModel bookWriteModel) {
         if(bookRepository.findById(bookId).isPresent()){
             var bookToEdit = buildFromWriteToDatabaseModelWithId(bookId, bookWriteModel);
+            logger.info("The book with given id has been updated");
             return bookRepository.save(bookToEdit);
         }else{
             logger.warn("The book with given id does not exist");

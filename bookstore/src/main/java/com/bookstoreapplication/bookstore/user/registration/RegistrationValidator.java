@@ -18,8 +18,8 @@ class RegistrationValidator {
         rules.add(new CharacterRule(EnglishCharacterData.Digit, 1));
         rules.add(new CharacterRule(EnglishCharacterData.Special, 1));
 
-        PasswordValidator validator = new PasswordValidator(rules);
-        PasswordData passwordData = new PasswordData(password);
+        var validator = new PasswordValidator(rules);
+        var passwordData = new PasswordData(password);
         RuleResult result = validator.validate(passwordData);
 
         return result.isValid();
@@ -30,11 +30,11 @@ class RegistrationValidator {
         rules.add(new LengthRule(1, Integer.MAX_VALUE));
         rules.add(new WhitespaceRule());
 
-        PasswordValidator validator = new PasswordValidator(rules);
-        PasswordData emailData = new PasswordData(request.getEmail());
-        PasswordData usernameData = new PasswordData(request.getUsername());
-        PasswordData nameData = new PasswordData(request.getName());
-        PasswordData surnameData = new PasswordData(request.getSurname());
+        var validator = new PasswordValidator(rules);
+        var emailData = new PasswordData(request.getEmail());
+        var usernameData = new PasswordData(request.getUsername());
+        var nameData = new PasswordData(request.getName());
+        var surnameData = new PasswordData(request.getSurname());
 
         RuleResult emailResult = validator.validate(emailData);
         RuleResult usernameResult = validator.validate(usernameData);
