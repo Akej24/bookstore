@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseBook;
+import com.bookstoreapplication.bookstore.purchase.PurchaseDetails;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,9 +21,10 @@ public class BookDatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
-    @OneToMany(mappedBy = "bookId")
-    private Set<PurchaseBook> purchaseBooks;
-    ///
+
+    @OneToMany(mappedBy = "bookDatabaseModel")
+    private Set<PurchaseDetails> purchaseDetails;
+
     @NotNull(message="Title must not be null")
     private String title;
     @NotNull(message="Author must not be null")

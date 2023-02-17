@@ -47,7 +47,7 @@ ALTER TABLE users ADD COLUMN purchase_id BIGINT REFERENCES purchases(purchase_id
 
 ALTER TABLE purchases ADD COLUMN user_id BIGINT REFERENCES users(user_id);
 
-CREATE TABLE purchases_books (
+CREATE TABLE purchases_details (
     purchase_book_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     purchase_id BIGINT REFERENCES purchases(purchase_id),
     book_id BIGINT REFERENCES books(book_id),

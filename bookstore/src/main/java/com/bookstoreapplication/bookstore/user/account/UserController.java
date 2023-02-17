@@ -15,9 +15,9 @@ class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{bookId}")
-    ResponseEntity<UserDatabaseModel> getBookById(@PathVariable long bookId){
-        return new ResponseEntity<>(userService.getUserById(bookId), HttpStatus.OK);
+    @GetMapping("/{userId}")
+    ResponseEntity<UserDatabaseModel> getUserById(@PathVariable long userId){
+        return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -25,9 +25,9 @@ class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{bookId}")
-    ResponseEntity<?> deleteBookById(@PathVariable long bookId){
-        userService.deleteUser(bookId);
+    @DeleteMapping("/{userId}")
+    ResponseEntity<?> deleteUserById(@PathVariable long userId){
+        userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -37,9 +37,9 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/{bookId}")
-    ResponseEntity<UserDatabaseModel> updateBookById(@PathVariable long bookId, @RequestBody UserUpdateRequest userUpdateRequest){
-        return new ResponseEntity<>(userService.updateUserById(bookId, userUpdateRequest), HttpStatus.OK);
+    @PatchMapping("/{userId}")
+    ResponseEntity<UserDatabaseModel> updateUserById(@PathVariable long userId, @RequestBody UserUpdateRequest userUpdateRequest){
+        return new ResponseEntity<>(userService.updateUserById(userId, userUpdateRequest), HttpStatus.OK);
     }
 
 }

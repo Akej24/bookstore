@@ -1,13 +1,16 @@
 package com.bookstoreapplication.bookstore.user.account;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 @AllArgsConstructor
 class UserService {
 
@@ -46,9 +49,10 @@ class UserService {
         logger.warn("All users have been removed from the database");
     }
 
-    public UserDatabaseModel updateUserById(long userId, UserUpdateRequest userUpdateRequest) {
+    public UserDatabaseModel updateUserById(@Valid long userId, @Valid UserUpdateRequest userUpdateRequest) {
         if(userRepository.findById(userId).isPresent()){
-            var userToEdit = buildFromWriteToDatabaseModelWithId(userId, userUpdateRequest);
+            var userToEdit = buildFromWriteToDatabaseModelWithId(userRepository.findById(userId).get(), userUpdateRequest);
+            logger.info("User has been updated");
             return userRepository.save(userToEdit);
         }else{
             logger.warn("User with the given id has not been found");
@@ -56,10 +60,8 @@ class UserService {
         }
     }
 
-    private static UserDatabaseModel buildFromWriteToDatabaseModelWithId(long bookId, UserUpdateRequest userUpdateRequest) {
-        return UserDatabaseModel.builder()
-                .userId(bookId)
-                .email(userUpdateRequest.getEmail())
+    private static UserDatabaseModel buildFromWriteToDatabaseModelWithId(UserDatabaseModel user, UserUpdateRequest userUpdateRequest) {
+        return user.toBuilder()
                 .username(userUpdateRequest.getUsername())
                 .password(userUpdateRequest.getPassword())
                 .name(userUpdateRequest.getName())

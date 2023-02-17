@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import com.bookstoreapplication.bookstore.purchase.Purchase;
+import com.bookstoreapplication.bookstore.purchase.PurchaseDatabaseModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,15 +21,16 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class UserDatabaseModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
-    @OneToMany(mappedBy = "userDatabaseModelId")
+
+    @OneToMany(mappedBy = "userDatabaseModel")
     @Column(name = "purchaseId")
-    private Set<Purchase> purchases;
-    ///
+    private Set<PurchaseDatabaseModel> purchaseDatabaseModels;
+
     @NotBlank
     private String email;
     @NotBlank
@@ -45,17 +46,17 @@ public class UserDatabaseModel implements UserDetails {
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    ///
+
     @NotNull
     private boolean locked;
     @NotNull
     private boolean enabled;
-    ///
+
     @ColumnDefault("0")
     private double availableFunds;
     @ColumnDefault("0")
     private int purchasedBooks;
-    ///
+
     @Embedded
     private UserAudit userAudit = new UserAudit();
 

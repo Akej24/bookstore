@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,15 +14,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 class UserUpdateRequest {
 
-    @NotBlank
-    private String email;
-    @NotBlank
+    @NotNull
     private String username;
-    @NotBlank
+    @NotNull
     private String password;
-    @NotBlank
+    @NotNull
     private  String name;
-    @NotBlank
+    @NotNull
     private String surname;
     @NotNull
     private LocalDate dateOfBirth;
