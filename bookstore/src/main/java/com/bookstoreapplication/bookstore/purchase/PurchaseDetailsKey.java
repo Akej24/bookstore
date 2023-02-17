@@ -1,18 +1,23 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Embeddable
-@EqualsAndHashCode
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseDetailsKey implements Serializable {
 
+    private long purchaseDetailsId;
     @Column(name = "purchase_id")
-    long purchaseId;
+    private long purchaseDatabaseModel;
     @Column(name = "book_id")
-    long bookId;
+    private long bookDatabaseModel;
 
 }

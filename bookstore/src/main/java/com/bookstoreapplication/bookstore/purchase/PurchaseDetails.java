@@ -8,26 +8,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "purchasesDetails")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class PurchaseDetails {
+@IdClass(PurchaseDetailsKey.class)
+public class PurchaseDetails implements Serializable {
 
-    @EmbeddedId
-    PurchaseDetailsKey purchaseDetailsId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long purchaseDetailsId;
 
+    @Id
     @ManyToOne
-    @MapsId("purchaseId")
     @JoinColumn(name = "purchase_id")
-    PurchaseDatabaseModel purchaseDatabaseModel;
+    private PurchaseDatabaseModel purchaseDatabaseModel;
 
+    @Id
     @ManyToOne
-    @MapsId("bookId")
     @JoinColumn(name = "book_id")
-    BookDatabaseModel bookDatabaseModel;
+    private BookDatabaseModel bookDatabaseModel;
 
     @NotNull
     private int booksAmount;

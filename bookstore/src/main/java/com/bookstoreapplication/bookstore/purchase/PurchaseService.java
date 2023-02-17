@@ -22,6 +22,7 @@ public class PurchaseService {
 
     private final BookService bookService;
     private final PurchaseRepository purchaseRepository;
+    private final PurchaseDetailsRepository purchaseDetailsRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final Logger logger = LoggerFactory.getLogger(PurchaseService.class);
@@ -45,6 +46,7 @@ public class PurchaseService {
                 .bookDatabaseModel(bookDatabaseModel)
                 .booksAmount(purchaseRequest.getBooksAmount())
                 .build();
+        purchaseDetailsRepository.save(purchaseDetails);
 
         var purchaseDetailsSet = new HashSet<PurchaseDetails>();
         purchaseDetailsSet.add(purchaseDetails);
