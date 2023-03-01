@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset aleks:1
+--changeset akej:1
 CREATE TABLE users (
     user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
 
@@ -42,7 +42,7 @@ CREATE TABLE books (
     updated_on DATETIME
 );
 
---changeset aleks:2
+--changeset akej:2
 ALTER TABLE users ADD COLUMN purchase_id BIGINT REFERENCES purchases(purchase_id);
 
 ALTER TABLE purchases ADD COLUMN user_id BIGINT REFERENCES users(user_id);
