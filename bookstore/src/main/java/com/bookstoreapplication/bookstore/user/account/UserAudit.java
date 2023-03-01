@@ -1,11 +1,13 @@
 package com.bookstoreapplication.bookstore.user.account;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Embeddable
+@Getter
 class UserAudit implements Serializable {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;

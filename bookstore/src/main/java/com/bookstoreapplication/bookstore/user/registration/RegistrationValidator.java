@@ -8,7 +8,6 @@ import java.util.List;
 
 @Component
 class RegistrationValidator {
-
     public boolean validatePassword(String password) {
         List<Rule> rules = new ArrayList<>();
         rules.add(new LengthRule(8, 16));
@@ -24,26 +23,4 @@ class RegistrationValidator {
 
         return result.isValid();
     }
-
-    public boolean validateFields(RegistrationRequest request){
-        List<Rule> rules = new ArrayList<>();
-        rules.add(new LengthRule(1, Integer.MAX_VALUE));
-        rules.add(new WhitespaceRule());
-
-        var validator = new PasswordValidator(rules);
-        var emailData = new PasswordData(request.getEmail());
-        var usernameData = new PasswordData(request.getUsername());
-        var nameData = new PasswordData(request.getName());
-        var surnameData = new PasswordData(request.getSurname());
-
-        RuleResult emailResult = validator.validate(emailData);
-        RuleResult usernameResult = validator.validate(usernameData);
-        RuleResult nameResult = validator.validate(nameData);
-        RuleResult surnameResult = validator.validate(surnameData);
-
-        return (
-                emailResult.isValid() && usernameResult.isValid() && nameResult.isValid() && surnameResult.isValid()
-        );
-    }
-
 }

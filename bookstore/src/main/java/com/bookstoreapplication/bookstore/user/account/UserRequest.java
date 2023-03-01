@@ -1,29 +1,35 @@
 package com.bookstoreapplication.bookstore.user.account;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-class UserUpdateRequest {
+class UserRequest {
 
-    @NotNull
+    @NotBlank(message="Username must not be blank")
     private String username;
-    @NotNull
+
+    @NotBlank(message="Password must not be blank")
     private String password;
-    @NotNull
+
+    @NotBlank(message="Name must not be blank")
     private  String name;
-    @NotNull
+
+    @NotBlank(message="Surname must not be blank")
     private String surname;
-    @NotNull
+
+    @NotNull(message = "Date of birth must not be null")
     private LocalDate dateOfBirth;
+
+    @NotNull(message = "Role must not be null")
+    private UserRole role;
 
 }
 

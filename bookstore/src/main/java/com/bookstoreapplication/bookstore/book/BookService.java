@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -17,84 +20,87 @@ public class BookService {
     private final BookRepository bookRepository;
     private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
-    BookDatabaseModel addBookToDatabase(@Valid BookWriteModel bookWriteModel){
-        var bookToSave = buildFromWriteToDatabaseModel(bookWriteModel);
+    @Transactional
+    Book addBookToDatabase(@Valid BookRequest bookRequest){
+        var bookToSave = createFromRequest(bookRequest);
+        var savedBook = bookRepository.save(bookToSave);
         logger.info("Successfully added to the database");
-        return bookRepository.save(bookToSave);
+        return savedBook;
     }
 
-    BookDatabaseModel getBookById(long bookId){
-        if(bookRepository.findById(bookId).isPresent()){
-            var result = bookRepository.findById(bookId).get();
-            logger.info("Successively fetch a book from the database");
-            return result;
-        }else{
-            logger.warn("The book with given id does not exist");
-            throw new IllegalArgumentException("Book with given id does not exist");
-        }
+    Book getBookById(long bookId){
+        var result = bookRepository.findById(bookId).orElseThrow(() -> {
+            logger.warn("The book with id {} does not exist", bookId);
+            return new IllegalArgumentException("Book with given id does not exist");
+        });
+        logger.info("Successively fetch a book with id {} from the database", bookId);
+        return result;
     }
 
-    List<BookDatabaseModel> getAllBooks() {
+    List<Book> getAllBooks() {
         var result = bookRepository.findAll();
         logger.info("All books have been fetched from the database");
         return result;
     }
 
+    @Transactional
     void deleteBook(long bookId) {
-        if(bookRepository.existsById(bookId)){
-            bookRepository.deleteById(bookId);
-            logger.info("The book was successfully removed from the database");
-        }else{
-            logger.warn("The book with given id does not exist");
+        Book bookToDelete = bookRepository.findById(bookId).orElseThrow(() -> {
+            logger.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
-        }
+        });
+        bookRepository.delete(bookToDelete);
+        logger.info("The book with id {} was successfully removed from the database", bookId);
     }
 
+    @Transactional
     void deleteAllBooks() {
         bookRepository.deleteAll();
         logger.warn("All books have been removed from the database");
     }
 
-    BookDatabaseModel updateBookById(@Valid long bookId, @Valid BookWriteModel bookWriteModel) {
-        if(bookRepository.findById(bookId).isPresent()){
-            var bookToEdit = buildFromWriteToDatabaseModelWithId(bookId, bookWriteModel);
-            logger.info("The book with given id has been updated");
-            return bookRepository.save(bookToEdit);
-        }else{
-            logger.warn("The book with given id does not exist");
+    @Transactional
+    Book updateBookById(long bookId, @Valid BookRequest bookRequest) {
+        Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(() -> {
+            logger.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
-        }
+        });
+        Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
+        Book savedBook = bookRepository.save(updatedBook);
+        logger.info("The book with id {} has been updated", bookId);
+        return savedBook;
     }
 
-    public double getBookPriceByAmount(long bookId, int amount){
-        var price = bookRepository.findById(bookId)
-                .map(BookDatabaseModel::getPrice)
+    public BigDecimal calculateBookPriceByAmount(long bookId, int amount){
+        Book book = bookRepository.findById(bookId)
                 .orElseThrow( () -> new IllegalArgumentException("Book with given id does not exist"));
-        return price * (double)amount;
+        BigDecimal price = BigDecimal.valueOf(book.getPrice());
+        BigDecimal total = price.multiply(BigDecimal.valueOf(amount));
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
-    private static BookDatabaseModel buildFromWriteToDatabaseModel(BookWriteModel bookWriteModel) {
-        return BookDatabaseModel.builder()
-                .title(bookWriteModel.getTitle())
-                .author(bookWriteModel.getAuthor())
-                .releaseDate(bookWriteModel.getReleaseDate())
-                .numberOfPages(bookWriteModel.getNumberOfPages())
-                .status(bookWriteModel.isStatus())
-                .availablePieces(bookWriteModel.getAvailablePieces())
-                .price(bookWriteModel.getPrice())
+    private static Book createFromRequest(BookRequest bookRequest) {
+        return Book.builder()
+                .title(bookRequest.getTitle())
+                .author(bookRequest.getAuthor())
+                .releaseDate(bookRequest.getReleaseDate())
+                .numberOfPages(bookRequest.getNumberOfPages())
+                .status(bookRequest.getStatus())
+                .availablePieces(bookRequest.getAvailablePieces())
+                .price(bookRequest.getPrice())
+                .bookAudit(new BookAudit())
                 .build();
     }
 
-    private static BookDatabaseModel buildFromWriteToDatabaseModelWithId(long bookId, BookWriteModel bookWriteModel) {
-        return BookDatabaseModel.builder()
-                .bookId(bookId)
-                .title(bookWriteModel.getTitle())
-                .author(bookWriteModel.getAuthor())
-                .releaseDate(bookWriteModel.getReleaseDate())
-                .numberOfPages(bookWriteModel.getNumberOfPages())
-                .status(bookWriteModel.isStatus())
-                .availablePieces(bookWriteModel.getAvailablePieces())
-                .price(bookWriteModel.getPrice())
+    private static Book updateFromRequest(Book bookToUpdate, BookRequest bookRequest) {
+        return bookToUpdate.toBuilder()
+                .title(bookRequest.getTitle())
+                .author(bookRequest.getAuthor())
+                .releaseDate(bookRequest.getReleaseDate())
+                .numberOfPages(bookRequest.getNumberOfPages())
+                .status(bookRequest.getStatus())
+                .availablePieces(bookRequest.getAvailablePieces())
+                .price(bookRequest.getPrice())
                 .build();
     }
 

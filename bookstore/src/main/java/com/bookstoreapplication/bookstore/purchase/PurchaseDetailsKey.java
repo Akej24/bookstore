@@ -18,6 +18,6 @@ public class PurchaseDetailsKey implements Serializable {
     @Column(name = "purchase_id")
     private long purchaseDatabaseModel;
     @Column(name = "book_id")
-    private long bookDatabaseModel;
+    private long book;
 
 }

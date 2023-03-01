@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user.login;
 
-import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
+import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -16,24 +16,20 @@ class LoginService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    public UserDatabaseModel loginUser(LoginRequest request){
-        if(userExistsByEmail(request) && userPasswordMatchesEmail(request)){
-            logger.info("Successfully logged in");
-            return userRepository.findByEmail(request.getEmail()).get();
-        }else{
-            logger.warn("Unsuccessfully logged in");
-            throw new IllegalArgumentException("User with given email or password does not exist");
+    public User loginUser(LoginRequest request){
+        User existingUser = userRepository.findByEmail(request.getEmail()).orElseThrow(()->{
+            logger.warn("Unsuccessfully logged in - user with given email does not exist");
+            throw new IllegalArgumentException("User with given email does not exist");
+        });
+
+        var passwordFromDatabase = existingUser.getPassword();
+        var passwordFromRequest = request.getPassword();
+        if(!bCryptPasswordEncoder.matches(passwordFromRequest, passwordFromDatabase)){
+            logger.warn("Unsuccessfully logged in - invalid password for user with e-mail {}", request.getEmail());
+            throw new IllegalArgumentException("Invalid password for user with given e-mail");
         }
-    }
 
-    private boolean userPasswordMatchesEmail(LoginRequest request) {
-       var passwordFromDatabase = userRepository.findByEmail(request.getEmail()).orElseThrow().getPassword();
-       var passwordFromForm = request.getPassword();
-       return bCryptPasswordEncoder.matches(passwordFromForm, passwordFromDatabase);
+        logger.info("User with e-mail {} successfully logged in", request.getEmail());
+        return existingUser;
     }
-
-    private boolean userExistsByEmail(LoginRequest request) {
-        return userRepository.findByEmail(request.getEmail()).isPresent();
-    }
-
 }

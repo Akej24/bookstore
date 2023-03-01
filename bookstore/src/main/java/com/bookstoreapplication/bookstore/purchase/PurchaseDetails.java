@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.BookDatabaseModel;
+import com.bookstoreapplication.bookstore.book.Book;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class PurchaseDetails implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private BookDatabaseModel bookDatabaseModel;
+    private Book book;
 
     @NotNull
     private int booksAmount;

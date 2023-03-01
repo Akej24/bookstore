@@ -13,21 +13,21 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 class BookController {
 
-    BookService bookService;
+    private final BookService bookService;
 
     @PostMapping("")
-    ResponseEntity<BookDatabaseModel> addBookToDatabase(@RequestBody BookWriteModel bookWriteModel){
-        var createdBook = bookService.addBookToDatabase(bookWriteModel);
+    ResponseEntity<Book> addBookToDatabase(@RequestBody BookRequest bookRequest){
+        var createdBook = bookService.addBookToDatabase(bookRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<BookDatabaseModel> getBookById(@PathVariable long bookId){
+    ResponseEntity<Book> getBookById(@PathVariable long bookId){
         return new ResponseEntity<>(bookService.getBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<List<BookDatabaseModel>> getAllBooks(){
+    ResponseEntity<List<Book>> getAllBooks(){
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
 
@@ -44,8 +44,8 @@ class BookController {
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<BookDatabaseModel> updateBookById(@PathVariable long bookId, @RequestBody BookWriteModel bookWriteModel){
-        return new ResponseEntity<>(bookService.updateBookById(bookId, bookWriteModel), HttpStatus.OK);
+    ResponseEntity<Book> updateBookById(@PathVariable long bookId, @RequestBody BookRequest bookRequest){
+        return new ResponseEntity<>(bookService.updateBookById(bookId, bookRequest), HttpStatus.OK);
     }
 
 }

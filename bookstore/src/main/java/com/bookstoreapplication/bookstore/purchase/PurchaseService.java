@@ -1,9 +1,9 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.BookDatabaseModel;
+import com.bookstoreapplication.bookstore.book.Book;
 import com.bookstoreapplication.bookstore.book.BookRepository;
 import com.bookstoreapplication.bookstore.book.BookService;
-import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
+import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,16 +34,16 @@ public class PurchaseService {
     }
 
     private PurchaseDatabaseModel buildNewPurchase(PurchaseRequest purchaseRequest) {
-        UserDatabaseModel userDatabaseModel = userRepository
+        User user = userRepository
                 .findById(purchaseRequest.getUserId())
                 .orElseThrow( () -> new IllegalArgumentException("User with given id does not exist"));
 
-        BookDatabaseModel bookDatabaseModel = bookRepository
+        Book book = bookRepository
                 .findById(purchaseRequest.getBookId())
                 .orElseThrow( () -> new IllegalArgumentException("Book with given id does not exist"));
 
         PurchaseDetails purchaseDetails = PurchaseDetails.builder()
-                .bookDatabaseModel(bookDatabaseModel)
+                .book(book)
                 .booksAmount(purchaseRequest.getBooksAmount())
                 .build();
         purchaseDetailsRepository.save(purchaseDetails);
@@ -52,10 +52,10 @@ public class PurchaseService {
         purchaseDetailsSet.add(purchaseDetails);
 
         return PurchaseDatabaseModel.builder()
-                .userDatabaseModel(userDatabaseModel)
+                .user(user)
                 .purchaseDetails(purchaseDetailsSet)
                 .purchaseDate(LocalDateTime.now())
-                .totalPrice(bookService.getBookPriceByAmount(purchaseRequest.getBookId(), purchaseRequest.getBooksAmount()))
+                .totalPrice(bookService.calculateBookPriceByAmount(purchaseRequest.getBookId(), purchaseRequest.getBooksAmount()))
                 .purchaseStatus(PurchaseStatus.INITIALIZED)
                 .build();
     }

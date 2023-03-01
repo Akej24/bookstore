@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.user.account.UserDatabaseModel;
+import com.bookstoreapplication.bookstore.user.account.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -22,7 +22,7 @@ public class PurchaseDatabaseModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserDatabaseModel userDatabaseModel;
+    private User user;
 
     @OneToMany(mappedBy = "purchaseDatabaseModel")
     private Set<PurchaseDetails> purchaseDetails;
