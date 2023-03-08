@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseDatabaseModel;
+import com.bookstoreapplication.bookstore.purchase.PurchaseDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -26,9 +26,8 @@ public class User implements UserDetails {
     private long userId;
 
     @OneToMany(mappedBy = "user")
-    @Column(name = "purchaseId")
     @JsonIgnore
-    private Set<PurchaseDatabaseModel> purchaseDatabaseModels;
+    private Set<PurchaseDetail> purchases;
 
     @Email(message = "Invalid e-mail format")
     private String email;
@@ -48,15 +47,18 @@ public class User implements UserDetails {
     @NotNull(message = "Date of birth must not be null")
     private LocalDate dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "Role must not be null")
     private UserRole role;
 
     @DecimalMin(value = "0.0", message = "Minimum value of available funds cannot be less than 0.0")
-    @NotNull
+    @NotNull(message = "Available funds must be not null")
+    @Builder.Default
     private Double availableFunds = 0.0;
 
     @Min(value = 0, message = "Minimum value of purchased books cannot be less than 0")
-    @NotNull
+    @NotNull(message = "Purchased books must be not null")
+    @Builder.Default
     private Integer purchasedBooks = 0;
 
     @Embedded
@@ -65,10 +67,12 @@ public class User implements UserDetails {
 
     @NotNull
     @JsonIgnore
+    @Builder.Default
     private Boolean locked = false;
 
     @NotNull
     @JsonIgnore
+    @Builder.Default
     private Boolean enabled = true;
 
     @Override

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseDetails;
+import com.bookstoreapplication.bookstore.purchase.PurchaseDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -23,9 +23,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
-    @OneToMany(mappedBy = "book")
+    @ManyToMany(mappedBy = "books")
     @JsonIgnore
-    private Set<PurchaseDetails> purchaseDetails;
+    private Set<PurchaseDetail> purchaseDetails;
 
     @NotBlank(message="Title must not be blank")
     private String title;
@@ -36,20 +36,20 @@ public class Book {
     @NotNull(message="Release date must not be null")
     private LocalDate releaseDate;
 
-    @Min(value = 1, message = "Number of pages must not be null and the minimum value is 1")
-    @NotNull
+    @Min(value = 1, message = "The minimum value of number of pages is 1")
+    @NotNull(message = "Number of pages must be not null")
     private Integer numberOfPages;
 
     @NotNull(message = "Status mut not be null")
     @Setter
     private Boolean status;
 
-    @Min(value = 0, message = "Available pieces must not be null and the minimum value is 0")
-    @NotNull
+    @Min(value = 0, message = "The minimum value of available pieces is 0")
+    @NotNull(message = "Available pieces must be not null")
     private Integer availablePieces;
 
-    @DecimalMin(value = "0.0", message = "Price must be not null and the minimum value is 0.0")
-    @NotNull
+    @DecimalMin(value = "0.0", message = "The minimum value of the price is 0.0")
+    @NotNull(message = "Price must be not null")
     private Double price;
 
     @Embedded
@@ -62,4 +62,6 @@ public class Book {
             availablePieces = 0;
         }
     }
+
+
 }

@@ -16,12 +16,12 @@ class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    ResponseEntity<User> getUserById(@PathVariable long userId){
+    ResponseEntity<UserResponse> getUserById(@PathVariable long userId){
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<List<User>> getAllBooks(){
+    ResponseEntity<List<UserResponse>> getAllBooks(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ class UserController {
     }
 
     @PatchMapping("/{userId}")
-    ResponseEntity<User> updateUserById(@PathVariable long userId, @RequestBody UserRequest userRequest){
+    ResponseEntity<UserResponse> updateUserById(@PathVariable long userId, @RequestBody UserRequest userRequest){
         return new ResponseEntity<>(userService.updateUserById(userId, userRequest), HttpStatus.OK);
     }
 

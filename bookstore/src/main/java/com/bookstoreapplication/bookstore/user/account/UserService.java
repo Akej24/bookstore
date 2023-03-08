@@ -18,26 +18,26 @@ class UserService {
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    User getUserById(long userId){
+    UserResponse getUserById(long userId){
         var result = userRepository.findById(userId).orElseThrow( () -> {
             logger.warn("User with id {} has not been found", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });
         logger.info("User with id {} has been found", userId);
-        return result;
+        return UserResponseMapper.mapToUserResponse(result);
     }
 
-    List<User> getAllUsers() {
+    List<UserResponse> getAllUsers() {
         var result = userRepository.findAll();
         logger.info("All users have been fetched from the database");
-        return result;
+        return UserResponseMapper.mapToUsersResponse(result);
     }
 
     @Transactional
     void deleteUser(long userId) {
         User userToDelete = userRepository.findById(userId).orElseThrow(() -> {
             logger.warn("The user with id {} does not exist", userId);
-            throw new IllegalArgumentException("User with given id %s does not exist");
+            throw new IllegalArgumentException("User with given id does not exist");
         });
         userRepository.delete(userToDelete);
         logger.info("The book with id {} was successfully removed from the database", userId);
@@ -50,7 +50,7 @@ class UserService {
     }
 
     @Transactional
-    User updateUserById(long userId, @Valid UserRequest userRequest) {
+    UserResponse updateUserById(long userId, @Valid UserRequest userRequest) {
         User userToUpdate = userRepository.findById(userId).orElseThrow(() -> {
             logger.warn("The user with id {} does not exist", userId);
             throw new IllegalArgumentException("User with given id does not exist");
@@ -58,7 +58,7 @@ class UserService {
         var updatedUser = updateFromRequest(userToUpdate, userRequest);
         var savedUser = userRepository.save(updatedUser);
         logger.info("The user with id {} has been updated", userId);
-        return savedUser;
+        return UserResponseMapper.mapToUserResponse(savedUser);
     }
 
     private static User updateFromRequest(User userToUpdate, UserRequest userRequest) {

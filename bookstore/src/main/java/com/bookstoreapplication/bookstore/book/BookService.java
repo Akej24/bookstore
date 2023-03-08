@@ -13,8 +13,8 @@ import java.math.RoundingMode;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @Validated
+@AllArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;

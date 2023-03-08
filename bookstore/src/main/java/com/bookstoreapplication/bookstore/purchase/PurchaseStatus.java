@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-public enum PurchaseStatus {
+enum PurchaseStatus {
     INITIALIZED,
     SUCCEED,
     FAILED

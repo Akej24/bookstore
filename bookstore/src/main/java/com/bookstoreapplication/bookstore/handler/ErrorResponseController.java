@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,25 +14,24 @@ import java.util.stream.Collectors;
 class ErrorResponseController {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e){
+    ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException exception){
+        String message = exception.getMessage();
+        var errors = new ArrayList<ErrorDto>();
+        errors.add(ErrorDto.builder().message(message).build());
 
-        Map<String, Object> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", e.getMessage());
-        errorMap.put("timestamp", ZonedDateTime.now());
-
-        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception){
-
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
 
         List<ErrorDto> errors = violations.stream()
                 .map(violation -> new ErrorDto(getFieldName(violation), violation.getMessage()))
                 .collect(Collectors.toList());
 
-        ErrorResponse errorResponse = new ErrorResponse("FAILED", LocalDateTime.now(), errors);
+        ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

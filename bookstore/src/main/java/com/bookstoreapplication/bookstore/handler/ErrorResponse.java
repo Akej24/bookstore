@@ -1,19 +1,22 @@
 package com.bookstoreapplication.bookstore.handler;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse {
 
-    private String status;
-    private LocalDateTime timestamp;
+    @Builder.Default
+    private String status = "FAILED";
+
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
+
     private List<ErrorDto> errors;
 
 }

@@ -15,8 +15,8 @@ class RegistrationController {
 
     @PostMapping
     ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest){
-        var registeredUser = registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+        registrationService.registerUserIfPasswordValidAndEmailNotTaken(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

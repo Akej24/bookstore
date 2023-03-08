@@ -2,7 +2,6 @@
 --changeset akej:1
 CREATE TABLE users (
     user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-
     email VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -12,7 +11,6 @@ CREATE TABLE users (
     role VARCHAR(255) NOT NULL,
     available_funds DOUBLE,
     purchased_books INT,
-    purchase_history LONGTEXT,
     created_on DATETIME,
     updated_on DATETIME,
     last_login DATETIME,
@@ -20,17 +18,8 @@ CREATE TABLE users (
     enabled BOOLEAN
 );
 
-CREATE TABLE purchases (
-    purchase_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-
-    purchase_date DATETIME NOT NULL,
-    total_price DOUBLE,
-    purchase_status VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE books (
     book_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
     release_date DATE NOT NULL,
@@ -41,16 +30,26 @@ CREATE TABLE books (
     created_on DATETIME,
     updated_on DATETIME
 );
-
 --changeset akej:2
-ALTER TABLE users ADD COLUMN purchase_id BIGINT REFERENCES purchases(purchase_id);
+CREATE TABLE purchases (
+    purchase_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    purchase_date DATETIME NOT NULL,
+    total_price DOUBLE NOT NULL,
+    purchase_status VARCHAR(255) NOT NULL
+);
 
-ALTER TABLE purchases ADD COLUMN user_id BIGINT REFERENCES users(user_id);
+CREATE TABLE purchase_details (
+    purchase_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    books_amount INT NOT NULL,
+    purchase_id BIGINT NOT NULL,
+    FOREIGN KEY (purchase_id) REFERENCES purchases (purchase_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
 
-CREATE TABLE purchases_details (
-    purchase_details_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    purchase_id BIGINT REFERENCES purchases(purchase_id),
-    book_id BIGINT REFERENCES books(book_id),
-
-    books_amount INT
+CREATE TABLE purchase_details_books (
+    purchase_detail_id BIGINT NOT NULL,
+    book_id BIGINT NOT NULL,
+    FOREIGN KEY (purchase_detail_id) REFERENCES purchase_details (purchase_detail_id),
+    FOREIGN KEY (book_id) REFERENCES books (book_id)
 );

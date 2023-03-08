@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -16,16 +15,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 class RegistrationRequest {
 
+    @NotBlank(message = "E-mail must not be blank")
     @Email(message = "Invalid e-mail format")
     private String email;
 
-    @NotBlank(message="Username must not be blank")
+    @NotBlank(message = "Username must not be blank")
     private String username;
 
-    @NotBlank(message="Password must not be blank")
+    @NotBlank(message = "Password must not be blank")
     private String password;
 
-    @NotBlank(message="Name must not be blank")
+    @NotBlank(message = "Name must not be blank")
     private  String name;
 
     @NotBlank(message="Surname must not be blank")

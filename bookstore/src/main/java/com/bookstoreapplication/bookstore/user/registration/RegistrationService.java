@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @AllArgsConstructor
 class RegistrationService {
 
@@ -20,7 +22,7 @@ class RegistrationService {
     private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
     @Transactional
-    public User registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
+    void registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
             logger.warn("Unsuccessfully registered - email must be not taken");
             throw new IllegalArgumentException("Unsuccessfully registered - email must be not taken");
@@ -29,8 +31,9 @@ class RegistrationService {
             logger.warn("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
             throw new IllegalArgumentException("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
         }
-        var modelToSave = createUserFromRequest(request);
-        return userRepository.save(modelToSave);
+        User modelToSave = createUserFromRequest(request);
+        userRepository.save(modelToSave);
+        logger.info("Successfully registered with email {}", request.getEmail());
     }
 
     private User createUserFromRequest(RegistrationRequest request) {

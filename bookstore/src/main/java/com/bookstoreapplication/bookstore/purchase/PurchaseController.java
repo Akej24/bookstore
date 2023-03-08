@@ -13,10 +13,10 @@ class PurchaseController {
 
     private final PurchaseService purchaseService;
 
-    @PostMapping("")
-    ResponseEntity<PurchaseDatabaseModel> createNewPurchase(@RequestBody PurchaseRequest purchaseRequest){
-        var newPurchase = purchaseService.createNewPurchase(purchaseRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newPurchase);
-    }
+//    @PostMapping("")
+//    ResponseEntity<Purchase> createNewPurchase(@RequestBody PurchaseRequest purchaseRequest){
+//        var newPurchase = purchaseService.createNewPurchase(purchaseRequest);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(newPurchase);
+//    }
 
 }
