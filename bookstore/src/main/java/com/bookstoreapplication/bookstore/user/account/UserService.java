@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import com.bookstoreapplication.bookstore.book.BookService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,7 @@ class UserService {
         return UserResponseMapper.mapToUserResponse(savedUser);
     }
 
-    private static User updateFromRequest(User userToUpdate, UserRequest userRequest) {
+    private User updateFromRequest(User userToUpdate, UserRequest userRequest) {
         return userToUpdate.toBuilder()
                 .username(userRequest.getUsername())
                 .password(userRequest.getPassword())

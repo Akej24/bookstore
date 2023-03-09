@@ -103,7 +103,7 @@ public class BookService {
         return BookResponseMapper.mapToBookResponse(savedBook);
     }
 
-    private static Book createFromRequest(BookRequest bookRequest) {
+    private Book createFromRequest(BookRequest bookRequest) {
         return Book.builder()
                 .title(bookRequest.getTitle())
                 .author(bookRequest.getAuthor())
@@ -117,7 +117,7 @@ public class BookService {
 
     }
 
-    private static Book updateFromRequest(Book bookToUpdate, BookRequest bookRequest) {
+    private Book updateFromRequest(Book bookToUpdate, BookRequest bookRequest) {
         Book book = bookToUpdate.toBuilder()
                 .title(bookRequest.getTitle())
                 .author(bookRequest.getAuthor())
