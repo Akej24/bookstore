@@ -27,8 +27,8 @@ class LoginService {
             throw new IllegalArgumentException("User with given email does not exist");
         });
 
-        var passwordFromDatabase = existingUser.getPassword();
-        var passwordFromRequest = request.getPassword();
+        String passwordFromDatabase = existingUser.getPassword();
+        String passwordFromRequest = request.getPassword();
         if(!bCryptPasswordEncoder.matches(passwordFromRequest, passwordFromDatabase)){
             logger.warn("Unsuccessfully logged in - invalid password for user with e-mail {}", request.getEmail());
             throw new IllegalArgumentException("Invalid password for user with given e-mail");

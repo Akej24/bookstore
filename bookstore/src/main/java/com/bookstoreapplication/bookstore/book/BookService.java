@@ -22,25 +22,25 @@ public class BookService {
 
     @Transactional
     Book addBookToDatabase(@Valid BookRequest bookRequest){
-        var bookToSave = createFromRequest(bookRequest);
-        var savedBook = bookRepository.save(bookToSave);
+        Book bookToSave = createFromRequest(bookRequest);
+        Book savedBook = bookRepository.save(bookToSave);
         logger.info("Successfully added to the database");
         return savedBook;
     }
 
     Book getBookById(long bookId){
-        var result = bookRepository.findById(bookId).orElseThrow(() -> {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             return new IllegalArgumentException("Book with given id does not exist");
         });
         logger.info("Successively fetch a book with id {} from the database", bookId);
-        return result;
+        return book;
     }
 
     List<Book> getAllBooks() {
-        var result = bookRepository.findAll();
+        List<Book> books = bookRepository.findAll();
         logger.info("All books have been fetched from the database");
-        return result;
+        return books;
     }
 
     @Transactional
@@ -90,10 +90,11 @@ public class BookService {
                 .price(bookRequest.getPrice())
                 .bookAudit(new BookAudit())
                 .build();
+
     }
 
     private static Book updateFromRequest(Book bookToUpdate, BookRequest bookRequest) {
-        return bookToUpdate.toBuilder()
+        Book book = bookToUpdate.toBuilder()
                 .title(bookRequest.getTitle())
                 .author(bookRequest.getAuthor())
                 .releaseDate(bookRequest.getReleaseDate())
@@ -102,6 +103,8 @@ public class BookService {
                 .availablePieces(bookRequest.getAvailablePieces())
                 .price(bookRequest.getPrice())
                 .build();
+        book.setPiecesPrePersist();
+        return book;
     }
 
 }

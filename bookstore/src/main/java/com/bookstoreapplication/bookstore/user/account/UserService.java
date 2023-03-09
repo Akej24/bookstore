@@ -19,18 +19,18 @@ class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     UserResponse getUserById(long userId){
-        var result = userRepository.findById(userId).orElseThrow( () -> {
+        User user = userRepository.findById(userId).orElseThrow( () -> {
             logger.warn("User with id {} has not been found", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });
         logger.info("User with id {} has been found", userId);
-        return UserResponseMapper.mapToUserResponse(result);
+        return UserResponseMapper.mapToUserResponse(user);
     }
 
     List<UserResponse> getAllUsers() {
-        var result = userRepository.findAll();
+        List<User> users = userRepository.findAll();
         logger.info("All users have been fetched from the database");
-        return UserResponseMapper.mapToUsersResponse(result);
+        return UserResponseMapper.mapToUsersResponse(users);
     }
 
     @Transactional
@@ -55,8 +55,8 @@ class UserService {
             logger.warn("The user with id {} does not exist", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });
-        var updatedUser = updateFromRequest(userToUpdate, userRequest);
-        var savedUser = userRepository.save(updatedUser);
+        User updatedUser = updateFromRequest(userToUpdate, userRequest);
+        User savedUser = userRepository.save(updatedUser);
         logger.info("The user with id {} has been updated", userId);
         return UserResponseMapper.mapToUserResponse(savedUser);
     }
