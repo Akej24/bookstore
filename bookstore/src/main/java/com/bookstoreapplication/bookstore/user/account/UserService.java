@@ -1,13 +1,14 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 class UserService {
 
+    private static final int PAGE_SIZE = 10;
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -27,8 +29,8 @@ class UserService {
         return UserResponseMapper.mapToUserResponse(user);
     }
 
-    List<UserResponse> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    List<UserResponse> getAllUsers(int page) {
+        List<User> users = userRepository.findAllUsers(PageRequest.of(page, PAGE_SIZE));
         logger.info("All users have been fetched from the database");
         return UserResponseMapper.mapToUsersResponse(users);
     }

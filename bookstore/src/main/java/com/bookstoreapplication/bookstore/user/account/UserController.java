@@ -21,8 +21,9 @@ class UserController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<UserResponse>> getAllBooks(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) int page){
+        page = page>=0 ? page : 0;
+        return new ResponseEntity<>(userService.getAllUsers(page), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
@@ -32,7 +33,7 @@ class UserController {
     }
 
     @DeleteMapping("")
-    ResponseEntity<?> deleteAllBooks(){
+    ResponseEntity<?> deleteAllUsers(){
         userService.deleteAllUsers();
         return ResponseEntity.status(HttpStatus.OK).build();
     }

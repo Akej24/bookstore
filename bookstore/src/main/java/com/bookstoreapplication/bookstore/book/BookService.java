@@ -1,13 +1,14 @@
 package com.bookstoreapplication.bookstore.book;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BookService {
 
+    private static final int PAGE_SIZE = 20;
     private final BookRepository bookRepository;
     private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
@@ -37,8 +39,8 @@ public class BookService {
         return book;
     }
 
-    List<Book> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
+    List<Book> getAllBooks(int page) {
+        List<Book> books = bookRepository.findAllBooks(PageRequest.of(page,PAGE_SIZE));
         logger.info("All books have been fetched from the database");
         return books;
     }

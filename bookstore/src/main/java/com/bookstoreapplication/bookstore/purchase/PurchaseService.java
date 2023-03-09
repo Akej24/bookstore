@@ -5,7 +5,6 @@ import com.bookstoreapplication.bookstore.book.BookRepository;
 import com.bookstoreapplication.bookstore.book.BookService;
 import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

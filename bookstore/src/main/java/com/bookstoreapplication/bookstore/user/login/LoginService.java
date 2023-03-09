@@ -3,13 +3,14 @@ package com.bookstoreapplication.bookstore.user.login;
 import com.bookstoreapplication.bookstore.config.JwtService;
 import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 @Service
 @Validated

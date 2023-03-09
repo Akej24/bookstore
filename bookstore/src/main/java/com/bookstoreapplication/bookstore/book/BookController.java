@@ -17,7 +17,7 @@ class BookController {
 
     @PostMapping("")
     ResponseEntity<Book> addBookToDatabase(@RequestBody BookRequest bookRequest){
-        var createdBook = bookService.addBookToDatabase(bookRequest);
+        Book createdBook = bookService.addBookToDatabase(bookRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
 
@@ -27,8 +27,9 @@ class BookController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Book>> getAllBooks(){
-        return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+    ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) int page){
+        page = page>=0 ? page : 0;
+        return new ResponseEntity<>(bookService.getAllBooks(page), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")

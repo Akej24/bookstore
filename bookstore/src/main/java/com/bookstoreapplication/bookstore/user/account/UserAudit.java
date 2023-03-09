@@ -1,8 +1,11 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 
+import javax.persistence.Embeddable;
+import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
