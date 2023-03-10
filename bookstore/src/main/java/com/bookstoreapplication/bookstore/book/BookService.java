@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,8 +43,33 @@ public class BookService {
         return book;
     }
 
-    List<Book> getAllBooks(int page) {
-        List<Book> books = bookRepository.findAllBooks(PageRequest.of(page,PAGE_SIZE));
+    List<Book> getAllBooks(Integer page,
+                           String sortDirection,
+                           String sortBy,
+                           String title,
+                           String author,
+                           LocalDate releaseDate,
+                           Integer numberOfPages,
+                           Boolean status,
+                           String availablePieces,
+                           String price) {
+
+        page = page != null && page >= 0 ? page : 0;
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Specification<Book> specification = Specification.where(
+                BookSpecifications.hasTitleContainingIgnoreCase(title)
+                        .and(BookSpecifications.hasAuthorContainingIgnoreCase(author))
+                        .and(BookSpecifications.hasReleaseDateAfter(releaseDate))
+                        .and(BookSpecifications.hasNumberOfPagesGreaterThanOrEqual(numberOfPages))
+                        .and(BookSpecifications.hasStatus(status))
+                        .and(BookSpecifications.hasAvailablePiecesContainingIgnoreCase(availablePieces))
+                        .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
+        );
+
+        List<Book> books = bookRepository.findAll(specification, pageable).getContent();
         logger.info("All books have been fetched from the database");
         return books;
     }

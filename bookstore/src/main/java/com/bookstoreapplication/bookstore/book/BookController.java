@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,9 +28,19 @@ class BookController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<Book>> getAllBooks(@RequestParam(required = false) int page){
-        page = page>=0 ? page : 0;
-        return new ResponseEntity<>(bookService.getAllBooks(page), HttpStatus.OK);
+    ResponseEntity<List<Book>> getAllBooks(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) LocalDate releaseDate,
+            @RequestParam(required = false) Integer numberOfPages,
+            @RequestParam(required = false) Boolean status,
+            @RequestParam(required = false) String availablePieces,
+            @RequestParam(required = false) String price
+            ){
+        return new ResponseEntity<>(bookService.getAllBooks(page, sortDirection, sortBy, title, author, releaseDate, numberOfPages, status, availablePieces, price), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")
