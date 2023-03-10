@@ -4,8 +4,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
-public class BookSpecifications {
-    public static Specification<Book> hasTitleContainingIgnoreCase(String title) {
+class BookSpecifications {
+    static Specification<Book> hasTitleContainingIgnoreCase(String title) {
         return (root, query, criteriaBuilder) -> {
             if (title == null || title.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -16,7 +16,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasAuthorContainingIgnoreCase(String author) {
+    static Specification<Book> hasAuthorContainingIgnoreCase(String author) {
         return (root, query, criteriaBuilder) -> {
             if (author == null || author.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -27,7 +27,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasReleaseDateAfter(LocalDate releaseDate) {
+    static Specification<Book> hasReleaseDateAfter(LocalDate releaseDate) {
         return (root, query, criteriaBuilder) -> {
             if (releaseDate == null) {
                 return criteriaBuilder.conjunction();
@@ -38,7 +38,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasNumberOfPagesGreaterThanOrEqual(Integer numberOfPages) {
+    static Specification<Book> hasNumberOfPagesGreaterThanOrEqual(Integer numberOfPages) {
         return (root, query, criteriaBuilder) -> {
             if (numberOfPages == null || numberOfPages < 0) {
                 return criteriaBuilder.conjunction();
@@ -49,7 +49,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasStatus(Boolean status) {
+    static Specification<Book> hasStatus(Boolean status) {
         return (root, query, criteriaBuilder) -> {
             if (status == null) {
                 return criteriaBuilder.conjunction();
@@ -59,7 +59,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasAvailablePiecesContainingIgnoreCase(String availablePieces) {
+    static Specification<Book> hasAvailablePiecesContainingIgnoreCase(String availablePieces) {
         return (root, query, criteriaBuilder) -> {
             if (availablePieces == null || availablePieces.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -70,7 +70,7 @@ public class BookSpecifications {
         };
     }
 
-    public static Specification<Book> hasPriceContainingIgnoreCase(String price) {
+    static Specification<Book> hasPriceContainingIgnoreCase(String price) {
         return (root, query, criteriaBuilder) -> {
             if (price == null || price.isEmpty()) {
                 return criteriaBuilder.conjunction();

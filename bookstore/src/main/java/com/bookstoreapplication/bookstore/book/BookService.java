@@ -27,23 +27,21 @@ public class BookService {
     private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
     @Transactional
-    Book addBookToDatabase(@Valid BookRequest bookRequest){
-        Book bookToSave = createFromRequest(bookRequest);
-        Book savedBook = bookRepository.save(bookToSave);
+    void addBookToDatabase(@Valid BookRequest bookRequest){
+        bookRepository.save(createFromRequest(bookRequest));
         logger.info("Successfully added to the database");
-        return savedBook;
     }
 
-    Book getBookById(long bookId){
+    BookResponse getBookById(long bookId){
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             return new IllegalArgumentException("Book with given id does not exist");
         });
         logger.info("Successively fetch a book with id {} from the database", bookId);
-        return book;
+        return BookResponseMapper.mapToBookResponse(book);
     }
 
-    List<Book> getAllBooks(Integer page,
+    List<BookResponse> getAllBooks(Integer page,
                            String sortDirection,
                            String sortBy,
                            String title,
@@ -71,7 +69,7 @@ public class BookService {
 
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
         logger.info("All books have been fetched from the database");
-        return books;
+        return BookResponseMapper.mapToBooksResponse(books);
     }
 
     @Transactional
@@ -91,7 +89,7 @@ public class BookService {
     }
 
     @Transactional
-    Book updateBookById(long bookId, @Valid BookRequest bookRequest) {
+    BookResponse updateBookById(long bookId, @Valid BookRequest bookRequest) {
         Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
@@ -99,7 +97,7 @@ public class BookService {
         Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
         Book savedBook = bookRepository.save(updatedBook);
         logger.info("The book with id {} has been updated", bookId);
-        return savedBook;
+        return BookResponseMapper.mapToBookResponse(savedBook);
     }
 
     public BigDecimal calculateBookPriceByAmount(long bookId, int amount){

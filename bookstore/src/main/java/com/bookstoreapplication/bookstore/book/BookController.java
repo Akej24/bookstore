@@ -17,18 +17,18 @@ class BookController {
     private final BookService bookService;
 
     @PostMapping("")
-    ResponseEntity<Book> addBookToDatabase(@RequestBody BookRequest bookRequest){
-        Book createdBook = bookService.addBookToDatabase(bookRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+    ResponseEntity<?> addBookToDatabase(@RequestBody BookRequest bookRequest){
+        bookService.addBookToDatabase(bookRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<Book> getBookById(@PathVariable long bookId){
+    ResponseEntity<BookResponse> getBookById(@PathVariable long bookId){
         return new ResponseEntity<>(bookService.getBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<List<Book>> getAllBooks(
+    ResponseEntity<List<BookResponse>> getAllBooks(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
@@ -56,7 +56,7 @@ class BookController {
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<Book> updateBookById(@PathVariable long bookId, @RequestBody BookRequest bookRequest){
+    ResponseEntity<BookResponse> updateBookById(@PathVariable long bookId, @RequestBody BookRequest bookRequest){
         return new ResponseEntity<>(bookService.updateBookById(bookId, bookRequest), HttpStatus.OK);
     }
 
