@@ -1,0 +1,21 @@
+<config xmlns ='http://www.ehcache.org/v3'
+        xmlns:xsi ="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation ="http://www.ehcache.org/v3
+https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+
+    <cache-template name="default">
+        <expiry>
+            <ttl unit="hours">1</ttl>
+        </expiry>
+        <heap>500</heap>
+    </cache-template>
+
+    <cache alias="Book" uses-template="default"/>
+    <cache alias="Books">
+        <expiry>
+            <ttl unit="hours">6</ttl>
+        </expiry>
+        <heap>1000</heap>
+    </cache>
+
+</config>

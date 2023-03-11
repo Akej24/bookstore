@@ -3,6 +3,8 @@ package com.bookstoreapplication.bookstore.book;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,16 +34,18 @@ public class BookService {
         logger.info("Successfully added to the database");
     }
 
-    BookResponse getBookById(long bookId){
+    @Cacheable(cacheNames = "Book")
+    public BookResponse getBookById(long bookId){
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             return new IllegalArgumentException("Book with given id does not exist");
         });
-        logger.info("Successively fetch a book with id {} from the database", bookId);
+        logger.info("Successively fetch a book with id {} from the database [Cached]", bookId);
         return BookResponseMapper.mapToBookResponse(book);
     }
 
-    List<BookResponse> getAllBooks(Integer page,
+    @Cacheable(cacheNames = "Books")
+    public List<BookResponse> getAllBooks(Integer page,
                            String sortDirection,
                            String sortBy,
                            String title,
@@ -68,7 +72,7 @@ public class BookService {
         );
 
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
-        logger.info("All books have been fetched from the database");
+        logger.info("All books have been fetched from the database [Cached]");
         return BookResponseMapper.mapToBooksResponse(books);
     }
 
@@ -89,14 +93,15 @@ public class BookService {
     }
 
     @Transactional
-    BookResponse updateBookById(long bookId, @Valid BookRequest bookRequest) {
+    @CachePut(cacheNames = "Book", key = "#root.target.savedBook.bookId")
+    public BookResponse updateBookById(long bookId, @Valid BookRequest bookRequest) {
         Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
         });
         Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
         Book savedBook = bookRepository.save(updatedBook);
-        logger.info("The book with id {} has been updated", bookId);
+        logger.info("The book with id {} has been updated [Cached]", bookId);
         return BookResponseMapper.mapToBookResponse(savedBook);
     }
 

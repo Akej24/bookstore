@@ -1,8 +1,11 @@
 package com.bookstoreapplication.bookstore.user.account;
 
+import com.bookstoreapplication.bookstore.book.BookService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +23,20 @@ class UserService {
     private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    UserResponse getUserById(long userId){
+    @Cacheable(cacheNames = "User")
+    public UserResponse getUserById(long userId){
         User user = userRepository.findById(userId).orElseThrow( () -> {
             logger.warn("User with id {} has not been found", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });
-        logger.info("User with id {} has been found", userId);
+        logger.info("User with id {} has been fetched from the database [Cached]", userId);
         return UserResponseMapper.mapToUserResponse(user);
     }
 
-    List<UserResponse> getAllUsers(int page) {
+    @Cacheable(cacheNames = "Users")
+    public List<UserResponse> getAllUsers(int page) {
         List<User> users = userRepository.findAllUsers(PageRequest.of(page, PAGE_SIZE));
-        logger.info("All users have been fetched from the database");
+        logger.info("All users have been fetched from the database [Cached]");
         return UserResponseMapper.mapToUsersResponse(users);
     }
 
@@ -52,14 +57,15 @@ class UserService {
     }
 
     @Transactional
-    UserResponse updateUserById(long userId, @Valid UserRequest userRequest) {
+    @CachePut(cacheNames = "User", key = "#root.target.savedUser.userId")
+    public UserResponse updateUserById(long userId, @Valid UserRequest userRequest) {
         User userToUpdate = userRepository.findById(userId).orElseThrow(() -> {
             logger.warn("The user with id {} does not exist", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });
         User updatedUser = updateFromRequest(userToUpdate, userRequest);
         User savedUser = userRepository.save(updatedUser);
-        logger.info("The user with id {} has been updated", userId);
+        logger.info("The user with id {} has been updated [Cached]", userId);
         return UserResponseMapper.mapToUserResponse(savedUser);
     }
 
