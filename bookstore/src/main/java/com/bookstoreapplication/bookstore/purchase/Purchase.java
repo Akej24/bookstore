@@ -17,7 +17,7 @@ import java.util.Set;
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long purchaseId;
+    private long purchaseId;
 
     @OneToMany(mappedBy = "purchase")
     private Set<PurchaseDetail> purchaseDetails;
