@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
+import com.bookstoreapplication.bookstore.user.account.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,18 +20,23 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchaseId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "purchase")
     private Set<PurchaseDetail> purchaseDetails;
 
     @NotNull(message = "Purchase date must be not null")
+    @Builder.Default
     private LocalDateTime purchaseDate = LocalDateTime.now();
 
     @DecimalMin(value = "0.0", message = "The minimum value of total price is 0.0")
-    @NotNull(message = "Total price must be not null")
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Purchase status cannot be null")
+    @Builder.Default
     private PurchaseStatus purchaseStatus = PurchaseStatus.INITIALIZED;
 
 }

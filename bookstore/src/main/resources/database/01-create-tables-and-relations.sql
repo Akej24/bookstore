@@ -33,23 +33,18 @@ CREATE TABLE books (
 --changeset akej:2
 CREATE TABLE purchases (
     purchase_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
     purchase_date DATETIME NOT NULL,
-    total_price DOUBLE NOT NULL,
-    purchase_status VARCHAR(255) NOT NULL
+    total_price DOUBLE,
+    purchase_status VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE purchase_details (
     purchase_detail_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    user_id BIGINT NOT NULL,
+    book_id BIGINT NOT NULL,
     books_amount INT NOT NULL,
     purchase_id BIGINT NOT NULL,
-    FOREIGN KEY (purchase_id) REFERENCES purchases (purchase_id),
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
-
-CREATE TABLE purchase_details_books (
-    purchase_detail_id BIGINT NOT NULL,
-    book_id BIGINT NOT NULL,
-    FOREIGN KEY (purchase_detail_id) REFERENCES purchase_details (purchase_detail_id),
-    FOREIGN KEY (book_id) REFERENCES books (book_id)
+    FOREIGN KEY (book_id) REFERENCES books (book_id),
+    FOREIGN KEY (purchase_id) REFERENCES purchases (purchase_id)
 );

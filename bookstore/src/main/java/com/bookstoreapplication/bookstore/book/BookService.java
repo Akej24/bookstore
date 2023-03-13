@@ -105,7 +105,7 @@ public class BookService {
         return BookResponseMapper.mapToBookResponse(savedBook);
     }
 
-    public BigDecimal calculateBookPriceByAmount(long bookId, int amount){
+    public BigDecimal calculateBookPriceByAmount(Long bookId, Integer amount){
         Book book = bookRepository.findById(bookId)
                 .orElseThrow( () -> new IllegalArgumentException("Book with given id does not exist"));
         BigDecimal price = BigDecimal.valueOf(book.getPrice());

@@ -23,7 +23,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
-    @ManyToMany(mappedBy = "books")
+    @OneToMany(mappedBy = "book")
     @JsonIgnore
     private Set<PurchaseDetail> purchaseDetails;
 

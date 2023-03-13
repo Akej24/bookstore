@@ -6,18 +6,18 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-class PurchaseRequest {
+class PurchaseDetailRequest {
 
-    @Min(value = 0, message = "User id must not be null and the minimum value is 0")
+    @Min(value = 0, message = "Book id must not be null and the minimum value is 0")
     @NotNull
-    private Long userId;
+    Long bookId;
 
-    private Set<PurchaseDetailRequest> purchaseDetailsRequest;
+    @Min(value = 1, message = "Books amount must not be null and the minimum value is 1")
+    @NotNull
+    Integer booksAmount;
 
 }

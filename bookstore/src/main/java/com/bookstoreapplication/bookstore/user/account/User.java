@@ -1,18 +1,14 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseDetail;
+import com.bookstoreapplication.bookstore.purchase.Purchase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -29,9 +25,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private Set<PurchaseDetail> purchases;
+    @OneToMany(mappedBy = "user")
+    private Set<Purchase> purchases;
 
     @Email(message = "Invalid e-mail format")
     private String email;
