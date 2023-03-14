@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 class PurchaseDetailRequest {
 
-    @Min(value = 0, message = "Book id must not be null and the minimum value is 0")
-    @NotNull
+    @Min(value = 0, message = "The minimum value of bookId is 0")
+    @NotNull(message = "Book id must not be null")
     Long bookId;
 
-    @Min(value = 1, message = "Books amount must not be null and the minimum value is 1")
-    @NotNull
+    @Min(value = 1, message = "The minimum value of books amount is 1")
+    @NotNull(message = "Books amount must not be null")
     Integer booksAmount;
 
 }

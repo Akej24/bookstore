@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -103,14 +101,6 @@ public class BookService {
         Book savedBook = bookRepository.save(updatedBook);
         logger.info("The book with id {} has been updated [Cached]", bookId);
         return BookResponseMapper.mapToBookResponse(savedBook);
-    }
-
-    public BigDecimal calculateBookPriceByAmount(Long bookId, Integer amount){
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow( () -> new IllegalArgumentException("Book with given id does not exist"));
-        BigDecimal price = BigDecimal.valueOf(book.getPrice());
-        BigDecimal total = price.multiply(BigDecimal.valueOf(amount));
-        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
     private static Book createFromRequest(BookRequest bookRequest) {
