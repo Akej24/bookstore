@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Validated
@@ -36,14 +37,60 @@ public class PurchaseService {
         checkUserHasInitializedPurchase(user.getUserId());
 
         Purchase newPurchase = createNewPurchaseForUser(user);
+        logger.info("Purchase prepared");
 
-        BigDecimal totalPurchasePrice = calculateTotalPriceAndUpdateAvailablePieces(purchaseRequest, newPurchase);
+        BigDecimal totalPurchasePrice = calculateTotalPriceAndUpdateAvailablePiecesAndCreateDetails(purchaseRequest, newPurchase);
+        logger.info("Price calculated, updated available pieces and created details");
+
         Purchase purchaseWithTotalPrice = newPurchase.toBuilder().totalPrice(totalPurchasePrice.doubleValue()).build();
         purchaseRepository.save(purchaseWithTotalPrice);
-
+        logger.info("Purchase has been successfully created and initialized");
     }
 
-    private BigDecimal calculateTotalPriceAndUpdateAvailablePieces(PurchaseRequest purchaseRequest, Purchase newPurchase) {
+    @Transactional
+    @Cacheable(cacheNames = "Payment")
+    public void payForPurchase(@Valid PaymentRequest paymentRequest) {
+        Long userId = paymentRequest.getUserId();
+
+        User user = findUserById(userId);
+        Purchase purchase = getUserInitializedPurchase(userId);
+        logger.info("Successfully found one initialized user purchase with id {}", purchase.getPurchaseId());
+
+        isUserAvailableToPay(user, purchase);
+        logger.info("User {} is available to pay for purchase with id {}", userId, purchase.getPurchaseId());
+
+        updateUserFunds(user, purchase);
+        logger.info("User {} successfully paid for purchase with id {}", userId, purchase.getPurchaseId());
+    }
+
+    private void updateUserFunds(User user, Purchase purchase) {
+        BigDecimal userFunds = BigDecimal.valueOf(user.getAvailableFunds());
+        BigDecimal totalPrice = BigDecimal.valueOf(purchase.getTotalPrice());
+        Double userNewFunds = userFunds.subtract(totalPrice).doubleValue();
+        User userWithNewFunds = user.toBuilder().availableFunds(userNewFunds).build();
+        userRepository.save(userWithNewFunds);
+    }
+
+    private void isUserAvailableToPay(User user, Purchase purchase) {
+        if(user.getAvailableFunds()< purchase.getTotalPrice()){
+            logger.warn("User with id {} does not have enough funds to pay for purchase with id {}", user.getUserId(), purchase.getPurchaseId());
+            throw new IllegalArgumentException("User with given id does not have enough funds to pay for this purchase");
+        }
+    }
+
+    private Purchase getUserInitializedPurchase(Long userId){
+        List<Purchase> initializedPurchases = purchaseRepository.findByUserUserIdAndPurchaseStatus(userId, PurchaseStatus.INITIALIZED);
+        if(initializedPurchases.isEmpty()){
+            logger.warn("User does not have any initialized purchase");
+            throw new IllegalArgumentException("User do not have any initialized purchase");
+        } else if(initializedPurchases.size()>1){
+            logger.error("User has more than one initialized purchase [Important error]");
+            throw new IllegalArgumentException("User has more than one initialized purchase, contact with support");
+        }
+        return initializedPurchases.get(0);
+    }
+
+    private BigDecimal calculateTotalPriceAndUpdateAvailablePiecesAndCreateDetails(PurchaseRequest purchaseRequest, Purchase newPurchase) {
         BigDecimal totalPrice = BigDecimal.ZERO;
         var purchaseDetails = new ArrayList<PurchaseDetail>();
 
