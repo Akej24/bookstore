@@ -56,11 +56,6 @@ public class User implements UserDetails {
     @Builder.Default
     private Double availableFunds = 0.0;
 
-    @Min(value = 0, message = "Minimum value of purchased books cannot be less than 0")
-    @NotNull(message = "Purchased books must be not null")
-    @Builder.Default
-    private Integer purchasedBooks = 0;
-
     @Embedded
     @JsonIgnore
     private UserAudit userAudit;

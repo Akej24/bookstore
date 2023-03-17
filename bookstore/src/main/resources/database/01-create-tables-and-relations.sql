@@ -10,7 +10,6 @@ CREATE TABLE users (
     date_of_birth DATE NOT NULL,
     role VARCHAR(255) NOT NULL,
     available_funds DOUBLE,
-    purchased_books INT,
     created_on DATETIME,
     updated_on DATETIME,
     last_login DATETIME,

@@ -3,18 +3,18 @@ package com.bookstoreapplication.bookstore.book;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class BookResponseMapper {
+public class BookResponseMapper {
 
     private BookResponseMapper() {
     }
 
-    static List<BookResponse> mapToBooksResponse(List<Book> books){
+    public static List<BookResponse> mapToBooksResponse(List<Book> books){
         return books.stream()
                 .map(BookResponseMapper::mapToBookResponse)
                 .collect(Collectors.toList());
     }
 
-    static BookResponse mapToBookResponse(Book book){
+    public static BookResponse mapToBookResponse(Book book){
         return BookResponse.builder()
                 .title(book.getTitle())
                 .author(book.getAuthor())

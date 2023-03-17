@@ -30,7 +30,7 @@ public class PurchaseService {
     private final PurchaseDetailRepository purchaseDetailRepository;
 
     @Transactional
-    @Cacheable(cacheNames = "PurchaseDetail")
+    @Cacheable(cacheNames = "Purchase")
     public void createNewPurchase(@Valid PurchaseRequest purchaseRequest) {
 
         User user = findUserById(purchaseRequest.getUserId());
@@ -39,18 +39,28 @@ public class PurchaseService {
         Purchase newPurchase = createNewPurchaseForUser(user);
         logger.info("Purchase prepared");
 
-        BigDecimal totalPurchasePrice = calculateTotalPriceAndUpdateAvailablePiecesAndCreateDetails(purchaseRequest, newPurchase);
-        logger.info("Price calculated, updated available pieces and created details");
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        var purchaseDetails = new ArrayList<PurchaseDetail>();
+        for(PurchaseDetailRequest detail : purchaseRequest.getPurchaseDetailsRequest()){
+            Book book = findBookById(detail.getBookId());
+            updateBookAvailablePieces(detail, book);
+            purchaseDetails.add(createNewPurchaseDetail(newPurchase, detail, book));
+            totalPrice = totalPrice.add(calculateBookPriceByAmount(book, detail.getBooksAmount()));
+        }
+        logger.info("Price calculated and updated available pieces");
 
-        Purchase purchaseWithTotalPrice = newPurchase.toBuilder().totalPrice(totalPurchasePrice.doubleValue()).build();
+        purchaseDetailRepository.saveAll(purchaseDetails);
+        logger.info("All details have been successfully saved");
+
+        Purchase purchaseWithTotalPrice = newPurchase.toBuilder().totalPrice(totalPrice.doubleValue()).build();
         purchaseRepository.save(purchaseWithTotalPrice);
         logger.info("Purchase has been successfully created and initialized");
     }
 
     @Transactional
     @Cacheable(cacheNames = "Payment")
-    public void payForPurchase(@Valid PaymentRequest paymentRequest) {
-        Long userId = paymentRequest.getUserId();
+    public void payForPurchase(@Valid UserIdRequest userIdRequest) {
+        Long userId = userIdRequest.getUserId();
 
         User user = findUserById(userId);
         Purchase purchase = getUserInitializedPurchase(userId);
@@ -61,6 +71,39 @@ public class PurchaseService {
 
         updateUserFunds(user, purchase);
         logger.info("User {} successfully paid for purchase with id {}", userId, purchase.getPurchaseId());
+
+        Purchase succeededPurchase = purchase.toBuilder().purchaseStatus(PurchaseStatus.SUCCEED).build();
+        purchaseRepository.save(succeededPurchase);
+    }
+
+    @Transactional
+    @Cacheable(cacheNames = "Purchase")
+    public void cancelPurchase(@Valid UserIdRequest userIdRequest){
+        Purchase purchase = getUserInitializedPurchase(userIdRequest.getUserId());
+
+        purchaseDetailRepository.deleteByPurchasePurchaseId(purchase.getPurchaseId());
+        logger.info("Successfully deleted all details considered with purchase with id {}", purchase.getPurchaseId());
+
+        Purchase canceledPurchase = purchase.toBuilder().purchaseStatus(PurchaseStatus.CANCELED).build();
+        purchaseRepository.save(canceledPurchase);
+        logger.info("Canceled purchase status with id {} for user {}", purchase.getPurchaseId(), userIdRequest.getUserId());
+
+    }
+
+    @Transactional
+    @Cacheable(cacheNames = "Purchases")
+    public List<PurchaseResponse> getAllPurchases(@Valid UserIdRequest userIdRequest) {
+        User user = findUserById(userIdRequest.getUserId());
+        List<Purchase> purchases = purchaseRepository.findByUserUserId(user.getUserId());
+        return PurchaseResponseMapper.mapToPurchasesResponse(purchases);
+    }
+
+    @Transactional
+    @Cacheable(cacheNames = "PurchasesWithDetails")
+    public List<PurchaseResponse> getAllPurchasesWithDetails(@Valid UserIdRequest userIdRequest) {
+        User user = findUserById(userIdRequest.getUserId());
+        List<Purchase> purchases = purchaseRepository.findByUserUserId(user.getUserId());
+        return PurchaseResponseMapper.mapToPurchasesWithDetailsResponse(purchases);
     }
 
     private void updateUserFunds(User user, Purchase purchase) {
@@ -88,20 +131,6 @@ public class PurchaseService {
             throw new IllegalArgumentException("User has more than one initialized purchase, contact with support");
         }
         return initializedPurchases.get(0);
-    }
-
-    private BigDecimal calculateTotalPriceAndUpdateAvailablePiecesAndCreateDetails(PurchaseRequest purchaseRequest, Purchase newPurchase) {
-        BigDecimal totalPrice = BigDecimal.ZERO;
-        var purchaseDetails = new ArrayList<PurchaseDetail>();
-
-        for(PurchaseDetailRequest detail : purchaseRequest.getPurchaseDetailsRequest()){
-            Book book = findBookById(detail.getBookId());
-            updateBookAvailablePieces(detail, book);
-            purchaseDetails.add(createNewPurchaseDetail(newPurchase, detail, book));
-            totalPrice = totalPrice.add(calculateBookPriceByAmount(book, detail.getBooksAmount()));
-        }
-        purchaseDetailRepository.saveAll(purchaseDetails);
-        return totalPrice;
     }
 
     private void updateBookAvailablePieces(PurchaseDetailRequest detail, Book book) {

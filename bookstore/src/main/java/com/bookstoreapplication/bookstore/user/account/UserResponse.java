@@ -17,6 +17,5 @@ class UserResponse {
     private LocalDate dateOfBirth;
     private UserRole role;
     private Double availableFunds;
-    private Integer purchasedBooks;
 
 }

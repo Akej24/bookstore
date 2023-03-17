@@ -24,7 +24,6 @@ class UserResponseMapper {
                 .dateOfBirth(user.getDateOfBirth())
                 .role(user.getRole())
                 .availableFunds(user.getAvailableFunds())
-                .purchasedBooks(user.getPurchasedBooks())
                 .build();
     }
 }

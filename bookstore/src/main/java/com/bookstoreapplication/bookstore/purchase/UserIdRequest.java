@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentRequest {
+class UserIdRequest {
 
     @Min(value = 0, message = "The minimum value of user id is 0")
     @NotNull(message = "User id must not be null")
