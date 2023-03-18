@@ -43,6 +43,13 @@
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="MavenPackageUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="org.ehcache:ehcache" />
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="VulnerableLibrariesLocal" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PurchaseDetailRepository extends JpaRepository<PurchaseDetail, Long> {
+interface PurchaseDetailRepository extends JpaRepository<PurchaseDetail, Long> {
 
     void deleteByPurchasePurchaseId(long purchaseId);
 
