@@ -1,8 +1,10 @@
 package com.bookstoreapplication.bookstore.config;
 
 import java.io.IOException;
+
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,35 +22,34 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final TokenManager tokenManager;
 
     @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
+        final String jwtFromHeader;
+        final String username;
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+        jwtFromHeader = authHeader.substring(7);
+        username = tokenManager.getUsernameFromToken(jwtFromHeader);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            Object jwtFromRedis = redisTemplate.opsForHash().get("User", jwtFromHeader);
+            if (tokenManager.validateJwtToken(jwtFromHeader, userDetails) && jwtFromRedis != null) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

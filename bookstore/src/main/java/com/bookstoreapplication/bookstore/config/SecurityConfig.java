@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.config;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -22,15 +22,15 @@ class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+//                .authorizeHttpRequests().anyRequest().permitAll().and()
+                .authorizeHttpRequests()
+                .antMatchers("/registration", "/login")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
-                .authorizeHttpRequests().anyRequest().permitAll().and()
-//                .authorizeHttpRequests()
-//                    .requestMatchers("/registration", "/login", "/books", "/books/create", "/books/{id}", "/users", "/users/{id}", "/purchases", "/purchases/{id}", "/swagger-ui/index.html", "/api/v2/api-docs", "/**/**")
-//                    .permitAll()
-//                    .anyRequest()
-//                    .authenticated()
-//                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
