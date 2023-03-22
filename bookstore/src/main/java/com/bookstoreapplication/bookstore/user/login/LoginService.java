@@ -42,14 +42,14 @@ class LoginService {
             throw new IllegalArgumentException("Invalid password for user with given e-mail");
         }
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                request.getUsername(), request.getPassword()));
 
         String jwtToken = tokenManager.generateJwtToken(existingUser);
         String userId = String.valueOf(existingUser.getUserId());
         template.opsForHash().put(jwtToken,"User", userId);
         template.boundHashOps(jwtToken).expire(3600, TimeUnit.SECONDS);
+
         logger.info("User with e-mail {} successfully logged in - created jwt token", request.getUsername());
         return jwtToken;
     }
