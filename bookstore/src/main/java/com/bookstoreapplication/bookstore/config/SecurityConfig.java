@@ -29,6 +29,8 @@ class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers("/registration", "/login")
                 .permitAll()
+//                .antMatchers("/users/1")
+//                .hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
