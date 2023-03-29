@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.aop;
+package com.bookstoreapplication.bookstore.config;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,7 +17,6 @@ class LoggingAspect {
 
     @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
             "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.aop..*(..))" +
             "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))")
     private void anyPublicMethod(){
     }
