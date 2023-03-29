@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class Purchase {
+class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchaseId;

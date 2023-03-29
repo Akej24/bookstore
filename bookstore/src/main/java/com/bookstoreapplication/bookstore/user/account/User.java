@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user.account;
 
-import com.bookstoreapplication.bookstore.purchase.Purchase;
+import com.bookstoreapplication.bookstore.purchase.query.SimplePurchaseQueryDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +28,7 @@ public class User implements UserDetails, Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private Set<Purchase> purchases;
+    private Set<SimplePurchaseQueryDto> purchases;
 
     @Email(message = "Invalid e-mail format")
     private String email;

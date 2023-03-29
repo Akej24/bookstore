@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseDetail;
+import com.bookstoreapplication.bookstore.purchase.query.SimplePurchaseDetailQueryDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -25,7 +25,7 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     @JsonIgnore
-    private Set<PurchaseDetail> purchaseDetails;
+    private Set<SimplePurchaseDetailQueryDto> purchaseDetails;
 
     @NotBlank(message="Title must not be blank")
     private String title;
