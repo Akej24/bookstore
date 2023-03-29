@@ -24,17 +24,25 @@ class RegistrationService {
 
     @Transactional
     void registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
-        if(userRepository.findByEmail(request.getEmail()).isPresent()){
-            logger.warn("Unsuccessfully registered - email must be not taken");
-            throw new IllegalArgumentException("Unsuccessfully registered - email must be not taken");
-        }
+        validateEmail(request);
+        validatePassword(request);
+        User modelToSave = createUserFromRequest(request);
+        userRepository.save(modelToSave);
+        logger.info("Successfully registered with email {}", request.getEmail());
+    }
+
+    private void validatePassword(RegistrationRequest request) {
         if(!registrationValidator.validatePassword(request.getPassword())){
             logger.warn("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
             throw new IllegalArgumentException("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
         }
-        User modelToSave = createUserFromRequest(request);
-        userRepository.save(modelToSave);
-        logger.info("Successfully registered with email {}", request.getEmail());
+    }
+
+    private void validateEmail(RegistrationRequest request) {
+        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+            logger.warn("Unsuccessfully registered - email must be not taken");
+            throw new IllegalArgumentException("Unsuccessfully registered - email must be not taken");
+        }
     }
 
     private User createUserFromRequest(RegistrationRequest request) {
