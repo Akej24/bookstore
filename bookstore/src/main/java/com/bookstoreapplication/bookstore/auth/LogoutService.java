@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.user.login;
+package com.bookstoreapplication.bookstore.auth;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

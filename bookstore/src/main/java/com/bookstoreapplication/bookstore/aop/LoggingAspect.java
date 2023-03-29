@@ -17,7 +17,8 @@ class LoggingAspect {
 
     @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
             "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.aop..*(..))")
+            "&& !execution(* com.bookstoreapplication.bookstore.aop..*(..))" +
+            "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))")
     private void anyPublicMethod(){
     }
 

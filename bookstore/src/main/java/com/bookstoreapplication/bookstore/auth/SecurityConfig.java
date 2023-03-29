@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.config;
+package com.bookstoreapplication.bookstore.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +17,13 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @RequiredArgsConstructor
 class SecurityConfig {
 
+    /* Configuration prepared to just create endpoints
+       which are secured by user role (admin,user)
+
+      .authorizeHttpRequests().anyRequest().permitAll().and()
+      .antMatchers("/users/1")
+      .hasRole("USER") */
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
@@ -25,12 +32,9 @@ class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//              .authorizeHttpRequests().anyRequest().permitAll().and()
                 .authorizeHttpRequests()
                 .antMatchers("/registration", "/login")
                 .permitAll()
-//                .antMatchers("/users/1")
-//                .hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()

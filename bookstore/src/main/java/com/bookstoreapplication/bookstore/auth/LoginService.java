@@ -1,6 +1,5 @@
-package com.bookstoreapplication.bookstore.user.login;
+package com.bookstoreapplication.bookstore.auth;
 
-import com.bookstoreapplication.bookstore.config.TokenManager;
 import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
 import lombok.AllArgsConstructor;
@@ -24,7 +23,7 @@ class LoginService {
     private final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final TokenManager tokenManager;
+    private final JwtManager jwtManager;
     private final AuthenticationManager authenticationManager;
     private RedisTemplate<String, String> template;
 
@@ -36,7 +35,7 @@ class LoginService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()));
 
-        String jwtToken = tokenManager.generateJwtToken(existingUser);
+        String jwtToken = jwtManager.generateJwtToken(existingUser);
         String userId = String.valueOf(existingUser.getUserId());
 
         template.opsForValue().set(jwtToken, userId);

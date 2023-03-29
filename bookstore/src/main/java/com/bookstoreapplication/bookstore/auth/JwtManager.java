@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.config;
+package com.bookstoreapplication.bookstore.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class TokenManager {
+class JwtManager {
 
     private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 

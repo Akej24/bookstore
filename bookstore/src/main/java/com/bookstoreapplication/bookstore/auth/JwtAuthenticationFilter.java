@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.config;
+package com.bookstoreapplication.bookstore.auth;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final RedisTemplate<String, String> redisTemplate;
-    private final TokenManager tokenManager;
+    private final JwtManager jwtManager;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -39,11 +39,11 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwtFromHeader = authHeader.substring(7);
-        username = tokenManager.getUsernameFromToken(jwtFromHeader);
+        username = jwtManager.getUsernameFromToken(jwtFromHeader);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             Object jwtFromRedis = redisTemplate.opsForValue().get(jwtFromHeader);
-            if (tokenManager.validateJwtToken(jwtFromHeader, userDetails) && jwtFromRedis != null) {
+            if (jwtManager.validateJwtToken(jwtFromHeader, userDetails) && jwtFromRedis != null) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
