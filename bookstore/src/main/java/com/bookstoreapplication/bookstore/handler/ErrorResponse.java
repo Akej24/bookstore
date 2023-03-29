@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorResponse {
+class ErrorResponse {
 
     @Builder.Default
     private String status = "FAILED";
