@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.query.SimpleBookQueryDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -100,30 +97,7 @@ class BookService {
         return BookDtoMapper.mapToBookDto(savedBook);
     }
 
-    public SimpleBookQueryDto createNewSimpleBookQueryDto(Long bookId) {
-        Book book = findBookById(bookId);
-        return BookDtoMapper.mapToSimpleBookDto(book);
-    }
-
-    public BigDecimal calculateBookPriceByAmount(Long bookId, Integer amount){
-        Book book = findBookById(bookId);
-        return BigDecimal
-                .valueOf(book.getPrice())
-                .multiply(BigDecimal.valueOf(amount))
-                .setScale(2, RoundingMode.HALF_UP);
-    }
-
-    public void updateBookAvailablePieces(Integer booksAmount, Long bookId) {
-        Book book = findBookById(bookId);
-        if(book.getAvailablePieces() < booksAmount){
-            throw new IllegalArgumentException("Not enough available pieces to buy this product");
-        }else{
-            Book updatedBook = book.toBuilder().availablePieces(book.getAvailablePieces() - booksAmount).build();
-            bookRepository.save(updatedBook);
-        }
-    }
-
-    private Book findBookById(Long bookId) {
+    Book findBookById(Long bookId) {
         return bookRepository.findById(bookId).orElseThrow( () -> {
             LOGGER.warn("Book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
