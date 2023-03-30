@@ -26,22 +26,19 @@ import java.util.List;
 class BookService {
 
     private static final int PAGE_SIZE = 20;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
-    private final Logger logger = LoggerFactory.getLogger(BookService.class);
 
     @Transactional
     void addBookToDatabase(@Valid BookRequest bookRequest){
         bookRepository.save(createFromRequest(bookRequest));
-        logger.info("Successfully added to the database");
+        LOGGER.info("Successfully added to the database");
     }
 
     @Cacheable(cacheNames = "Book")
     public BookDto getBookById(long bookId){
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
-            logger.warn("The book with id {} does not exist", bookId);
-            return new IllegalArgumentException("Book with given id does not exist");
-        });
-        logger.info("Successively fetch a book with id {} from the database [Cached]", bookId);
+        Book book = findBookById(bookId);
+        LOGGER.info("Successively fetch a book with id {} from the database [Cached]", bookId);
         return BookDtoMapper.mapToBookDto(book);
     }
 
@@ -73,49 +70,39 @@ class BookService {
         );
 
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
-        logger.info("All books have been fetched from the database [Cached]");
+        LOGGER.info("All books have been fetched from the database [Cached]");
         return BookDtoMapper.mapToBooksDto(books);
     }
 
     @Transactional
     void deleteBook(long bookId) {
         Book bookToDelete = bookRepository.findById(bookId).orElseThrow(() -> {
-            logger.warn("The book with id {} does not exist", bookId);
+            LOGGER.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
         });
         bookRepository.delete(bookToDelete);
-        logger.info("The book with id {} was successfully removed from the database", bookId);
+        LOGGER.info("The book with id {} was successfully removed from the database", bookId);
     }
 
     @Transactional
     void deleteAllBooks() {
         bookRepository.deleteAll();
-        logger.warn("All books have been removed from the database");
+        LOGGER.warn("All books have been removed from the database");
     }
 
     @Transactional
     @CachePut(cacheNames = "Book", key = "#root.target.savedBook.bookId")
     public BookDto updateBookById(long bookId, @Valid BookRequest bookRequest) {
-        Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(() -> {
-            logger.warn("The book with id {} does not exist", bookId);
-            throw new IllegalArgumentException("Book with given id does not exist");
-        });
+        Book bookToUpdate = findBookById(bookId);
         Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
         Book savedBook = bookRepository.save(updatedBook);
-        logger.info("The book with id {} has been updated [Cached]", bookId);
+        LOGGER.info("The book with id {} has been updated [Cached]", bookId);
         return BookDtoMapper.mapToBookDto(savedBook);
     }
 
     public SimpleBookQueryDto createNewSimpleBookQueryDto(Long bookId) {
         Book book = findBookById(bookId);
         return BookDtoMapper.mapToSimpleBookDto(book);
-    }
-
-    private Book findBookById(Long bookId) {
-        return bookRepository.findById(bookId).orElseThrow( () -> {
-            logger.warn("Book with id {} does not exist", bookId);
-            throw new IllegalArgumentException("Book with given id does not exist");
-        });
     }
 
     public BigDecimal calculateBookPriceByAmount(Long bookId, Integer amount){
@@ -134,6 +121,13 @@ class BookService {
             Book updatedBook = book.toBuilder().availablePieces(book.getAvailablePieces() - booksAmount).build();
             bookRepository.save(updatedBook);
         }
+    }
+
+    private Book findBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow( () -> {
+            LOGGER.warn("Book with id {} does not exist", bookId);
+            throw new IllegalArgumentException("Book with given id does not exist");
+        });
     }
 
     private Book createFromRequest(BookRequest bookRequest) {

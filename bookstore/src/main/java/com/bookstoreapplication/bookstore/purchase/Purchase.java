@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.user.account.User;
+import com.bookstoreapplication.bookstore.user.account.query.SimpleUserQueryDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +22,7 @@ class Purchase {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private SimpleUserQueryDto user;
 
     @OneToMany(mappedBy = "purchase")
     private Set<PurchaseDetail> purchaseDetails;

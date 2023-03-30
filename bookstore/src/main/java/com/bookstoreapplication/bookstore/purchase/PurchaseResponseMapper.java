@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-
 import com.bookstoreapplication.bookstore.book.BookDtoMapper;
 
 import java.util.List;
@@ -20,7 +19,6 @@ class PurchaseResponseMapper {
 
     static PurchaseResponse mapToPurchaseWithDetailsResponse(Purchase purchase){
         List<PurchaseDetailResponse> detailResponses = mapToDetailsResponse(purchase.getPurchaseDetails());
-
         return PurchaseResponse.builder()
                 .purchaseDate(purchase.getPurchaseDate())
                 .purchaseDetails(detailResponses)
