@@ -1,18 +1,23 @@
-package com.bookstoreapplication.bookstore.user.query;
+package com.bookstoreapplication.bookstore.user;
 
 import com.bookstoreapplication.bookstore.purchase.query.SimplePurchaseQueryDto;
-import com.bookstoreapplication.bookstore.user.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,9 +26,8 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleUserQueryDto {
+public class SimpleUserQueryDto implements UserDetails, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
     @JsonIgnore
@@ -47,4 +51,39 @@ public class SimpleUserQueryDto {
     @NotNull(message = "Available funds must be not null")
     @Builder.Default
     private Double availableFunds = 0.0;
+
+    @NotNull
+    @JsonIgnore
+    @Builder.Default
+    private Boolean locked = false;
+
+    @NotNull
+    @JsonIgnore
+    @Builder.Default
+    private Boolean enabled = true;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

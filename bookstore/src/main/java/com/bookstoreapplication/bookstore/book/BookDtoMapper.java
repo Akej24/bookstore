@@ -24,6 +24,7 @@ public class BookDtoMapper {
 
     static SimpleBookQueryDto mapToSimpleBookDto(Book book) {
         return SimpleBookQueryDto.builder()
+                .bookId(book.getBookId())
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .releaseDate(book.getReleaseDate())

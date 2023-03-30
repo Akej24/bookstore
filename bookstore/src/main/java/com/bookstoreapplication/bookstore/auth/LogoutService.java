@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 class LogoutService implements LogoutHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(LogoutService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogoutService.class);
     private RedisTemplate<String, String> template;
 
     @Override
@@ -26,7 +26,7 @@ class LogoutService implements LogoutHandler {
         final String jwtToken = authHeader.substring(7);
 
         template.delete(jwtToken);
-        logger.info("Successfully logged out with id {}", template.opsForValue().get(jwtToken));
+        LOGGER.info("Successfully logged out with id {}", template.opsForValue().get(jwtToken));
         SecurityContextHolder.clearContext();
     }
 }

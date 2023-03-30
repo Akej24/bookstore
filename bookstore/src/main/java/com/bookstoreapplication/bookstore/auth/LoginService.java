@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.auth;
 
-import com.bookstoreapplication.bookstore.user.User;
-import com.bookstoreapplication.bookstore.user.UserRepository;
+import com.bookstoreapplication.bookstore.user.SimpleUserQueryDto;
+import com.bookstoreapplication.bookstore.user.UserFacade;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +20,16 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 class LoginService {
 
-    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtManager jwtManager;
-    private final AuthenticationManager authenticationManager;
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginService.class);
     private RedisTemplate<String, String> template;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtManager jwtManager;
+    private final UserFacade userFacade;
 
     String loginUser(@Valid LoginRequest request){
 
-        User existingUser = getUserById(request);
+        SimpleUserQueryDto existingUser = userFacade.findByUsername(request.getUsername());
         checkPasswordsMatch(request, existingUser);
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -40,24 +40,17 @@ class LoginService {
 
         template.opsForValue().set(jwtToken, userId);
         template.boundValueOps(jwtToken).expire(3600, TimeUnit.SECONDS);
-        logger.info("User with e-mail {} successfully logged in - created jwt token", request.getUsername());
+        LOGGER.info("User with e-mail {} successfully logged in - created jwt token", request.getUsername());
         return jwtToken;
     }
 
-    private void checkPasswordsMatch(LoginRequest request, User existingUser) {
+    private void checkPasswordsMatch(LoginRequest request, SimpleUserQueryDto existingUser) {
         String passwordFromDatabase = existingUser.getPassword();
         String passwordFromRequest = request.getPassword();
         if(!bCryptPasswordEncoder.matches(passwordFromRequest, passwordFromDatabase)){
-            logger.warn("Unsuccessfully logged in - invalid password for user with e-mail {}", request.getUsername());
+            LOGGER.warn("Unsuccessfully logged in - invalid password for user with e-mail {}", request.getUsername());
             throw new IllegalArgumentException("Invalid password for user with given e-mail");
         }
-    }
-
-    private User getUserById(LoginRequest request) {
-        return userRepository.findByUsername(request.getUsername()).orElseThrow(()->{
-            logger.warn("Unsuccessfully logged in - user with given email does not exist");
-            throw new IllegalArgumentException("User with given email does not exist");
-        });
     }
 
 }

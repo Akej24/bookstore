@@ -1,7 +1,5 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +10,7 @@ class UserDtoMapper {
 
     public static SimpleUserQueryDto mapToSimpleUserQueryDto(User user) {
         return SimpleUserQueryDto.builder()
+                .userId(user.getUserId())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .password(user.getPassword())

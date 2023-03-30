@@ -2,7 +2,7 @@ package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.book.BookFacade;
 import com.bookstoreapplication.bookstore.user.UserFacade;
-import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
+import com.bookstoreapplication.bookstore.user.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +88,7 @@ class PurchaseService {
 
     @Transactional
     @Cacheable(cacheNames = "Purchases")
-    public List<PurchaseResponse> getAllPurchases(@Valid UserIdRequest userIdRequest) {
+    public List<PurchaseDto> getAllPurchases(@Valid UserIdRequest userIdRequest) {
         userFacade.existsUserById(userIdRequest.getUserId());
         List<Purchase> purchases = purchaseRepository.findByUserUserId(userIdRequest.getUserId());
         return PurchaseResponseMapper.mapToPurchasesResponse(purchases);
@@ -96,7 +96,7 @@ class PurchaseService {
 
     @Transactional
     @Cacheable(cacheNames = "PurchasesWithDetails")
-    public List<PurchaseResponse> getAllPurchasesWithDetails(@Valid UserIdRequest userIdRequest) {
+    public List<PurchaseDto> getAllPurchasesWithDetails(@Valid UserIdRequest userIdRequest) {
         userFacade.existsUserById(userIdRequest.getUserId());
         List<Purchase> purchases = purchaseRepository.findByUserUserId(userIdRequest.getUserId());
         return PurchaseResponseMapper.mapToPurchasesWithDetailsResponse(purchases);

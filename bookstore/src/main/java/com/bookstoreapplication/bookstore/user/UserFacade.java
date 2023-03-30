@@ -1,8 +1,8 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @AllArgsConstructor
@@ -24,5 +24,9 @@ public class UserFacade {
 
     public SimpleUserQueryDto getSimpleUserQueryDto(Long userId){
         return userService.getSimpleUserQueryDto(userId);
+    }
+
+    public SimpleUserQueryDto findByUsername(String username){
+        return userService.findByUsername(username);
     }
 }

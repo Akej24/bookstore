@@ -34,14 +34,14 @@ class PurchaseController {
     }
 
     @GetMapping("")
-    ResponseEntity<List<PurchaseResponse>> getAllPurchases(@RequestBody UserIdRequest userIdRequest){
-        List<PurchaseResponse> purchases = purchaseService.getAllPurchases(userIdRequest);
+    ResponseEntity<List<PurchaseDto>> getAllPurchases(@RequestBody UserIdRequest userIdRequest){
+        List<PurchaseDto> purchases = purchaseService.getAllPurchases(userIdRequest);
         return ResponseEntity.status(HttpStatus.OK).body(purchases);
     }
 
     @GetMapping("/details")
     ResponseEntity<?> getAllPurchasesWithDetails(@RequestBody UserIdRequest userIdRequest){
-        List<PurchaseResponse> purchases = purchaseService.getAllPurchasesWithDetails(userIdRequest);
+        List<PurchaseDto> purchases = purchaseService.getAllPurchasesWithDetails(userIdRequest);
         return ResponseEntity.status(HttpStatus.OK).body(purchases);
     }
 

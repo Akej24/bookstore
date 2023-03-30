@@ -1,12 +1,12 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -94,6 +94,12 @@ public class UserService {
 
     public void existsUserById(Long userId) {
         findUserById(userId);
+    }
+
+    public SimpleUserQueryDto findByUsername(String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return UserDtoMapper.mapToSimpleUserQueryDto(user);
     }
 
     private User findUserById(Long userId) {

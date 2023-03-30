@@ -15,7 +15,6 @@ import javax.persistence.*;
 public class SimplePurchaseDetailQueryDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchaseDetailId;
 
     @ManyToOne

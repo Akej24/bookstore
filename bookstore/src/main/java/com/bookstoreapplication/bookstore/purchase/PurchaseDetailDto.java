@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-class PurchaseDetailResponse {
+class PurchaseDetailDto {
 
     private BookDto book;
     private Integer booksAmount;

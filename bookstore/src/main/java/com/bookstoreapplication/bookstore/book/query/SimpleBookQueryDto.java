@@ -21,7 +21,6 @@ import java.util.Set;
 public class SimpleBookQueryDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
     @OneToMany(mappedBy = "book")

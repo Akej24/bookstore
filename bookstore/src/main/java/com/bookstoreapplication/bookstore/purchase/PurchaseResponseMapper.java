@@ -11,15 +11,15 @@ class PurchaseResponseMapper {
     private PurchaseResponseMapper() {
     }
 
-    static List<PurchaseResponse> mapToPurchasesWithDetailsResponse(List<Purchase> purchases){
+    static List<PurchaseDto> mapToPurchasesWithDetailsResponse(List<Purchase> purchases){
         return purchases.stream()
                 .map(PurchaseResponseMapper::mapToPurchaseWithDetailsResponse)
                 .collect(Collectors.toList());
     }
 
-    static PurchaseResponse mapToPurchaseWithDetailsResponse(Purchase purchase){
-        List<PurchaseDetailResponse> detailResponses = mapToDetailsResponse(purchase.getPurchaseDetails());
-        return PurchaseResponse.builder()
+    static PurchaseDto mapToPurchaseWithDetailsResponse(Purchase purchase){
+        List<PurchaseDetailDto> detailResponses = mapToDetailsResponse(purchase.getPurchaseDetails());
+        return PurchaseDto.builder()
                 .purchaseDate(purchase.getPurchaseDate())
                 .purchaseDetails(detailResponses)
                 .totalPrice(purchase.getTotalPrice())
@@ -27,27 +27,27 @@ class PurchaseResponseMapper {
                 .build();
     }
 
-    static List<PurchaseDetailResponse> mapToDetailsResponse(Set<PurchaseDetail> details){
+    static List<PurchaseDetailDto> mapToDetailsResponse(Set<PurchaseDetail> details){
         return details.stream()
                 .map(PurchaseResponseMapper::mapToDetailResponse)
                 .collect(Collectors.toList());
     }
 
-    static PurchaseDetailResponse mapToDetailResponse(PurchaseDetail detail){
-        return PurchaseDetailResponse.builder()
+    static PurchaseDetailDto mapToDetailResponse(PurchaseDetail detail){
+        return PurchaseDetailDto.builder()
                 .book(BookDtoMapper.mapToBookDto(detail.getBook()))
                 .booksAmount(detail.getBooksAmount())
                 .build();
     }
 
-    static List<PurchaseResponse> mapToPurchasesResponse(List<Purchase> purchases){
+    static List<PurchaseDto> mapToPurchasesResponse(List<Purchase> purchases){
         return purchases.stream()
                 .map(PurchaseResponseMapper::mapToPurchaseResponse)
                 .collect(Collectors.toList());
     }
 
-    static PurchaseResponse mapToPurchaseResponse(Purchase purchase){
-        return PurchaseResponse.builder()
+    static PurchaseDto mapToPurchaseResponse(Purchase purchase){
+        return PurchaseDto.builder()
                 .purchaseDate(purchase.getPurchaseDate())
                 .totalPrice(purchase.getTotalPrice())
                 .purchaseStatus(purchase.getPurchaseStatus())

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase.query;
 
-import com.bookstoreapplication.bookstore.user.User;
+import com.bookstoreapplication.bookstore.user.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,10 @@ import javax.persistence.*;
 public class SimplePurchaseQueryDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long purchaseId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private SimpleUserQueryDto user;
 
 }

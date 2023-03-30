@@ -8,11 +8,11 @@ import java.util.List;
 
 @Getter
 @Builder
-class PurchaseResponse {
+class PurchaseDto {
 
     private LocalDateTime purchaseDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<PurchaseDetailResponse> purchaseDetails;
+    private List<PurchaseDetailDto> purchaseDetails;
     private Double totalPrice;
     private PurchaseStatus purchaseStatus;
 

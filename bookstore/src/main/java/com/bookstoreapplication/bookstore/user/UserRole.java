@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
-public enum UserRole {
+enum UserRole {
     USER,
     ADMIN
 }

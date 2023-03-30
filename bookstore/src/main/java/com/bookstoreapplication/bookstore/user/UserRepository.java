@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select user from User user")
     List<User> findAllUsers(Pageable page);
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByUsername(String email);
+    Optional<User> findByUsername(String username);
 
 }
