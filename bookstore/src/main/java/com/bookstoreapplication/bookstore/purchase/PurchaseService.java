@@ -1,8 +1,8 @@
 package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.book.BookFacade;
-import com.bookstoreapplication.bookstore.user.account.UserFacade;
-import com.bookstoreapplication.bookstore.user.account.query.SimpleUserQueryDto;
+import com.bookstoreapplication.bookstore.user.UserFacade;
+import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

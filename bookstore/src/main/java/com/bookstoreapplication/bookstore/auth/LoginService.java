@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.auth;
 
-import com.bookstoreapplication.bookstore.user.account.User;
-import com.bookstoreapplication.bookstore.user.account.UserRepository;
+import com.bookstoreapplication.bookstore.user.User;
+import com.bookstoreapplication.bookstore.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package com.bookstoreapplication.bookstore.user.account;
+package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.account.query.SimpleUserQueryDto;
+import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.auth;
 
-import com.bookstoreapplication.bookstore.user.account.UserRepository;
+import com.bookstoreapplication.bookstore.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

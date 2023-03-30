@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.user.account;
+package com.bookstoreapplication.bookstore.user;
 
 import com.bookstoreapplication.bookstore.purchase.query.SimplePurchaseQueryDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;

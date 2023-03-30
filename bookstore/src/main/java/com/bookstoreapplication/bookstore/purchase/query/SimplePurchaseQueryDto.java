@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase.query;
 
-import com.bookstoreapplication.bookstore.user.account.User;
+import com.bookstoreapplication.bookstore.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

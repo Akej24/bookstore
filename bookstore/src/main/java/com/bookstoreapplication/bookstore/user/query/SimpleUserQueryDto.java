@@ -1,7 +1,7 @@
-package com.bookstoreapplication.bookstore.user.account.query;
+package com.bookstoreapplication.bookstore.user.query;
 
 import com.bookstoreapplication.bookstore.purchase.query.SimplePurchaseQueryDto;
-import com.bookstoreapplication.bookstore.user.account.UserRole;
+import com.bookstoreapplication.bookstore.user.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

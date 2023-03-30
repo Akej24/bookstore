@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.user.account;
+package com.bookstoreapplication.bookstore.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

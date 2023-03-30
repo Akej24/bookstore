@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.user.account;
+package com.bookstoreapplication.bookstore.user;
 
 import lombok.Getter;
 

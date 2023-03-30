@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.user.account.query.SimpleUserQueryDto;
+import com.bookstoreapplication.bookstore.user.query.SimpleUserQueryDto;
 import lombok.*;
 
 import javax.persistence.*;
