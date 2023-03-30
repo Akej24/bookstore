@@ -1,9 +1,9 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.Book;
-import com.bookstoreapplication.bookstore.book.BookRepository;
+import com.bookstoreapplication.bookstore.book.BookFacade;
 import com.bookstoreapplication.bookstore.user.account.User;
 import com.bookstoreapplication.bookstore.user.account.UserRepository;
+import com.bookstoreapplication.bookstore.user.account.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,8 @@ public class PurchaseService {
 
     private final Logger logger = LoggerFactory.getLogger(PurchaseService.class);
     private final UserRepository userRepository;
-    private final BookRepository bookRepository;
+    private final UserService userService;
+    private final BookFacade bookFacade;
     private final PurchaseRepository purchaseRepository;
     private final PurchaseDetailRepository purchaseDetailRepository;
 
@@ -33,7 +33,7 @@ public class PurchaseService {
     @Cacheable(cacheNames = "Purchase")
     public void createNewPurchase(@Valid PurchaseRequest purchaseRequest) {
 
-        User user = findUserById(purchaseRequest.getUserId());
+        User user = userService.findUserById(purchaseRequest.getUserId());
         checkUserHasInitializedPurchase(user.getUserId());
 
         Purchase newPurchase = createNewPurchaseForUser(user);
@@ -42,10 +42,9 @@ public class PurchaseService {
         BigDecimal totalPrice = BigDecimal.ZERO;
         var purchaseDetails = new ArrayList<PurchaseDetail>();
         for(PurchaseDetailRequest detail : purchaseRequest.getPurchaseDetailsRequest()){
-            Book book = findBookById(detail.getBookId());
-            updateBookAvailablePieces(detail, book);
-            purchaseDetails.add(createNewPurchaseDetail(newPurchase, detail, book));
-            totalPrice = totalPrice.add(calculateBookPriceByAmount(book, detail.getBooksAmount()));
+            bookFacade.updateBookAvailablePieces(detail.getBooksAmount(), detail.getBookId());
+            purchaseDetails.add(createNewPurchaseDetail(newPurchase, detail));
+            totalPrice = totalPrice.add(bookFacade.calculateBookPriceByAmount(detail.getBookId(), detail.getBooksAmount()));
         }
         logger.info("Price calculated and updated available pieces");
 
@@ -62,7 +61,7 @@ public class PurchaseService {
     public void payForPurchase(@Valid UserIdRequest userIdRequest) {
         Long userId = userIdRequest.getUserId();
 
-        User user = findUserById(userId);
+        User user = userService.findUserById(userId);
         Purchase purchase = getUserInitializedPurchase(userId);
         logger.info("Successfully found one initialized user purchase with id {}", purchase.getPurchaseId());
 
@@ -93,7 +92,7 @@ public class PurchaseService {
     @Transactional
     @Cacheable(cacheNames = "Purchases")
     public List<PurchaseResponse> getAllPurchases(@Valid UserIdRequest userIdRequest) {
-        User user = findUserById(userIdRequest.getUserId());
+        User user = userService.findUserById(userIdRequest.getUserId());
         List<Purchase> purchases = purchaseRepository.findByUserUserId(user.getUserId());
         return PurchaseResponseMapper.mapToPurchasesResponse(purchases);
     }
@@ -101,7 +100,7 @@ public class PurchaseService {
     @Transactional
     @Cacheable(cacheNames = "PurchasesWithDetails")
     public List<PurchaseResponse> getAllPurchasesWithDetails(@Valid UserIdRequest userIdRequest) {
-        User user = findUserById(userIdRequest.getUserId());
+        User user = userService.findUserById(userIdRequest.getUserId());
         List<Purchase> purchases = purchaseRepository.findByUserUserId(user.getUserId());
         return PurchaseResponseMapper.mapToPurchasesWithDetailsResponse(purchases);
     }
@@ -133,25 +132,9 @@ public class PurchaseService {
         return initializedPurchases.get(0);
     }
 
-    private void updateBookAvailablePieces(PurchaseDetailRequest detail, Book book) {
-        if(book.getAvailablePieces() < detail.booksAmount){
-            throw new IllegalArgumentException("Not enough available pieces to buy this product");
-        }else{
-            Book updatedBook = book.toBuilder().availablePieces(book.getAvailablePieces() - detail.booksAmount).build();
-            bookRepository.save(updatedBook);
-        }
-    }
-
-    private BigDecimal calculateBookPriceByAmount(Book book, Integer amount){
-        return BigDecimal
-                .valueOf(book.getPrice())
-                .multiply(BigDecimal.valueOf(amount))
-                .setScale(2, RoundingMode.HALF_UP);
-    }
-
-    private PurchaseDetail createNewPurchaseDetail(Purchase newPurchase, PurchaseDetailRequest detail, Book book) {
+    private PurchaseDetail createNewPurchaseDetail(Purchase newPurchase, PurchaseDetailRequest detail) {
         return PurchaseDetail.builder()
-                .book(book)
+                .book(bookFacade.createNewSimpleBookQueryDto(detail.getBookId()))
                 .booksAmount(detail.getBooksAmount())
                 .purchase(newPurchase)
                 .build();
@@ -167,20 +150,6 @@ public class PurchaseService {
             logger.warn("User with id {} has already initialized purchase", userId);
             throw new IllegalArgumentException("User with given id has already initialized purchase");
         }
-    }
-
-    private Book findBookById(Long bookId) {
-        return bookRepository.findById(bookId).orElseThrow( () -> {
-            logger.warn("Book with id {} does not exist", bookId);
-            throw new IllegalArgumentException("Book with given id does not exist");
-        });
-    }
-
-    private User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow( () -> {
-            logger.warn("User with id {} has not been found", userId);
-            throw new IllegalArgumentException("User with given id does not exist");
-        });
     }
 
 }

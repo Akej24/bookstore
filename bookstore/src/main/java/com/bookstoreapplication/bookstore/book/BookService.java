@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
+import com.bookstoreapplication.bookstore.book.query.SimpleBookQueryDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @Validated
 @AllArgsConstructor
-public class BookService {
+class BookService {
 
     private static final int PAGE_SIZE = 20;
     private final BookRepository bookRepository;
@@ -33,26 +36,26 @@ public class BookService {
     }
 
     @Cacheable(cacheNames = "Book")
-    public BookResponse getBookById(long bookId){
+    public BookDto getBookById(long bookId){
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             return new IllegalArgumentException("Book with given id does not exist");
         });
         logger.info("Successively fetch a book with id {} from the database [Cached]", bookId);
-        return BookResponseMapper.mapToBookResponse(book);
+        return BookDtoMapper.mapToBookDto(book);
     }
 
     @Cacheable(cacheNames = "Books")
-    public List<BookResponse> getAllBooks(Integer page,
-                           String sortDirection,
-                           String sortBy,
-                           String title,
-                           String author,
-                           LocalDate releaseDate,
-                           Integer numberOfPages,
-                           Boolean status,
-                           String availablePieces,
-                           String price) {
+    public List<BookDto> getAllBooks(Integer page,
+                                     String sortDirection,
+                                     String sortBy,
+                                     String title,
+                                     String author,
+                                     LocalDate releaseDate,
+                                     Integer numberOfPages,
+                                     Boolean status,
+                                     String availablePieces,
+                                     String price) {
 
         page = page != null && page >= 0 ? page : 0;
         Sort.Direction direction = sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -71,7 +74,7 @@ public class BookService {
 
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
         logger.info("All books have been fetched from the database [Cached]");
-        return BookResponseMapper.mapToBooksResponse(books);
+        return BookDtoMapper.mapToBooksDto(books);
     }
 
     @Transactional
@@ -92,7 +95,7 @@ public class BookService {
 
     @Transactional
     @CachePut(cacheNames = "Book", key = "#root.target.savedBook.bookId")
-    public BookResponse updateBookById(long bookId, @Valid BookRequest bookRequest) {
+    public BookDto updateBookById(long bookId, @Valid BookRequest bookRequest) {
         Book bookToUpdate = bookRepository.findById(bookId).orElseThrow(() -> {
             logger.warn("The book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
@@ -100,7 +103,37 @@ public class BookService {
         Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
         Book savedBook = bookRepository.save(updatedBook);
         logger.info("The book with id {} has been updated [Cached]", bookId);
-        return BookResponseMapper.mapToBookResponse(savedBook);
+        return BookDtoMapper.mapToBookDto(savedBook);
+    }
+
+    public SimpleBookQueryDto createNewSimpleBookQueryDto(Long bookId) {
+        Book book = findBookById(bookId);
+        return BookDtoMapper.mapToSimpleBookDto(book);
+    }
+
+    private Book findBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow( () -> {
+            logger.warn("Book with id {} does not exist", bookId);
+            throw new IllegalArgumentException("Book with given id does not exist");
+        });
+    }
+
+    public BigDecimal calculateBookPriceByAmount(Long bookId, Integer amount){
+        Book book = findBookById(bookId);
+        return BigDecimal
+                .valueOf(book.getPrice())
+                .multiply(BigDecimal.valueOf(amount))
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void updateBookAvailablePieces(Integer booksAmount, Long bookId) {
+        Book book = findBookById(bookId);
+        if(book.getAvailablePieces() < booksAmount){
+            throw new IllegalArgumentException("Not enough available pieces to buy this product");
+        }else{
+            Book updatedBook = book.toBuilder().availablePieces(book.getAvailablePieces() - booksAmount).build();
+            bookRepository.save(updatedBook);
+        }
     }
 
     private Book createFromRequest(BookRequest bookRequest) {

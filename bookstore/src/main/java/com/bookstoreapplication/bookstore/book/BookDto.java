@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class BookResponse {
+public class BookDto {
 
     private String title;
     private String author;

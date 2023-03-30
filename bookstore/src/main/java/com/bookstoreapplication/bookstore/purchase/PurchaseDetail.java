@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.Book;
+import com.bookstoreapplication.bookstore.book.query.SimpleBookQueryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +24,7 @@ class PurchaseDetail implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
-    private Book book;
+    private SimpleBookQueryDto book;
 
     @Min(value = 1, message = "The minimum value of books amount is 1")
     @NotNull(message = "Books amount cannot be null")

@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Book {
+class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;

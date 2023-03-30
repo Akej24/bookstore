@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.BookResponseMapper;
+
+import com.bookstoreapplication.bookstore.book.BookDtoMapper;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ class PurchaseResponseMapper {
 
     static PurchaseDetailResponse mapToDetailResponse(PurchaseDetail detail){
         return PurchaseDetailResponse.builder()
-                .book(BookResponseMapper.mapToBookResponse(detail.getBook()))
+                .book(BookDtoMapper.mapToBookDto(detail.getBook()))
                 .booksAmount(detail.getBooksAmount())
                 .build();
     }

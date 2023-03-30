@@ -23,12 +23,12 @@ class BookController {
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<BookResponse> getBookById(@PathVariable long bookId){
+    ResponseEntity<BookDto> getBookById(@PathVariable long bookId){
         return new ResponseEntity<>(bookService.getBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<List<BookResponse>> getAllBooks(
+    ResponseEntity<List<BookDto>> getAllBooks(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
@@ -56,7 +56,7 @@ class BookController {
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<BookResponse> updateBookById(@PathVariable long bookId, @RequestBody BookRequest bookRequest){
+    ResponseEntity<BookDto> updateBookById(@PathVariable long bookId, @RequestBody BookRequest bookRequest){
         return new ResponseEntity<>(bookService.updateBookById(bookId, bookRequest), HttpStatus.OK);
     }
 

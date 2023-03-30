@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.book.BookResponse;
+import com.bookstoreapplication.bookstore.book.BookDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 class PurchaseDetailResponse {
 
-    private BookResponse book;
+    private BookDto book;
     private Integer booksAmount;
 
 }

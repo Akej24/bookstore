@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @Validated
 @AllArgsConstructor
-class UserService {
+public class UserService {
 
     private static final int PAGE_SIZE = 10;
     private final UserRepository userRepository;
@@ -77,6 +77,13 @@ class UserService {
                 .dateOfBirth(userRequest.getDateOfBirth())
                 .role(userRequest.getRole())
                 .build();
+    }
+
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow( () -> {
+            logger.warn("User with id {} has not been found", userId);
+            throw new IllegalArgumentException("User with given id does not exist");
+        });
     }
 
 }
