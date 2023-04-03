@@ -1,9 +1,11 @@
 package com.bookstoreapplication.bookstore.book;
 
+import com.bookstoreapplication.bookstore.book.vo.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Id;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -15,28 +17,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 class BookRequest {
 
-    @NotBlank(message="Title must not be blank")
-    private String title;
-
-    @NotBlank(message="Author must not be blank")
-    private String author;
-
-    @NotNull(message="Release date must not be null")
-    private LocalDate releaseDate;
-
-    @Min(value = 1, message = "Number of pages must not be null and the minimum value is 1")
-    @NotNull
-    private Integer numberOfPages;
-
-    @NotNull(message = "Status mut not be null")
-    private Boolean status;
-
-    @Min(value = 0, message = "Available pieces must not be null and the minimum value is 0")
-    @NotNull
-    private Integer availablePieces;
-
-    @DecimalMin(value = "0.0", message = "Price must be not null and the minimum value is 0.0")
-    @NotNull
-    private Double price;
+    private Title title;
+    private Author author;
+    private ReleaseDate releaseDate;
+    private NumberOfPages numberOfPages;
+    private AvailabilityStatus status;
+    private AvailablePieces availablePieces;
+    private Price price;
 
 }

@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
+import com.bookstoreapplication.bookstore.purchase.vo.PurchaseStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -3,8 +3,10 @@ package com.bookstoreapplication.bookstore.book;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,12 +14,13 @@ import java.util.List;
 @RequestMapping("/books")
 @AllArgsConstructor
 @CrossOrigin("http://localhost:3000")
+@Validated
 class BookController {
 
     private final BookService bookService;
 
     @PostMapping("")
-    ResponseEntity<?> addBookToDatabase(@RequestBody BookRequest bookRequest){
+    ResponseEntity<?> addBookToDatabase(@RequestBody @Valid BookRequest bookRequest){
         bookService.addBookToDatabase(bookRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

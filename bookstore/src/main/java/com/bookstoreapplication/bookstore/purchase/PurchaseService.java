@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.book.BookFacade;
+import com.bookstoreapplication.bookstore.purchase.vo.PurchaseStatus;
 import com.bookstoreapplication.bookstore.user.UserFacade;
 import com.bookstoreapplication.bookstore.user.SimpleUserQueryDto;
 import lombok.AllArgsConstructor;

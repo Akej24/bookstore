@@ -18,7 +18,7 @@ class RegistrationService {
     private final UserRepository userRepository;
     private final RegistrationValidator registrationValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final Logger logger = LoggerFactory.getLogger(RegistrationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationService.class);
 
     @Transactional
     void registerUserIfPasswordValidAndEmailNotTaken(@Valid RegistrationRequest request) {
@@ -26,19 +26,19 @@ class RegistrationService {
         validatePassword(request);
         User modelToSave = createUserFromRequest(request);
         userRepository.save(modelToSave);
-        logger.info("Successfully registered with email {}", request.getEmail());
+        LOGGER.info("Successfully registered with email {}", request.getEmail());
     }
 
     private void validatePassword(RegistrationRequest request) {
         if(!registrationValidator.validatePassword(request.getPassword())){
-            logger.warn("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
+            LOGGER.warn("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
             throw new IllegalArgumentException("Unsuccessfully registered - the password must contain 8-16 characters, one lowercase letter, one uppercase letter, a special character and a number");
         }
     }
 
     private void validateEmail(RegistrationRequest request) {
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
-            logger.warn("Unsuccessfully registered - email must be not taken");
+            LOGGER.warn("Unsuccessfully registered - email must be not taken");
             throw new IllegalArgumentException("Unsuccessfully registered - email must be not taken");
         }
     }

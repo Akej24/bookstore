@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase;
 
+import com.bookstoreapplication.bookstore.purchase.vo.PurchaseStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;

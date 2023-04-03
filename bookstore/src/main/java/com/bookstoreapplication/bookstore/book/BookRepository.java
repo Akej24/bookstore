@@ -10,6 +10,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
 
+    Book findBookByBookId_BookId(long bookId);
+
+    BookDto findBookDtoByBookId_BookId(long bookId);
+
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 
+    <S extends Book> S save(S entity);
+
+    void deleteBookByBookId_BookId(long BookId);
+
+    void deleteAllBy();
 }

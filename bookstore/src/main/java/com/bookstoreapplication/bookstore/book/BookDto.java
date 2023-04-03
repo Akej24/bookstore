@@ -1,20 +1,21 @@
 package com.bookstoreapplication.bookstore.book;
 
-import lombok.Builder;
+import com.bookstoreapplication.bookstore.book.vo.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @Getter
-@Builder
+@AllArgsConstructor
+@EqualsAndHashCode
 public class BookDto {
 
-    private String title;
-    private String author;
-    private LocalDate releaseDate;
-    private Integer numberOfPages;
-    private Boolean status;
-    private Integer availablePieces;
-    private Double price;
+    private Title title;
+    private Author author;
+    private ReleaseDate releaseDate;
+    private NumberOfPages numberOfPages;
+    private AvailabilityStatus availabilityStatus;
+    private AvailablePieces availablePieces;
+    private Price price;
 
 }

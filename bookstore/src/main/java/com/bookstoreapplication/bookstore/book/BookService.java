@@ -11,14 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@Validated
 @AllArgsConstructor
 class BookService {
 
@@ -27,16 +25,16 @@ class BookService {
     private final BookRepository bookRepository;
 
     @Transactional
-    void addBookToDatabase(@Valid BookRequest bookRequest){
-        bookRepository.save(createFromRequest(bookRequest));
+    void addBookToDatabase(BookRequest source){
+        bookRepository.save(BookFactory.createBook(source));
         LOGGER.info("Successfully added to the database");
     }
 
     @Cacheable(cacheNames = "Book")
     public BookDto getBookById(long bookId){
-        Book book = findBookById(bookId);
+        BookDto book = findBookDtoById(bookId);
         LOGGER.info("Successively fetch a book with id {} from the database [Cached]", bookId);
-        return BookDtoMapper.mapToBookDto(book);
+        return book;
     }
 
     @Cacheable(cacheNames = "Books")
@@ -73,63 +71,37 @@ class BookService {
 
     @Transactional
     void deleteBook(long bookId) {
-        Book bookToDelete = bookRepository.findById(bookId).orElseThrow(() -> {
-            LOGGER.warn("The book with id {} does not exist", bookId);
-            throw new IllegalArgumentException("Book with given id does not exist");
-        });
-        bookRepository.delete(bookToDelete);
+        existsBookById(bookId);
+        bookRepository.deleteBookByBookId_BookId(bookId);
         LOGGER.info("The book with id {} was successfully removed from the database", bookId);
     }
 
     @Transactional
     void deleteAllBooks() {
-        bookRepository.deleteAll();
+        bookRepository.deleteAllBy();
         LOGGER.warn("All books have been removed from the database");
     }
 
     @Transactional
     @CachePut(cacheNames = "Book", key = "#root.target.savedBook.bookId")
-    public BookDto updateBookById(long bookId, @Valid BookRequest bookRequest) {
-        Book bookToUpdate = findBookById(bookId);
-        Book updatedBook = updateFromRequest(bookToUpdate, bookRequest);
+    public BookDto updateBookById(long bookId, @Valid BookRequest source) {
+        Book bookToUpdate = bookRepository.findBookByBookId_BookId(bookId);
+        Book updatedBook = BookFactory.updateBook(bookToUpdate, source);
         Book savedBook = bookRepository.save(updatedBook);
         LOGGER.info("The book with id {} has been updated [Cached]", bookId);
         return BookDtoMapper.mapToBookDto(savedBook);
     }
 
-    Book findBookById(Long bookId) {
-        return bookRepository.findById(bookId).orElseThrow( () -> {
+    BookDto findBookDtoById(long bookId) {
+        existsBookById(bookId);
+        return bookRepository.findBookDtoByBookId_BookId(bookId);
+    }
+
+    void existsBookById(long bookId){
+        if(!bookRepository.existsById(bookId)){
             LOGGER.warn("Book with id {} does not exist", bookId);
             throw new IllegalArgumentException("Book with given id does not exist");
-        });
-    }
-
-    private Book createFromRequest(BookRequest bookRequest) {
-        return Book.builder()
-                .title(bookRequest.getTitle())
-                .author(bookRequest.getAuthor())
-                .releaseDate(bookRequest.getReleaseDate())
-                .numberOfPages(bookRequest.getNumberOfPages())
-                .status(bookRequest.getStatus())
-                .availablePieces(bookRequest.getAvailablePieces())
-                .price(bookRequest.getPrice())
-                .bookAudit(new BookAudit())
-                .build();
-
-    }
-
-    private Book updateFromRequest(Book bookToUpdate, BookRequest bookRequest) {
-        Book book = bookToUpdate.toBuilder()
-                .title(bookRequest.getTitle())
-                .author(bookRequest.getAuthor())
-                .releaseDate(bookRequest.getReleaseDate())
-                .numberOfPages(bookRequest.getNumberOfPages())
-                .status(bookRequest.getStatus())
-                .availablePieces(bookRequest.getAvailablePieces())
-                .price(bookRequest.getPrice())
-                .build();
-        book.setPiecesPrePersist();
-        return book;
+        }
     }
 
 }
