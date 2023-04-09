@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.handler;
+package com.bookstoreapplication.bookstore.adapters.exception_handler;
 
 import lombok.*;
 

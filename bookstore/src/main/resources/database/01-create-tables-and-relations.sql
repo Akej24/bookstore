@@ -5,11 +5,11 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    surname VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL,
     role VARCHAR(255) NOT NULL,
-    funds DOUBLE,
+    funds DECIMAL,
     created_on DATETIME,
     updated_on DATETIME,
     last_login DATETIME,
@@ -25,7 +25,7 @@ CREATE TABLE books (
     number_of_pages INT NOT NULL,
     status BOOLEAN NOT NULL,
     available_pieces INT NOT NULL,
-    price DOUBLE NOT NULL,
+    price DECIMAL NOT NULL,
     created_on DATETIME,
     updated_on DATETIME
 );
@@ -34,7 +34,6 @@ CREATE TABLE purchases (
     purchase_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     purchase_date DATETIME NOT NULL,
-    total_price DOUBLE,
     purchase_status VARCHAR(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

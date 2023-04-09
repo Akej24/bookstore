@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.purchase.config;
+package com.bookstoreapplication.bookstore.adapters.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

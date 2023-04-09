@@ -1,10 +1,15 @@
-package com.bookstoreapplication.bookstore.adapters.controller;
+package com.bookstoreapplication.bookstore.adapters.book;
 
 import com.bookstoreapplication.bookstore.application.book.BookCommand;
 import com.bookstoreapplication.bookstore.application.book.BookCommandHandler;
-import com.bookstoreapplication.bookstore.application.book.BookCommandResponse;
+import com.bookstoreapplication.bookstore.application.book.BookQueryResponse;
+import com.bookstoreapplication.bookstore.domain.book.core.Book;
 import com.bookstoreapplication.bookstore.domain.purchase.value_object.SimpleBookId;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +26,7 @@ import java.util.Set;
 @CrossOrigin("http://localhost:3000")
 class BookController {
 
+    private static final int PAGE_SIZE = 20;
     private final BookCommandHandler bookCommandHandler;
 
     @PostMapping("")
@@ -30,12 +36,12 @@ class BookController {
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<BookCommandResponse> getBookById(@PathVariable @Valid SimpleBookId bookId){
+    ResponseEntity<BookQueryResponse> getBookById(@PathVariable @Valid SimpleBookId bookId){
         return new ResponseEntity<>(bookCommandHandler.getBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<Set<BookCommandResponse>> getAllBooks(
+    ResponseEntity<Set<BookQueryResponse>> getAllBooks(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
@@ -47,7 +53,23 @@ class BookController {
             @RequestParam(required = false) String availablePieces,
             @RequestParam(required = false) String price
             ){
-        return new ResponseEntity<>(bookCommandHandler.getAllBooks(page, sortDirection, sortBy, title, author, releaseDate, numberOfPages, status, availablePieces, price), HttpStatus.OK);
+
+        page = page != null && page >= 0 ? page : 0;
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
+
+        Specification<Book> specification = Specification.where(
+                BookSpecifications.hasTitleContainingIgnoreCase(title)
+                        .and(BookSpecifications.hasAuthorContainingIgnoreCase(author))
+                        .and(BookSpecifications.hasReleaseDateAfter(releaseDate))
+                        .and(BookSpecifications.hasNumberOfPagesGreaterThanOrEqual(numberOfPages))
+                        .and(BookSpecifications.hasStatus(status))
+                        .and(BookSpecifications.hasAvailablePiecesContainingIgnoreCase(availablePieces))
+                        .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
+        );
+
+        return new ResponseEntity<>(bookCommandHandler.getAllBooks(specification, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")

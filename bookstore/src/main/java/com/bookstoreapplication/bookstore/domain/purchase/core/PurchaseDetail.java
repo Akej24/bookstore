@@ -1,29 +1,31 @@
-package com.bookstoreapplication.bookstore.domain.purchase;
+package com.bookstoreapplication.bookstore.domain.purchase.core;
 
-import com.bookstoreapplication.bookstore.domain.purchase.value_objects.BooksAmount;
-import com.bookstoreapplication.bookstore.domain.purchase.value_objects.PurchaseDetailId;
-import com.bookstoreapplication.bookstore.domain.purchase.value_objects.SimpleBookId;
-import com.bookstoreapplication.bookstore.domain.purchase.value_objects.SimplePurchaseId;
-import com.bookstoreapplication.bookstore.purchase.value_objects.*;
+import com.bookstoreapplication.bookstore.domain.purchase.value_object.BooksAmount;
+import com.bookstoreapplication.bookstore.domain.purchase.value_object.PurchaseDetailId;
+import com.bookstoreapplication.bookstore.domain.purchase.value_object.SimpleBookId;
+import com.bookstoreapplication.bookstore.domain.purchase.value_object.SimplePurchaseId;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Table(name="purchase_details")
 @Entity
-@Table(name = "purchase_details")
 @Getter
-@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
 public class PurchaseDetail implements Serializable {
 
-    @Id
+    @EmbeddedId
     private PurchaseDetailId purchaseDetailId;
+    @Embedded
     private SimpleBookId bookId;
+    @Embedded
     private BooksAmount booksAmount;
+    @Embedded
     private SimplePurchaseId purchaseId;
 
-    public PurchaseDetail(SimpleBookId bookId, BooksAmount booksAmount, SimplePurchaseId purchaseId) {
+    PurchaseDetail(SimpleBookId bookId, BooksAmount booksAmount, SimplePurchaseId purchaseId) {
         this.bookId = bookId;
         this.booksAmount = booksAmount;
         this.purchaseId = purchaseId;

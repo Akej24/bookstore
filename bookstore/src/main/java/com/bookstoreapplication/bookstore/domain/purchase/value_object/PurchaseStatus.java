@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.domain.purchase.value_objects;
+package com.bookstoreapplication.bookstore.domain.purchase.value_object;
 
 public enum PurchaseStatus {
     INITIALIZED,

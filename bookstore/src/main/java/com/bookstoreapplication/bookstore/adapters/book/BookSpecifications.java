@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.application.book;
+package com.bookstoreapplication.bookstore.adapters.book;
 
 import com.bookstoreapplication.bookstore.domain.book.core.Book;
 import org.springframework.data.jpa.domain.Specification;

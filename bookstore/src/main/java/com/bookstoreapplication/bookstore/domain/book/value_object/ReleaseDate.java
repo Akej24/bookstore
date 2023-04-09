@@ -1,12 +1,20 @@
-package com.bookstoreapplication.bookstore.domain.book.vo;
+package com.bookstoreapplication.bookstore.domain.book.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public record ReleaseDate(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class ReleaseDate implements Serializable {
 
         @NotNull(message = "Release date must not be null")
-        LocalDate releaseDate
+        private LocalDate releaseDate;
 
-) implements Serializable { }
+}

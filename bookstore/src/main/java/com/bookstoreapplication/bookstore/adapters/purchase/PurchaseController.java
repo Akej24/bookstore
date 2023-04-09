@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.controller;
+package com.bookstoreapplication.bookstore.adapters.purchase;
 
 import com.bookstoreapplication.bookstore.application.purchase.PurchaseCommandHandler;
 import com.bookstoreapplication.bookstore.application.purchase.PurchaseCommand;

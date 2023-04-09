@@ -1,11 +1,19 @@
-package com.bookstoreapplication.bookstore.domain.book.vo;
+package com.bookstoreapplication.bookstore.domain.book.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-public record Author(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class Author implements Serializable {
 
         @NotBlank(message = "Author must not be blank")
-        String author
+        private String author;
 
-) implements Serializable { }
+}

@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.domain.user;
+package com.bookstoreapplication.bookstore.domain.user.value_objects;
 
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
-class UserAudit implements Serializable {
+public class UserAudit implements Serializable {
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
     private LocalDateTime lastLogin;

@@ -1,13 +1,21 @@
-package com.bookstoreapplication.bookstore.domain.book.vo;
+package com.bookstoreapplication.bookstore.domain.book.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public record AvailablePieces(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class AvailablePieces implements Serializable {
 
         @Min(value = 0, message = "The minimum value of available pieces is 0")
         @NotNull(message = "Available pieces must be not null")
-        Integer availablePieces
+        private Integer availablePieces;
 
-) implements Serializable { }
+}

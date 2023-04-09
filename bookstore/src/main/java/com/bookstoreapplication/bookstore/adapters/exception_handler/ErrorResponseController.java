@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.handler;
+package com.bookstoreapplication.bookstore.adapters.exception_handler;
 
 import com.bookstoreapplication.bookstore.domain.purchase.exception.PurchaseException;
 import org.springframework.http.HttpStatus;

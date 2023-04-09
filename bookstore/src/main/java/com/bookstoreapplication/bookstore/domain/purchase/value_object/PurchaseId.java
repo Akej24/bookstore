@@ -1,12 +1,20 @@
-package com.bookstoreapplication.bookstore.domain.purchase.value_objects;
+package com.bookstoreapplication.bookstore.domain.purchase.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
 
-public record PurchaseId(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class PurchaseId implements Serializable {
 
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        long purchaseId
+        private long purchaseId;
 
-) implements Serializable { }
+}

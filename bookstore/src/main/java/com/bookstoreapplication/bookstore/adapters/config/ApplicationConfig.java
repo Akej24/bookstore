@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.purchase.config;
+package com.bookstoreapplication.bookstore.adapters.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.domain.user;
+package com.bookstoreapplication.bookstore.domain.user.core;
 
 import com.bookstoreapplication.bookstore.application.user.UserCommand;
 import com.bookstoreapplication.bookstore.application.user.UserUpdateCommand;
@@ -6,36 +6,50 @@ import com.bookstoreapplication.bookstore.domain.purchase.value_object.Funds;
 import com.bookstoreapplication.bookstore.domain.user.value_objects.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Table(name = "users")
+@Entity
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
-    @Id
+    @EmbeddedId
     private UserId userId;
+    @Embedded
     private UserEmail email;
+    @Embedded
     private Username username;
+    @Embedded
     private Password password;
+    @Embedded
     private FirstName firstName;
+    @Embedded
     private LastName lastName;
+    @Embedded
     private DateOfBirth dateOfBirth;
+    @Embedded
     private Funds funds;
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role must not be null")
     private UserRole role;
     @Embedded
     private UserAudit userAudit;
+    @Embedded
     private Locked locked;
+    @Embedded
     private Enabled enabled;
 
-    public User(UserCommand source) {
+    public User(UserCommand source, BCryptPasswordEncoder bCryptPasswordEncoder) {
         email = source.getUserEmail();
         username = source.getUsername();
-        password = source.getPassword();
+        password = new Password(bCryptPasswordEncoder.encode(source.getPassword().getPassword()));
         firstName = source.getFirstName();
         lastName = source.getLastName();
         dateOfBirth = source.getDateOfBirth();

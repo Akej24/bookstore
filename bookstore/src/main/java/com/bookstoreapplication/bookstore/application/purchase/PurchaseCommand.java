@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.application;
+package com.bookstoreapplication.bookstore.application.purchase;
 
 import com.bookstoreapplication.bookstore.domain.purchase.value_object.SimpleCustomerId;
 import lombok.AllArgsConstructor;

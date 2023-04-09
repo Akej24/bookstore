@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.domain.book.core;
+package com.bookstoreapplication.bookstore.application.book;
 
 import com.bookstoreapplication.bookstore.domain.book.value_object.*;
 import lombok.AllArgsConstructor;

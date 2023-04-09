@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.domain.book.vo;
+package com.bookstoreapplication.bookstore.domain.book.value_object;
 
 import lombok.Getter;
 

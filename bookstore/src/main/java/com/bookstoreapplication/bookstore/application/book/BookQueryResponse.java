@@ -3,7 +3,6 @@ package com.bookstoreapplication.bookstore.application.book;
 import com.bookstoreapplication.bookstore.domain.book.core.Book;
 import com.bookstoreapplication.bookstore.domain.book.value_object.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.List;
@@ -12,8 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-@EqualsAndHashCode
-public class BookCommandResponse {
+public class BookQueryResponse {
 
     private Title title;
     private Author author;
@@ -23,12 +21,12 @@ public class BookCommandResponse {
     private AvailablePieces availablePieces;
     private Price price;
 
-    static Set<BookCommandResponse> toResponses(List<Book> sources){
-        return sources.stream().map(BookCommandResponse::toResponse).collect(Collectors.toSet());
+    static Set<BookQueryResponse> toResponses(List<Book> sources){
+        return sources.stream().map(BookQueryResponse::toResponse).collect(Collectors.toSet());
     }
 
-    static BookCommandResponse toResponse(Book source){
-        return new BookCommandResponse(
+    static BookQueryResponse toResponse(Book source){
+        return new BookQueryResponse(
                 source.getTitle(),
                 source.getAuthor(),
                 source.getReleaseDate(),

@@ -1,9 +1,19 @@
-package com.bookstoreapplication.bookstore.domain.purchase.value_objects;
+package com.bookstoreapplication.bookstore.domain.purchase.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public record SimplePurchaseId(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class SimplePurchaseId implements Serializable {
 
-        long purchaseId
+    @NotNull(message = "Purchase id cannot be null")
+    private long purchaseId;
 
-) implements Serializable { }
+}

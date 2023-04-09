@@ -1,11 +1,19 @@
-package com.bookstoreapplication.bookstore.domain.book.vo;
+package com.bookstoreapplication.bookstore.domain.book.value_object;
 
+import lombok.*;
+
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-public record AvailabilityStatus(
+@Embeddable
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode
+public class AvailabilityStatus implements Serializable {
 
         @NotNull(message = "Status mut not be null")
-        Boolean status
+        private Boolean status;
 
-) implements Serializable { }
+}

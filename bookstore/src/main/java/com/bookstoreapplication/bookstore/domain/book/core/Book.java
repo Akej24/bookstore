@@ -1,33 +1,64 @@
-package com.bookstoreapplication.bookstore.domain.book;
+package com.bookstoreapplication.bookstore.domain.book.core;
 
-import com.bookstoreapplication.bookstore.book.vo.*;
-import com.bookstoreapplication.bookstore.domain.book.vo.*;
-import com.bookstoreapplication.bookstore.domain.purchase.book.vo.*;
+import com.bookstoreapplication.bookstore.application.book.BookCommand;
+import com.bookstoreapplication.bookstore.domain.book.value_object.*;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
 @Table(name = "books")
+@Entity
 @Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-class Book {
+public class Book implements Serializable {
 
-    @Id
+    @EmbeddedId
     private BookId bookId;
+    @Embedded
     private Title title;
+    @Embedded
     private Author author;
+    @Embedded
     private ReleaseDate releaseDate;
+    @Embedded
     private NumberOfPages numberOfPages;
+    @Embedded
     private AvailabilityStatus availabilityStatus;
+    @Embedded
     private AvailablePieces availablePieces;
+    @Embedded
     private Price price;
     @Embedded
     private BookAudit bookAudit;
 
-    public void updateAvailability() {
-        if (availabilityStatus.status().equals(false) || availablePieces.availablePieces() == 0) {
+    public Book(BookCommand source) {
+        title = source.getTitle();
+        author = source.getAuthor();
+        releaseDate = source.getReleaseDate();
+        numberOfPages = source.getNumberOfPages();
+        availabilityStatus = source.getStatus();
+        availablePieces = source.getAvailablePieces();
+        price = source.getPrice();
+        this.bookAudit = new BookAudit();
+        updateAvailability();
+    }
+
+    public Book update(BookCommand source){
+        title = source.getTitle();
+        author = source.getAuthor();
+        releaseDate = source.getReleaseDate();
+        numberOfPages = source.getNumberOfPages();
+        availabilityStatus = source.getStatus();
+        availablePieces = source.getAvailablePieces();
+        price = source.getPrice();
+        updateAvailability();
+        return this;
+    }
+
+    void updateAvailability() {
+        if (availabilityStatus.getStatus().equals(false) || availablePieces.getAvailablePieces() == 0) {
             availablePieces = new AvailablePieces(0);
             availabilityStatus = new AvailabilityStatus(false);
         }

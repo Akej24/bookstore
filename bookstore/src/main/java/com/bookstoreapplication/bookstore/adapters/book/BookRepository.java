@@ -1,6 +1,6 @@
-package com.bookstoreapplication.bookstore.adapters.repositories;
+package com.bookstoreapplication.bookstore.adapters.book;
 
-import com.bookstoreapplication.bookstore.application.book.BookCommandResponse;
+import com.bookstoreapplication.bookstore.application.book.BookQueryResponse;
 import com.bookstoreapplication.bookstore.domain.book.core.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
 
     Book findBookByBookId_BookId(long bookId);
 
-    BookCommandResponse findBookDtoByBookId_BookId(long bookId);
+    BookQueryResponse findBookDtoByBookId_BookId(long bookId);
 
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 

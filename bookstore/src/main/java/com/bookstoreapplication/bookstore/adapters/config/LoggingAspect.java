@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.adapters.purchase.config;
+package com.bookstoreapplication.bookstore.adapters.config;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
