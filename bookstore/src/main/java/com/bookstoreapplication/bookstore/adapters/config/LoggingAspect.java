@@ -16,8 +16,8 @@ class LoggingAspect {
     private final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
-            "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))")
+            "&& !execution(* com.bookstoreapplication.bookstore.adapters.config..*(..))" +
+            "&& !execution(* com.bookstoreapplication.bookstore.adapters.auth..*(..))")
     private void anyPublicMethod(){
     }
 
