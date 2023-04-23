@@ -1,0 +1,37 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3308:3306"
+    volumes:
+      - bookstore-mysql:/var/lib/mysql
+    container_name: mysql
+
+  redis:
+    image: redis:7.0
+    restart: always
+    ports:
+      - "6382:6379"
+    volumes:
+      - bookstore-redis:/data
+    container_name: redis
+
+  app:
+    image: bookstore-app:v1
+    ports:
+      - "8081:8080"
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      MYSQL_HOST: db
+    depends_on:
+      - db
+      - redis
+    container_name: app
+
+volumes:
+  bookstore-mysql:
+  bookstore-redis:

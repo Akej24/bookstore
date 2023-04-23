@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class  UserCommand {
+public class UserCommand {
 
     private UserEmail userEmail;
     private Username username;
