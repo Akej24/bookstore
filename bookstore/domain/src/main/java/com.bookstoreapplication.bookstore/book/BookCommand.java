@@ -14,7 +14,6 @@ import java.util.Map;
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
 class BookCommand {
 
-    @JsonValue
     private Title title;
     private Author author;
     private ReleaseDate releaseDate;
