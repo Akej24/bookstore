@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+class User implements Serializable {
     @EmbeddedId
     private UserId userId;
     @Embedded

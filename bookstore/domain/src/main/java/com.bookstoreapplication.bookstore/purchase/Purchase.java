@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.purchase.core;
+package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.purchase.value_object.*;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
-public class Purchase implements Serializable {
+class Purchase implements Serializable {
 
     @EmbeddedId
     private PurchaseId purchaseId;

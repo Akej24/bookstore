@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.purchase.core;
+package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
 import com.bookstoreapplication.bookstore.purchase.value_object.PurchaseDetailId;
@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
-public class PurchaseDetail implements Serializable {
+class PurchaseDetail implements Serializable {
 
     @EmbeddedId
     private PurchaseDetailId purchaseDetailId;

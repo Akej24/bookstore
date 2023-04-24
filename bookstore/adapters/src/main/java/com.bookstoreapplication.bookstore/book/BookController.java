@@ -1,9 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.BookCommand;
-import com.bookstoreapplication.bookstore.book.BookCommandHandler;
-import com.bookstoreapplication.bookstore.book.BookQueryResponse;
-import com.bookstoreapplication.bookstore.book.core.Book;
 import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;

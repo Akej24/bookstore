@@ -1,6 +1,5 @@
-package com.bookstoreapplication.bookstore.book.core;
+package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.BookCommand;
 import com.bookstoreapplication.bookstore.book.value_object.*;
 import lombok.*;
 
@@ -12,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book implements Serializable {
+class Book implements Serializable {
 
     @EmbeddedId
     private BookId bookId;

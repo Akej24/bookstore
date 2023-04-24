@@ -1,9 +1,5 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.purchase.core.BookProduct;
-import com.bookstoreapplication.bookstore.purchase.core.Customer;
-import com.bookstoreapplication.bookstore.purchase.core.Purchase;
-import com.bookstoreapplication.bookstore.purchase.core.PurchaseService;
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
 import com.bookstoreapplication.bookstore.purchase.value_object.PurchaseStatus;
 import com.bookstoreapplication.bookstore.purchase.value_object.SimpleCustomerId;
@@ -18,25 +14,25 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PurchaseCommandHandler {
+class PurchaseCommandHandler {
 
     private final PurchaseService purchaseService;
-    private final PurchaseDetailJpaRepository purchaseDetailJpaRepository;
+    private final PurchaseDetailRepository purchaseDetailRepository;
     private final BookProductRepository bookInOrderRepository;
-    private final CustomerJpaRepository customerRepository;
-    private final PurchaseJpaRepository purchaseJpaRepository;
+    private final CustomerRepository customerRepository;
+    private final PurchaseRepository purchaseRepository;
 
     @Transactional
     @Cacheable(cacheNames = "Purchase")
     public void placeOrder(PurchaseCommand request) {
 
         Customer customer = findCustomerById(request.getCustomerId().getUserId());
-        List<Purchase> customerInitializedPurchases = purchaseJpaRepository.findByUserId_UserIdAndPurchaseStatus(customer.getCustomerId().getUserId(), PurchaseStatus.INITIALIZED);
+        List<Purchase> customerInitializedPurchases = purchaseRepository.findByUserId_UserIdAndPurchaseStatus(customer.getCustomerId().getUserId(), PurchaseStatus.INITIALIZED);
         HashMap<BookProduct, BooksAmount> orderedBooks = findBooksById(request);
 
         Purchase createdPurchase = purchaseService.placeOrder(request.getPurchaseCommandDetails(), customer, customerInitializedPurchases, orderedBooks);
-        purchaseJpaRepository.save(createdPurchase);
-        //purchaseDetailJpaRepository.saveAll(details);
+        purchaseRepository.save(createdPurchase);
+        //purchaseDetailRepository.saveAll(details);
         log.info("Successfully placed order");
     }
 

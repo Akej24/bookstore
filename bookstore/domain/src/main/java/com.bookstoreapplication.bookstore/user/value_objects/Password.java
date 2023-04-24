@@ -21,8 +21,8 @@ public class Password implements Serializable {
     private String password;
 
     public Password(String password) {
-        validateRawFormat();
         this.password = password;
+        validateRawFormat();
     }
 
     @Access(AccessType.FIELD)

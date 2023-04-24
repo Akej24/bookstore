@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @AllArgsConstructor
-public class PurchaseCommand {
+class PurchaseCommand {
 
     private SimpleCustomerId customerId;
     private Set<PurchaseCommandDetail> purchaseCommandDetails;

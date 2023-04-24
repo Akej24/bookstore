@@ -1,7 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.core.Book;
-import com.bookstoreapplication.bookstore.book.BookRepository;
 import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class BookCommandHandler {
+class BookCommandHandler {
 
     private final BookRepository bookRepository;
 

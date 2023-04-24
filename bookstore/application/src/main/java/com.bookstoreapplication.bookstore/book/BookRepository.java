@@ -1,15 +1,10 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.core.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
+interface BookRepository{
 
     Book findBookByBookId_BookId(long bookId);
 
@@ -22,4 +17,6 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     void deleteBookByBookId_BookId(long BookId);
 
     void deleteAllBy();
+
+    boolean existsById(long bookId);
 }

@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.purchase.core;
+package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.book.value_object.AvailabilityStatus;
 import com.bookstoreapplication.bookstore.book.value_object.AvailablePieces;
@@ -18,7 +18,7 @@ import java.math.RoundingMode;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
-public class BookProduct implements Serializable {
+class BookProduct implements Serializable {
 
     @EmbeddedId
     private SimpleBookId bookId;

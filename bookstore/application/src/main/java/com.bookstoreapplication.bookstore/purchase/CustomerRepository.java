@@ -2,7 +2,7 @@ package com.bookstoreapplication.bookstore.purchase;
 
 import java.util.Optional;
 
-interface BookProductRepository{
+interface CustomerRepository {
 
-    Optional<BookProduct> findById(Long bookId);
+    Optional<Customer> findById(Long customerId);
 }

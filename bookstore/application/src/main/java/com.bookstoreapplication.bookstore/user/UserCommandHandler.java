@@ -15,9 +15,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @AllArgsConstructor
-@Slf4j
 class UserCommandHandler {
 
     private final UserRepository userRepository;

@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.core.Book;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;

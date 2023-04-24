@@ -1,7 +1,6 @@
-package com.bookstoreapplication.bookstore.purchase.core;
+package com.bookstoreapplication.bookstore.purchase;
 
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
-import com.bookstoreapplication.bookstore.purchase.PurchaseCommandDetail;
 import com.bookstoreapplication.bookstore.purchase.value_object.SimplePurchaseId;
 import lombok.AllArgsConstructor;
 
@@ -9,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class PurchaseService {
+class PurchaseService {
 
     public Purchase placeOrder(Set<PurchaseCommandDetail> commandDetails,
                                Customer customer,

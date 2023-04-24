@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public class UserQueryResponse {
+class UserQueryResponse {
 
     private UserEmail email;
     private Username username;

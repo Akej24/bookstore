@@ -5,7 +5,7 @@ import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
 
 import java.io.Serializable;
 
-public record PurchaseCommandDetail(
+record PurchaseCommandDetail(
 
         SimpleBookId bookId,
         BooksAmount booksAmount

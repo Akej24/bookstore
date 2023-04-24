@@ -1,7 +1,5 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.purchase.PurchaseCommandHandler;
-import com.bookstoreapplication.bookstore.purchase.PurchaseCommand;
 import com.bookstoreapplication.bookstore.purchase.value_object.SimpleCustomerId;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

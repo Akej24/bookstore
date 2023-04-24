@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.core.Book;
 import com.bookstoreapplication.bookstore.book.value_object.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public class BookQueryResponse {
+class BookQueryResponse {
 
     private Title title;
     private Author author;
