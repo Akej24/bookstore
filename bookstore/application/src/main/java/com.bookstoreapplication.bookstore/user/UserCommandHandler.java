@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.core.User;
 import com.bookstoreapplication.bookstore.user.exception.EmailTakenException;
 import com.bookstoreapplication.bookstore.user.value_objects.SimpleUserId;
 import lombok.AllArgsConstructor;
@@ -19,18 +18,19 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class UserCommandHandler {
+class UserCommandHandler {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public void registerUserIfPasswordValidAndEmailNotTaken(@Valid UserCommand source) {
-        if(userRepository.findByEmail(source.getUserEmail()).isPresent()){
+    public void registerUser(@Valid UserCommand source) {
+        if(userRepository.findByEmail(source.getEmail()).isPresent()){
             log.warn("Unsuccessfully registered - email must be not taken");
             throw new EmailTakenException();
         }
-        userRepository.save(new User(source, bCryptPasswordEncoder));
+        String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
+        userRepository.save(new User(source, encodedPassword));
         log.info("Successfully registered");
     }
 
@@ -63,15 +63,16 @@ public class UserCommandHandler {
 
     @Transactional
     @CachePut(cacheNames = "User", key = "#root.target.savedUser.userId")
-    public UserQueryResponse updateUserById(SimpleUserId userId, @Valid UserUpdateCommand userUpdateCommand) {
+    public UserQueryResponse updateUserById(SimpleUserId userId, @Valid UserUpdateCommand source) {
         User userToUpdate = findUserById(userId.getUserId());
-        User savedUser = userRepository.save(userToUpdate.update(userUpdateCommand));
+        String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
+        User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
         log.info("The user with id {} has been updated [Cached]", userId);
         return UserQueryResponse.toResponse(savedUser);
     }
 
     public User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow( () -> {
+        return userRepository.findByUserId_UserId(userId).orElseThrow( () -> {
             log.warn("User with id {} has not been found", userId);
             throw new IllegalArgumentException("User with given id does not exist");
         });

@@ -1,7 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
 import com.bookstoreapplication.bookstore.purchase.value_object.Funds;
-import com.bookstoreapplication.bookstore.user.core.User;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,6 @@ public class UserQueryResponse {
 
     private UserEmail email;
     private Username username;
-    private Password password;
     private FirstName firstName;
     private LastName lastName;
     private DateOfBirth dateOfBirth;
@@ -30,7 +28,6 @@ public class UserQueryResponse {
         return new UserQueryResponse(
                 source.getEmail(),
                 source.getUsername(),
-                source.getPassword(),
                 source.getFirstName(),
                 source.getLastName(),
                 source.getDateOfBirth(),

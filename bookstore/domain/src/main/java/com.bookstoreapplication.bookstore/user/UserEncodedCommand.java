@@ -6,15 +6,14 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class  UserCommand {
+public class UserEncodedCommand {
 
     private UserEmail userEmail;
     private Username username;
-    private Password password;
+    private EncodedPassword encodedPassword;
     private FirstName firstName;
     private LastName lastName;
     private DateOfBirth dateOfBirth;
     private UserRole userRole;
 
 }
-

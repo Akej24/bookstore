@@ -16,7 +16,6 @@ class LoginController {
 
     @PostMapping
     ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest.getEmail().getEmail());
         String jwtToken = loginService.loginUser(loginRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + jwtToken);

@@ -1,8 +1,8 @@
 --liquibase formatted sql
 --changeset akej:1
-INSERT INTO users (email, username, password, first_name, last_name, date_of_birth, role, funds, locked, enabled, created_on)
+INSERT INTO users (email, username, encoded_password, first_name, last_name, date_of_birth, role, funds, locked, enabled, created_on)
 VALUES ('admin@test.com', 'admin', '$2a$12$N/gJODsnrfOIiaroZYg80uxunYfTCQdqq19/qYX9AngKPFvECBEmW', 'admin', 'admin', '2023-01-01', 'ADMIN', 1000.00, false, true, now());
-INSERT INTO users (email, username, password, first_name, last_name, date_of_birth, role, funds, locked, enabled, created_on)
+INSERT INTO users (email, username, encoded_password, first_name, last_name, date_of_birth, role, funds, locked, enabled, created_on)
 VALUES ('user@test.com', 'user', '$2a$12$fVgJMoqbMukVKh55j3TT4OyQNIOr09DXdeRePigLNyBcO3SHsIutW', 'user', 'user', '2023-01-01', 'USER', 1000.00, false, true, now());
 
 --changeset akej:2
