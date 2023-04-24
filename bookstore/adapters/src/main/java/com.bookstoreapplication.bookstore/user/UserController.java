@@ -1,9 +1,5 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.UserCommand;
-import com.bookstoreapplication.bookstore.user.UserCommandHandler;
-import com.bookstoreapplication.bookstore.user.UserQueryResponse;
-import com.bookstoreapplication.bookstore.user.UserUpdateCommand;
 import com.bookstoreapplication.bookstore.user.value_objects.SimpleUserId;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +23,7 @@ class UserController {
 
     @PostMapping
     ResponseEntity<?> registerUser(@RequestBody @Valid UserCommand userCommand){
-        userCommandHandler.registerUserIfPasswordValidAndEmailNotTaken(userCommand);
+        userCommandHandler.registerUser(userCommand);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

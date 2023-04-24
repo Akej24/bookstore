@@ -24,7 +24,7 @@ class SecuredUser implements UserDetails, Serializable {
     @Embedded
     private UserEmail userEmail;
     @Embedded
-    private Password password;
+    private EncodedPassword encodedPassword;
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Role must not be null")
     private UserRole role;
@@ -34,7 +34,7 @@ class SecuredUser implements UserDetails, Serializable {
     private Enabled enabled;
 
     void checkPasswordsMatch(Password requestPassword, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        if(!bCryptPasswordEncoder.matches(requestPassword.getPassword(), password.getPassword())){
+        if(!bCryptPasswordEncoder.matches(requestPassword.getPassword(), encodedPassword.getEncodedPassword())){
             throw new IllegalArgumentException("Invalid password for user with given e-mail");
         }
     }
@@ -45,7 +45,7 @@ class SecuredUser implements UserDetails, Serializable {
     }
 
     @Override
-    public String getPassword() { return password.getPassword(); }
+    public String getPassword() { return encodedPassword.getEncodedPassword(); }
 
     @Override
     public String getUsername() { return userEmail.getEmail(); }

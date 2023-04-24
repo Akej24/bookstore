@@ -8,13 +8,13 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserCommand {
 
-    private UserEmail userEmail;
+    private UserEmail email;
     private Username username;
     private Password password;
     private FirstName firstName;
     private LastName lastName;
     private DateOfBirth dateOfBirth;
-    private UserRole userRole;
+    private UserRole role;
 
 }
 

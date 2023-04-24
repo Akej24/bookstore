@@ -1,13 +1,10 @@
-package com.bookstoreapplication.bookstore.user.core;
+package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.UserCommand;
-import com.bookstoreapplication.bookstore.user.UserUpdateCommand;
 import com.bookstoreapplication.bookstore.purchase.value_object.Funds;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -27,7 +24,7 @@ public class User implements Serializable {
     @Embedded
     private Username username;
     @Embedded
-    private Password password;
+    private EncodedPassword encodedPassword;
     @Embedded
     private FirstName firstName;
     @Embedded
@@ -46,23 +43,23 @@ public class User implements Serializable {
     @Embedded
     private Enabled enabled;
 
-    public User(UserCommand source, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        email = source.getUserEmail();
+    public User(UserCommand source, String encodedPasswordFormat) {
+        email = source.getEmail();
         username = source.getUsername();
-        password = new Password(bCryptPasswordEncoder.encode(source.getPassword().getPassword()));
+        encodedPassword = source.getPassword().toEncodedFormat(encodedPasswordFormat);
         firstName = source.getFirstName();
         lastName = source.getLastName();
         dateOfBirth = source.getDateOfBirth();
         funds = new Funds(BigDecimal.ZERO);
-        role = source.getUserRole();
+        role = source.getRole();
         userAudit = new UserAudit();
         locked = new Locked(false);
         enabled = new Enabled(true);
     }
 
-    public User update(UserUpdateCommand source){
+    public User update(UserUpdateCommand source, String encodedPasswordFormat){
         username = source.getUsername();
-        password = source.getPassword();
+        encodedPassword = source.getPassword().toEncodedFormat(encodedPasswordFormat);
         firstName = source.getFirstName();
         lastName = source.getLastName();
         dateOfBirth = source.getDateOfBirth();
