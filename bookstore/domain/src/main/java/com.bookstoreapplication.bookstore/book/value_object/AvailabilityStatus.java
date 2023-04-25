@@ -14,6 +14,6 @@ import java.io.Serializable;
 public class AvailabilityStatus implements Serializable {
 
         @NotNull(message = "Status mut not be null")
-        private Boolean status;
+        private Boolean availabilityStatus;
 
 }

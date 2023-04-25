@@ -40,7 +40,7 @@ class BookProduct implements Serializable {
     }
 
     void toggleStatusIfPiecesZero(){
-        availabilityStatus = new AvailabilityStatus(!availabilityStatus.getStatus());
+        availabilityStatus = new AvailabilityStatus(!availabilityStatus.getAvailabilityStatus());
     }
 
     BigDecimal addToTotalPrice(BigDecimal totalPrice, BooksAmount booksAmount) {

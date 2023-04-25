@@ -37,7 +37,7 @@ class Book implements Serializable {
         author = source.getAuthor();
         releaseDate = source.getReleaseDate();
         numberOfPages = source.getNumberOfPages();
-        availabilityStatus = source.getStatus();
+        availabilityStatus = source.getAvailabilityStatus();
         availablePieces = source.getAvailablePieces();
         price = source.getPrice();
         this.bookAudit = new BookAudit();
@@ -49,7 +49,7 @@ class Book implements Serializable {
         author = source.getAuthor();
         releaseDate = source.getReleaseDate();
         numberOfPages = source.getNumberOfPages();
-        availabilityStatus = source.getStatus();
+        availabilityStatus = source.getAvailabilityStatus();
         availablePieces = source.getAvailablePieces();
         price = source.getPrice();
         updateAvailability();
@@ -57,7 +57,7 @@ class Book implements Serializable {
     }
 
     void updateAvailability() {
-        if (availabilityStatus.getStatus().equals(false) || availablePieces.getAvailablePieces() == 0) {
+        if (availabilityStatus.getAvailabilityStatus().equals(false) || availablePieces.getAvailablePieces() == 0) {
             availablePieces = new AvailablePieces(0);
             availabilityStatus = new AvailabilityStatus(false);
         }

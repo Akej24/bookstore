@@ -23,7 +23,7 @@ CREATE TABLE books (
     author VARCHAR(255) NOT NULL,
     release_date DATE NOT NULL,
     number_of_pages INT NOT NULL,
-    status BOOLEAN NOT NULL,
+    availability_status BOOLEAN NOT NULL,
     available_pieces INT NOT NULL,
     price DECIMAL NOT NULL,
     created_on DATETIME,
