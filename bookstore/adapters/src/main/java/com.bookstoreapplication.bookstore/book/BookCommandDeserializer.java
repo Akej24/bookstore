@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 class BookCommandDeserializer extends JsonDeserializer<BookCommand> {
 
@@ -16,11 +19,14 @@ class BookCommandDeserializer extends JsonDeserializer<BookCommand> {
 
         Title title = new Title(node.get("title").asText());
         Author author = new Author(node.get("author").asText());
-        ReleaseDate releaseDate = jp.getCodec().treeToValue(node.get("releaseDate"), ReleaseDate.class);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(node.get("releaseDate").asText(), formatter);
+        ReleaseDate releaseDate = new ReleaseDate(localDate);
         NumberOfPages numberOfPages = new NumberOfPages(node.get("numberOfPages").asInt());
         AvailabilityStatus availabilityStatus = new AvailabilityStatus(node.get("availabilityStatus").asBoolean());
         AvailablePieces availablePieces = new AvailablePieces(node.get("availablePieces").asInt());
-        Price price = jp.getCodec().treeToValue(node.get("price"), Price.class);
+        BigDecimal bigDecimal = BigDecimal.valueOf(Long.parseLong(node.get("releaseDate").asText()));
+        Price price = new Price(bigDecimal);
 
         return new BookCommand(title, author, releaseDate, numberOfPages, availabilityStatus, availablePieces, price);
     }
