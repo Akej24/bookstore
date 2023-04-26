@@ -13,8 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 class Book implements Serializable {
 
-    @EmbeddedId
-    private BookId bookId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long bookId;
     @Embedded
     private Title title;
     @Embedded
@@ -33,7 +34,6 @@ class Book implements Serializable {
     private BookAudit bookAudit;
 
     public Book(BookCommand source) {
-        bookId = new BookId();
         title = source.getTitle();
         author = source.getAuthor();
         releaseDate = source.getReleaseDate();

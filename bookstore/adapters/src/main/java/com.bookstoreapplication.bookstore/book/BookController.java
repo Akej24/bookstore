@@ -1,6 +1,5 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
 import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -9,17 +8,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/books")
 @AllArgsConstructor
-@Validated
 @CrossOrigin("http://localhost:3000")
 class BookController {
 
@@ -33,7 +29,7 @@ class BookController {
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<BookQueryResponse> getBookById(@PathVariable @Valid SimpleBookId bookId){
+    ResponseEntity<BookQueryResponse> getBookById(@PathVariable long bookId){
         return new ResponseEntity<>(bookCommandHandler.getBookById(bookId), HttpStatus.OK);
     }
 
@@ -70,7 +66,7 @@ class BookController {
     }
 
     @DeleteMapping("/{bookId}")
-    ResponseEntity<?> deleteBookById(@PathVariable @Valid SimpleBookId bookId){
+    ResponseEntity<?> deleteBookById(@PathVariable long bookId){
         bookCommandHandler.deleteBook(bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -82,8 +78,8 @@ class BookController {
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<?> updateBookById(@PathVariable SimpleBookId bookId, @RequestBody BookCommand bookCommand){
-        bookCommandHandler.updateBookById(bookId, bookCommand);
+    ResponseEntity<?> updateBookById(@PathVariable long bookId, @RequestBody Json json){
+        bookCommandHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -6,17 +6,15 @@ import org.springframework.data.jpa.domain.Specification;
 
 interface BookRepository{
 
-    Book findBookByBookId_BookId(long bookId);
-
-    BookQueryResponse findBookDtoByBookId_BookId(long bookId);
+    Book findBookByBookId(long bookId);
 
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 
     <S extends Book> S save(S entity);
 
-    void deleteBookByBookId_BookId(long BookId);
+    void deleteBookByBookId(long BookId);
 
     void deleteAllBy();
 
-    boolean existsById(long bookId);
+    boolean existsByBookId(long bookId);
 }

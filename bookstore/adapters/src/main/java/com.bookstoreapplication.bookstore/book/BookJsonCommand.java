@@ -63,5 +63,4 @@ class BookJsonCommand implements JsonEncodable {
                 .put("price", Json.of(price.getPrice()))
                 .build();
     }
-
 }
