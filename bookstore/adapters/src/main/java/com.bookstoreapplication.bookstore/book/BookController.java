@@ -1,9 +1,8 @@
 package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import dev.mccue.json.Json;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,32 +13,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/books")
+@AllArgsConstructor
 @Validated
 @CrossOrigin("http://localhost:3000")
 class BookController {
 
     private static final int PAGE_SIZE = 20;
     private final BookCommandHandler bookCommandHandler;
-    private final ObjectMapper objectMapper;
-
-    public BookController(BookCommandHandler bookCommandHandler, ObjectMapper objectMapper) {
-        this.bookCommandHandler = bookCommandHandler;
-        this.objectMapper = objectMapper;
-        var module = new SimpleModule();
-        module.addDeserializer(BookCommand.class, new BookCommandDeserializer());
-        objectMapper.registerModule(module);
-    }
 
     @PostMapping("")
-    ResponseEntity<?> addBookToDatabase(@RequestBody String json) throws JsonProcessingException {
-            BookCommand bookCommand = objectMapper.readValue(json, BookCommand.class);
-            bookCommandHandler.addBookToDatabase(bookCommand);
+    ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
+            bookCommandHandler.addBookToDatabase(BookJsonCommand.fromJson(json));
             return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -33,6 +33,7 @@ class Book implements Serializable {
     private BookAudit bookAudit;
 
     public Book(BookCommand source) {
+        bookId = new BookId();
         title = source.getTitle();
         author = source.getAuthor();
         releaseDate = source.getReleaseDate();

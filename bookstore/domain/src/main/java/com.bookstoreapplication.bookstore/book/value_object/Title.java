@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Title implements Serializable {
+public class Title implements Serializable{
 
         @NotBlank(message = "Title must not be blank")
         private String title;

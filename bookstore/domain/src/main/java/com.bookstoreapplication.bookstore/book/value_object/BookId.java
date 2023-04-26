@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class BookId implements Serializable {
