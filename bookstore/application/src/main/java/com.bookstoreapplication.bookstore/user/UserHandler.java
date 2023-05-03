@@ -1,7 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
 import com.bookstoreapplication.bookstore.user.exception.EmailTakenException;
-import com.bookstoreapplication.bookstore.user.value_objects.SimpleUserId;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor
-class UserCommandHandler {
+class UserHandler {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,8 +34,8 @@ class UserCommandHandler {
     }
 
     @Cacheable(cacheNames = "User")
-    public UserQueryResponse getUserById(SimpleUserId userId){
-        User user = findUserById(userId.getUserId());
+    public UserQueryResponse getUserById(long userId){
+        User user = findUserById(userId);
         log.info("User with id {} has been fetched from the database", userId);
         return UserQueryResponse.toResponse(user);
     }
@@ -49,8 +48,8 @@ class UserCommandHandler {
     }
 
     @Transactional
-    public void deleteUser(SimpleUserId userId) {
-        User userToDelete = findUserById(userId.getUserId());
+    public void deleteUser(long userId) {
+        User userToDelete = findUserById(userId);
         userRepository.delete(userToDelete);
         log.info("The book with id {} was successfully removed from the database", userId);
     }
@@ -62,9 +61,9 @@ class UserCommandHandler {
     }
 
     @Transactional
-    @CachePut(cacheNames = "User", key = "#root.target.savedUser.userId")
-    public UserQueryResponse updateUserById(SimpleUserId userId, @Valid UserUpdateCommand source) {
-        User userToUpdate = findUserById(userId.getUserId());
+    @CachePut(cacheNames = "User")
+    public UserQueryResponse updateUserById(long userId, @Valid UserUpdateCommand source) {
+        User userToUpdate = findUserById(userId);
         String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
         User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
         log.info("The user with id {} has been updated [Cached]", userId);

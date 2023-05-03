@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,8 +16,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor
 @Slf4j
-@Validated
-class BookCommandHandler {
+class BookHandler {
 
     private final BookRepository bookRepository;
 

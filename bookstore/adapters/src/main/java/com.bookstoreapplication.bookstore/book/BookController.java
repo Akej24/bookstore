@@ -20,17 +20,17 @@ import java.util.Set;
 class BookController {
 
     private static final int PAGE_SIZE = 20;
-    private final BookCommandHandler bookCommandHandler;
+    private final BookHandler bookHandler;
 
     @PostMapping("")
     ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
-            bookCommandHandler.addBookToDatabase(BookJsonCommand.fromJson(json));
+            bookHandler.addBookToDatabase(BookJsonCommand.fromJson(json));
             return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{bookId}")
     ResponseEntity<BookQueryResponse> getBookById(@PathVariable long bookId){
-        return new ResponseEntity<>(bookCommandHandler.getBookById(bookId), HttpStatus.OK);
+        return new ResponseEntity<>(bookHandler.getBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -62,24 +62,24 @@ class BookController {
                         .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
         );
 
-        return new ResponseEntity<>(bookCommandHandler.getAllBooks(specification, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(bookHandler.getAllBooks(specification, pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")
     ResponseEntity<?> deleteBookById(@PathVariable long bookId){
-        bookCommandHandler.deleteBook(bookId);
+        bookHandler.deleteBook(bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("")
     ResponseEntity<?> deleteAllBooks(){
-        bookCommandHandler.deleteAllBooks();
+        bookHandler.deleteAllBooks();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{bookId}")
     ResponseEntity<?> updateBookById(@PathVariable long bookId, @RequestBody Json json){
-        bookCommandHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
+        bookHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.user.value_objects.SimpleUserId;
+import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -19,40 +19,40 @@ import java.util.Set;
 class UserController {
 
     private static final int PAGE_SIZE = 10;
-    private final UserCommandHandler userCommandHandler;
+    private final UserHandler userHandler;
 
     @PostMapping
-    ResponseEntity<?> registerUser(@RequestBody @Valid UserCommand userCommand){
-        userCommandHandler.registerUser(userCommand);
+    ResponseEntity<?> registerUser(@RequestBody @Valid Json json){
+        userHandler.registerUser(UserJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{userId}")
-    ResponseEntity<UserQueryResponse> getUserById(@PathVariable @Valid SimpleUserId userId){
-        return new ResponseEntity<>(userCommandHandler.getUserById(userId), HttpStatus.OK);
+    ResponseEntity<UserQueryResponse> getUserById(@PathVariable long userId){
+        return new ResponseEntity<>(userHandler.getUserById(userId), HttpStatus.OK);
     }
 
     @GetMapping("")
     ResponseEntity<Set<UserQueryResponse>> getAllUsers(@RequestParam(required = false) int page){
         page = page>=0 ? page : 0;
-        return new ResponseEntity<>(userCommandHandler.getAllUsers(PageRequest.of(page, PAGE_SIZE)), HttpStatus.OK);
+        return new ResponseEntity<>(userHandler.getAllUsers(PageRequest.of(page, PAGE_SIZE)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
-    ResponseEntity<?> deleteUserById(@PathVariable @Valid SimpleUserId userId){
-        userCommandHandler.deleteUser(userId);
+    ResponseEntity<?> deleteUserById(@PathVariable long userId){
+        userHandler.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("")
     ResponseEntity<?> deleteAllUsers(){
-        userCommandHandler.deleteAllUsers();
+        userHandler.deleteAllUsers();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/{userId}")
-    ResponseEntity<UserQueryResponse> updateUserById(@Valid SimpleUserId userId, @RequestBody UserUpdateCommand userUpdateCommand){
-        return new ResponseEntity<>(userCommandHandler.updateUserById(userId, userUpdateCommand), HttpStatus.OK);
+    ResponseEntity<UserQueryResponse> updateUserById(@PathVariable long userId, @RequestBody Json json){
+        return new ResponseEntity<>(userHandler.updateUserById(userId, UserJsonUpdateCommand.fromJson(json)), HttpStatus.OK);
     }
 
 }

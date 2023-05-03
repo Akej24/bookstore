@@ -7,7 +7,6 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
         <expiry>
             <ttl unit="hours">1</ttl>
         </expiry>
-        <heap>500</heap>
     </cache-template>
 
     <cache alias="Book" uses-template="default"/>
@@ -15,7 +14,6 @@ https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
         <expiry>
             <ttl unit="hours">6</ttl>
         </expiry>
-        <heap>1000</heap>
     </cache>
 
 </config>

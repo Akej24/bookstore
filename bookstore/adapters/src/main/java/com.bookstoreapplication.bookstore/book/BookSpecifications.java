@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
 
 class BookSpecifications {
+
     static Specification<Book> hasTitleContainingIgnoreCase(String title) {
         return (root, query, criteriaBuilder) -> {
             if (title == null || title.isEmpty()) {
