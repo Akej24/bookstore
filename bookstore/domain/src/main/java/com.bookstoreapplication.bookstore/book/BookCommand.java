@@ -3,10 +3,12 @@ package com.bookstoreapplication.bookstore.book;
 import com.bookstoreapplication.bookstore.book.value_object.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 class BookCommand {
 
