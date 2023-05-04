@@ -1,6 +1,8 @@
 package com.bookstoreapplication.bookstore.exception_handler;
 
 import com.bookstoreapplication.bookstore.purchase.exception.PurchaseException;
+import com.bookstoreapplication.bookstore.user.exception.UserException;
+import dev.mccue.json.JsonDecodeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,21 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 class ErrorResponseController {
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException exception){
-        String message = exception.getMessage();
-        var errors = new ArrayList<ErrorDto>();
-        errors.add(ErrorDto.builder().message(message).build());
-
-        ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException exception){
@@ -36,19 +29,23 @@ class ErrorResponseController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PurchaseException.class)
-    ResponseEntity<?> handlePurchaseException(PurchaseException exception){
-        String message = exception.getMessage();
-        var errors = new ArrayList<ErrorDto>();
-        errors.add(ErrorDto.builder().message(message).build());
-
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            PurchaseException.class,
+            UserException.class,
+            JsonDecodeException.class
+    })
+    ResponseEntity<?> handleIllegalArgumentException(RuntimeException exception){
+        List<ErrorDto> errors = List.of(ErrorDto.builder()
+                .message((exception instanceof JsonDecodeException) ? "invalid json" : exception.getMessage())
+                .build());
         ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     private String getFieldName(ConstraintViolation<?> violation) {
         String[] propertyPath = violation.getPropertyPath().toString().split("\\.");
-        return propertyPath[propertyPath.length - 1];
+        return propertyPath.length > 0 ? propertyPath[propertyPath.length - 1] : "unknown";
     }
 
 }

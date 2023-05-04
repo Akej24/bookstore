@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.user;
 
 import com.bookstoreapplication.bookstore.user.exception.EmailTakenException;
+import com.bookstoreapplication.bookstore.user.exception.UserDoesNotExistException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
+@Validated
 @AllArgsConstructor
 class UserHandler {
 
@@ -71,9 +74,9 @@ class UserHandler {
     }
 
     public User findUserById(Long userId) {
-        return userRepository.findByUserId_UserId(userId).orElseThrow( () -> {
+        return userRepository.findByUserId(userId).orElseThrow( () -> {
             log.warn("User with id {} has not been found", userId);
-            throw new IllegalArgumentException("User with given id does not exist");
+            throw new UserDoesNotExistException();
         });
     }
 

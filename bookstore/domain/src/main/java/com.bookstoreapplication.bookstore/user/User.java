@@ -6,8 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -17,8 +24,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 class User implements Serializable {
-    @EmbeddedId
-    private UserId userId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userId;
     @Embedded
     private UserEmail email;
     @Embedded

@@ -18,6 +18,6 @@ interface UserRepository {
 
     void deleteAll();
 
-    Optional<User> findByUserId_UserId(Long userId);
+    Optional<User> findByUserId(Long userId);
 
 }

@@ -19,8 +19,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 class SecuredUser implements UserDetails, Serializable {
-    @EmbeddedId
-    private UserId userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long userId;
     @Embedded
     private UserEmail userEmail;
     @Embedded

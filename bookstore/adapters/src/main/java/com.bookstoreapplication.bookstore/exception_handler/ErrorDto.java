@@ -1,12 +1,15 @@
 package com.bookstoreapplication.bookstore.exception_handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 class ErrorDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
