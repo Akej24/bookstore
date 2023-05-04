@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/purchases")
+@RequestMapping("/api/v1/purchases")
 @AllArgsConstructor
 @Validated
 @CrossOrigin("http://localhost:3000")

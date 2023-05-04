@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping( "/login")
+@RequestMapping( "/api/v1/login")
 @AllArgsConstructor
 @CrossOrigin("http://localhost:3000")
 class LoginController {

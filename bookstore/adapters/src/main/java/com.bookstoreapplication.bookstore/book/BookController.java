@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/api/v1/books")
 @AllArgsConstructor
 @CrossOrigin("http://localhost:3000")
 class BookController {

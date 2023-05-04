@@ -1,41 +1,48 @@
 package com.bookstoreapplication.bookstore.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Aspect
 @Component
 @EnableAspectJAutoProxy
 class LoggingAspect {
 
-    private final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
-
     @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
             "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))")
+            "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))" +
+            "&& !execution(* com.bookstoreapplication.bookstore.exception_handler..*(..))" +
+            "&& !execution(* *..*Config.*(..))" +
+            "&& !execution(* *..*Repository.*(..))")
     private void anyPublicMethod(){
     }
 
     @Before("anyPublicMethod()")
     public void beforeAnyPublicMethod(JoinPoint joinPoint){
-        logger.info("###### before :: " + joinPoint.getSignature().getDeclaringType().getSimpleName() + " :: "+ joinPoint.getSignature().getName());
+        log.info("###### before :: " + joinPoint.getSignature().getDeclaringType().getSimpleName() + " :: "+ joinPoint.getSignature().getName());
     }
 
     @After("anyPublicMethod()")
     public void afterAnyPublicMethod(JoinPoint joinPoint){
-        logger.info("###### after :: " + joinPoint.getSignature().getDeclaringType().getSimpleName() + " :: "+ joinPoint.getSignature().getName());
+        log.info("###### after :: " + joinPoint.getSignature().getDeclaringType().getSimpleName() + " :: "+ joinPoint.getSignature().getName());
     }
 
     @Around("execution(* *..*Controller.*(..))")
     public Object aroundControllerMethod(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
         Object proceed =  proceedingJoinPoint.proceed();
-        logger.info("###### time " + ((System.nanoTime() - start)/1000000) + " ms :: " + proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName() + " :: " + proceedingJoinPoint.getSignature().getName());
+        log.info("###### time " + (System.currentTimeMillis() - start) +
+                " ms :: " + proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName() +
+                " :: " + proceedingJoinPoint.getSignature().getName());
         return proceed;
     }
 

@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @AllArgsConstructor
 @Validated
 @CrossOrigin("http://localhost:3000")
