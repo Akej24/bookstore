@@ -1,5 +1,7 @@
 package com.bookstoreapplication.bookstore.book;
 
+import com.bookstoreapplication.bookstore.book.exception.BookDoesNotExistException;
+import com.bookstoreapplication.bookstore.book.exception.BookWithTitleAndAuthorExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
@@ -24,6 +26,10 @@ class BookHandler {
 
     @Transactional
     public void addBookToDatabase(@Valid BookCommand source){
+        if(bookRepository.existsByTitle_TitleAndAuthor_Author(source.getTitle().getTitle(), source.getAuthor().getAuthor())){
+            log.warn("Book with title: {} and author: {} already exists", source.getTitle().getTitle(), source.getAuthor().getAuthor());
+            throw new BookWithTitleAndAuthorExistsException();
+        }
         Book book = new Book(source);
         bookRepository.save(book);
         log.info("Successfully added to the database");
@@ -72,7 +78,7 @@ class BookHandler {
     void existsBookById(long bookId){
         if(!bookRepository.existsByBookId(bookId)){
             log.warn("Book with id {} does not exist", bookId);
-            throw new IllegalArgumentException("Book with given id does not exist");
+            throw new BookDoesNotExistException();
         }
     }
 

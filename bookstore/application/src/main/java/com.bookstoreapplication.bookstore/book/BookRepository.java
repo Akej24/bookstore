@@ -17,4 +17,7 @@ interface BookRepository{
     void deleteAllBy();
 
     boolean existsByBookId(long bookId);
+
+    boolean existsByTitle_TitleAndAuthor_Author(String title, String author);
+
 }

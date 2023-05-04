@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.exception_handler;
 
+import com.bookstoreapplication.bookstore.book.exception.BookException;
 import com.bookstoreapplication.bookstore.purchase.exception.PurchaseException;
 import com.bookstoreapplication.bookstore.user.exception.UserException;
 import dev.mccue.json.JsonDecodeException;
@@ -33,6 +34,7 @@ class ErrorResponseController {
             IllegalArgumentException.class,
             PurchaseException.class,
             UserException.class,
+            BookException.class,
             JsonDecodeException.class
     })
     ResponseEntity<?> handleIllegalArgumentException(RuntimeException exception){
