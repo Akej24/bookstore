@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @EnableAspectJAutoProxy
 class LoggingAspect {
 
+    @SuppressWarnings("EmptyMethod")
     @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
             "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
             "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))" +

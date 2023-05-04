@@ -43,9 +43,9 @@ class PurchaseCommandHandler {
 
     private HashMap<BookProduct, BooksAmount> findBooksById(PurchaseCommand request) {
         HashMap<BookProduct, BooksAmount> orderedBooks = new HashMap<>();
-        request.getPurchaseCommandDetails().forEach(requestDetail -> {
+        for (PurchaseCommandDetail requestDetail : request.getPurchaseCommandDetails()) {
             orderedBooks.put(findBookById(requestDetail.bookId().getBookId()), requestDetail.booksAmount());
-        });
+        }
         return orderedBooks;
     }
 
