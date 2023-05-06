@@ -69,7 +69,7 @@ class UserHandler {
         User userToUpdate = findUserById(userId);
         String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
         User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
-        log.info("The user with id {} has been updated [Cached]", userId);
+        log.info("The user with id {} has been updated", userId);
         return UserQueryResponse.toResponse(savedUser);
     }
 

@@ -30,8 +30,7 @@ class BookHandler {
             log.warn("Book with title: {} and author: {} already exists", source.getTitle().getTitle(), source.getAuthor().getAuthor());
             throw new BookWithTitleAndAuthorExistsException();
         }
-        Book book = new Book(source);
-        bookRepository.save(book);
+        bookRepository.save(new Book(source));
         log.info("Successfully added to the database");
     }
 
@@ -45,7 +44,7 @@ class BookHandler {
     @Cacheable(cacheNames = "Books")
     public Set<BookQueryResponse> getAllBooks(Specification<Book> specification, Pageable pageable) {
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
-        log.info("All books have been fetched from the database [Cached]");
+        log.info("All books have been fetched from the database");
         return BookQueryResponse.toResponses(books);
     }
 

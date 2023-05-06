@@ -5,28 +5,19 @@ import com.bookstoreapplication.bookstore.book.value_object.AvailablePieces;
 import com.bookstoreapplication.bookstore.book.value_object.Price;
 import com.bookstoreapplication.bookstore.purchase.exception.NotEnoughBooksInMagazineException;
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
-import com.bookstoreapplication.bookstore.purchase.value_object.SimpleBookId;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Table(name="books")
-@Entity
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
 class BookProduct implements Serializable {
 
-    @EmbeddedId
-    private SimpleBookId bookId;
-    @Embedded
+    private long bookId;
     private AvailabilityStatus availabilityStatus;
-    @Embedded
     private AvailablePieces availablePieces;
-    @Embedded
     private Price price;
 
     void decreaseAvailablePieces(BooksAmount booksAmount){
@@ -41,14 +32,6 @@ class BookProduct implements Serializable {
 
     void toggleStatusIfPiecesZero(){
         availabilityStatus = new AvailabilityStatus(!availabilityStatus.getAvailabilityStatus());
-    }
-
-    BigDecimal addToTotalPrice(BigDecimal totalPrice, BooksAmount booksAmount) {
-        BigDecimal toAdd = price.getPrice()
-                .multiply(BigDecimal.valueOf(booksAmount.getBooksAmount()))
-                .setScale(2, RoundingMode.HALF_UP);
-        totalPrice = totalPrice.add(toAdd);
-        return totalPrice;
     }
 
 }

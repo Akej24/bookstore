@@ -1,31 +1,21 @@
 package com.bookstoreapplication.bookstore.purchase;
 
-import com.bookstoreapplication.bookstore.purchase.exception.UserDoesNotHaveAnyInitializedPurchasesException;
-import com.bookstoreapplication.bookstore.purchase.exception.UserHasAlreadyInitializedPurchaseException;
-import com.bookstoreapplication.bookstore.purchase.exception.UserHasMoreThanOneInitializedPurchaseException;
+import com.bookstoreapplication.bookstore.purchase.exception.CustomerDoesNotHaveAnyInitializedOrderException;
+import com.bookstoreapplication.bookstore.purchase.exception.CustomerHasAlreadyInitializedOrderException;
+import com.bookstoreapplication.bookstore.purchase.exception.CustomerHasMoreThanOneInitializedOrderException;
 import com.bookstoreapplication.bookstore.purchase.value_object.Funds;
 import com.bookstoreapplication.bookstore.purchase.value_object.TotalPrice;
-import com.bookstoreapplication.bookstore.purchase.value_object.SimpleCustomerId;
 import lombok.*;
 
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Table(name="users")
-@Entity
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
 class Customer implements Serializable {
 
-    @EmbeddedId
-    private SimpleCustomerId customerId;
-    @Embedded
+    private long customerId;
     private Funds funds;
 
     boolean isAbleToPay(TotalPrice totalPrice){
@@ -37,19 +27,19 @@ class Customer implements Serializable {
         funds = new Funds(newFunds);
     }
 
-    void checkIfHasAnyInitializedPurchase(List<Purchase> initializedPurchases) {
-        if(!initializedPurchases.isEmpty()){
-            throw new UserHasAlreadyInitializedPurchaseException();
+    void checkIfHasAnyInitializedPurchase(List<Order> initializedOrders) {
+        if(!initializedOrders.isEmpty()){
+            throw new CustomerHasAlreadyInitializedOrderException();
         }
     }
 
-    Purchase getInitializedPurchase(List<Purchase> initializedPurchases){
-        if(initializedPurchases.isEmpty()){
-            throw new UserDoesNotHaveAnyInitializedPurchasesException();
-        } else if(initializedPurchases.size()>1){
-            throw new UserHasMoreThanOneInitializedPurchaseException();
+    Order getInitializedPurchase(List<Order> initializedOrders){
+        if(initializedOrders.isEmpty()){
+            throw new CustomerDoesNotHaveAnyInitializedOrderException();
+        } else if(initializedOrders.size()>1){
+            throw new CustomerHasMoreThanOneInitializedOrderException();
         }
-        return initializedPurchases.get(0);
+        return initializedOrders.get(0);
     }
 
 }
