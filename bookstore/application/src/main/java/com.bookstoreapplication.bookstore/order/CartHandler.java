@@ -1,7 +1,6 @@
 package com.bookstoreapplication.bookstore.order;
 
-import com.bookstoreapplication.bookstore.order.exception.BookProductNotFoundException;
-import com.bookstoreapplication.bookstore.order.exception.CustomerNotFoundException;
+import com.bookstoreapplication.bookstore.order.exception.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,37 +16,51 @@ class CartHandler {
     private final CustomerRepository customerRepository;
 
     void initializeCart(long customerId, long bookId) {
+        if(cartRepository.findByCustomerId(customerId).isPresent()){
+            throw new CustomerHasAlreadyInitializedCartException();
+        }
         BookProduct bookProduct = findBookById(bookId);
         cartRepository.save(new Cart(customerId, bookProduct));
     }
 
     void addProduct(long customerId, long bookId) {
         BookProduct bookProduct = findBookById(bookId);
-        Cart customerCart = cartRepository.findByCustomerId(customerId);
+        Cart customerCart = findCartByCustomerId(customerId);
         cartRepository.save(customerCart.addProduct(bookProduct));
     }
 
     void deleteProduct(long customerId, long bookId) {
         BookProduct bookProduct = findBookById(bookId);
-        Cart customerCart = cartRepository.findByCustomerId(customerId);
+        Cart customerCart = findCartByCustomerId(customerId);
         cartRepository.save(customerCart.deleteProduct(bookProduct));
     }
 
     void increaseProductAmount(long customerId, long bookId) {
         BookProduct bookProduct = findBookById(bookId);
-        Cart customerCart = cartRepository.findByCustomerId(customerId);
+        Cart customerCart = findCartByCustomerId(customerId);
         cartRepository.save(customerCart.increaseProductAmount(bookProduct));
     }
 
     void decreaseProductAmount(long customerId, long bookId) {
         BookProduct bookProduct = findBookById(bookId);
-        Cart customerCart = cartRepository.findByCustomerId(customerId);
+        Cart customerCart = findCartByCustomerId(customerId);
         cartRepository.save(customerCart.decreaseProductAmount(bookProduct));
     }
 
     void checkout(long customerId){
-        Cart customerCart = cartRepository.findByCustomerId(customerId);
+        if(checkoutCartRepository.existsByCart_CustomerId(customerId)){
+            log.warn("Customer has already initialized checkout cart");
+            throw new CustomerHasAlreadyInitializedCheckoutCartException();
+        }
+        Cart customerCart = findCartByCustomerId(customerId);
         checkoutCartRepository.save(customerCart.checkout());
+    }
+
+    private Cart findCartByCustomerId(long customerId){
+        return cartRepository.findByCustomerId(customerId).orElseThrow( () -> {
+            log.warn("Customer with id {} does not have any initialized cart", customerId);
+            throw new CartNotFoundException();
+        });
     }
 
     private BookProduct findBookById(long bookId) {
@@ -57,10 +70,4 @@ class CartHandler {
         });
     }
 
-    private Customer findCustomerById(long customerId) {
-        return customerRepository.findById(customerId).orElseThrow( () -> {
-            log.warn("Customer with id {} does not exist", customerId);
-            throw new CustomerNotFoundException();
-        });
-    }
 }

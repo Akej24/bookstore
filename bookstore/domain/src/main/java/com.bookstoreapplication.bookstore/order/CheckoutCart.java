@@ -8,27 +8,27 @@ import lombok.Getter;
 class CheckoutCart {
 
     private final Cart cart;
-    private Delivery delivery;
-    private Payment payment;
+    private DeliveryDetails deliveryDetails;
+    private PaymentMethod paymentMethod;
 
     CheckoutCart(Cart cart) {
         this.cart = cart;
     }
 
-    CheckoutCart updateDelivery(Delivery delivery) {
-        this.delivery = delivery;
+    CheckoutCart updateDelivery(DeliveryDetails deliveryDetails) {
+        this.deliveryDetails = deliveryDetails;
         return this;
     }
 
-    CheckoutCart updatePayment(Payment payment) {
-        this.payment = payment;
+    CheckoutCart updatePayment(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
         return this;
     }
 
     Order order(){
-        if(delivery == null){
+        if(deliveryDetails == null){
             throw new MissingDeliveryInCheckoutCartException();
-        } else if(payment == null){
+        } else if(paymentMethod == null){
             throw new MissingPaymentInCheckoutCartException();
         }
         return new Order(this);

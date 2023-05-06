@@ -1,0 +1,99 @@
+2023-05-04 17:50:37.001  INFO 9096 --- [main] c.b.bookstore.BookstoreApplication       : Starting BookstoreApplication using Java 17.0.1 on DESKTOP-0M556VV with PID 9096 (C:\Users\Aleks\Desktop\bookstore\bookstore\monolith\target\classes started by Aleks in C:\Users\Aleks\Desktop\bookstore)
+2023-05-04 17:50:37.004  INFO 9096 --- [main] c.b.bookstore.BookstoreApplication       : The following 1 profile is active: "application-local"
+2023-05-04 17:50:37.836  INFO 9096 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-04 17:50:37.837  INFO 9096 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-04 17:50:37.997  INFO 9096 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 152 ms. Found 7 JPA repository interfaces.
+2023-05-04 17:50:38.719  INFO 9096 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-04 17:50:38.726  INFO 9096 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-04 17:50:38.726  INFO 9096 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-05-04 17:50:38.845  INFO 9096 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-04 17:50:38.845  INFO 9096 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1806 ms
+2023-05-04 17:50:39.277  INFO 9096 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-05-04 17:50:39.461  INFO 9096 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-05-04 17:50:39.507  INFO 9096 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2023-05-04 17:50:39.645  INFO 9096 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2023-05-04 17:50:39.747  INFO 9096 --- [main] liquibase.changelog                      : Reading resource: database/01-create-tables-and-relations.sql
+2023-05-04 17:50:39.755  INFO 9096 --- [main] liquibase.changelog                      : Reading resource: database/02-insert-startup-data.sql
+2023-05-04 17:50:39.771  INFO 9096 --- [main] liquibase.changelog                      : Creating database history table with name: PUBLIC.DATABASECHANGELOG
+2023-05-04 17:50:39.773  INFO 9096 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2023-05-04 17:50:39.841  INFO 9096 --- [main] liquibase.changelog                      : Custom SQL executed
+2023-05-04 17:50:39.841  INFO 9096 --- [main] liquibase.changelog                      : ChangeSet database/01-create-tables-and-relations.sql::1::akej ran successfully in 17ms
+2023-05-04 17:50:39.871  INFO 9096 --- [main] liquibase.changelog                      : Custom SQL executed
+2023-05-04 17:50:39.872  INFO 9096 --- [main] liquibase.changelog                      : ChangeSet database/01-create-tables-and-relations.sql::2::akej ran successfully in 11ms
+2023-05-04 17:50:39.876  INFO 9096 --- [main] liquibase.changelog                      : Custom SQL executed
+2023-05-04 17:50:39.876  INFO 9096 --- [main] liquibase.changelog                      : ChangeSet database/02-insert-startup-data.sql::1::akej ran successfully in 3ms
+2023-05-04 17:50:39.880  INFO 9096 --- [main] liquibase.changelog                      : Custom SQL executed
+2023-05-04 17:50:39.881  INFO 9096 --- [main] liquibase.changelog                      : ChangeSet database/02-insert-startup-data.sql::2::akej ran successfully in 4ms
+2023-05-04 17:50:39.883  INFO 9096 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2023-05-04 17:50:39.951  INFO 9096 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-04 17:50:40.004  INFO 9096 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-05-04 17:50:40.179  INFO 9096 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-05-04 17:50:40.340  INFO 9096 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-05-04 17:50:41.026  INFO 9096 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-04 17:50:41.035  INFO 9096 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-04 17:50:42.199  INFO 9096 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@11261fc9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@273cb729, org.springframework.security.web.context.SecurityContextPersistenceFilter@18e0f894, org.springframework.security.web.header.HeaderWriterFilter@275860e9, org.springframework.security.web.authentication.logout.LogoutFilter@105d2c27, com.bookstoreapplication.bookstore.auth.JwtAuthenticationFilter@2ff4d61b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e03b52f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@66008321, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@76603c44, org.springframework.security.web.session.SessionManagementFilter@33a1bb90, org.springframework.security.web.access.ExceptionTranslationFilter@548d9d87, org.springframework.security.web.access.intercept.AuthorizationFilter@3b9d5218]
+2023-05-04 17:50:42.748  INFO 9096 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-04 17:50:43.004  INFO 9096 --- [main] c.b.bookstore.BookstoreApplication       : Started BookstoreApplication in 6.352 seconds (JVM running for 6.933)
+2023-05-04 17:50:47.649  INFO 9096 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-04 17:50:47.650  INFO 9096 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-05-04 17:50:47.651  INFO 9096 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-05-04 17:58:34.851  INFO 17540 --- [main] c.b.bookstore.BookstoreApplication       : Starting BookstoreApplication using Java 17.0.1 on DESKTOP-0M556VV with PID 17540 (C:\Users\Aleks\Desktop\bookstore\bookstore\monolith\target\classes started by Aleks in C:\Users\Aleks\Desktop\bookstore)
+2023-05-04 17:58:34.853  INFO 17540 --- [main] c.b.bookstore.BookstoreApplication       : The following 1 profile is active: "application-local"
+2023-05-04 17:58:35.666  INFO 17540 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-04 17:58:35.667  INFO 17540 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-04 17:58:35.823  INFO 17540 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 149 ms. Found 7 JPA repository interfaces.
+2023-05-04 17:58:36.543  INFO 17540 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-04 17:58:36.552  INFO 17540 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-04 17:58:36.552  INFO 17540 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-05-04 17:58:36.665  INFO 17540 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-04 17:58:36.665  INFO 17540 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1776 ms
+2023-05-04 17:58:37.080  INFO 17540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-05-04 17:58:37.280  INFO 17540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-05-04 17:58:37.359  INFO 17540 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2023-05-04 17:58:37.477  INFO 17540 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2023-05-04 17:58:37.591  INFO 17540 --- [main] liquibase.changelog                      : Reading resource: database/01-create-tables-and-relations.sql
+2023-05-04 17:58:37.600  INFO 17540 --- [main] liquibase.changelog                      : Reading resource: database/02-insert-startup-data.sql
+2023-05-04 17:58:37.637  INFO 17540 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2023-05-04 17:58:37.720  INFO 17540 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2023-05-04 17:58:37.830  INFO 17540 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-04 17:58:37.877  INFO 17540 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-05-04 17:58:38.022  INFO 17540 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-05-04 17:58:38.140  INFO 17540 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-05-04 17:58:38.820  INFO 17540 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-04 17:58:38.829  INFO 17540 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-04 17:58:40.118  INFO 17540 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@38379575, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@271df4c0, org.springframework.security.web.context.SecurityContextPersistenceFilter@cf6a6eb, org.springframework.security.web.header.HeaderWriterFilter@72090715, org.springframework.security.web.authentication.logout.LogoutFilter@1847da64, com.bookstoreapplication.bookstore.auth.JwtAuthenticationFilter@63ee2891, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@45fdd38d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@446dea16, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@86e7c7a, org.springframework.security.web.session.SessionManagementFilter@7fbe0f64, org.springframework.security.web.access.ExceptionTranslationFilter@4746b319, org.springframework.security.web.access.intercept.AuthorizationFilter@6b989889]
+2023-05-04 17:58:40.665  INFO 17540 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-04 17:58:40.943  INFO 17540 --- [main] c.b.bookstore.BookstoreApplication       : Started BookstoreApplication in 6.471 seconds (JVM running for 6.974)
+2023-05-04 17:59:21.776  INFO 17540 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-04 17:59:21.778  INFO 17540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-05-04 17:59:21.779  INFO 17540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-05-04 17:59:57.325  INFO 13192 --- [main] c.b.bookstore.BookstoreApplication       : Starting BookstoreApplication using Java 17.0.1 on DESKTOP-0M556VV with PID 13192 (C:\Users\Aleks\Desktop\bookstore\bookstore\monolith\target\classes started by Aleks in C:\Users\Aleks\Desktop\bookstore)
+2023-05-04 17:59:57.327  INFO 13192 --- [main] c.b.bookstore.BookstoreApplication       : The following 1 profile is active: "application-local"
+2023-05-04 17:59:58.182  INFO 13192 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-05-04 17:59:58.183  INFO 13192 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-04 17:59:58.352  INFO 13192 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 162 ms. Found 7 JPA repository interfaces.
+2023-05-04 17:59:59.050  INFO 13192 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-05-04 17:59:59.058  INFO 13192 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-04 17:59:59.058  INFO 13192 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.73]
+2023-05-04 17:59:59.166  INFO 13192 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-04 17:59:59.166  INFO 13192 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1801 ms
+2023-05-04 17:59:59.569  INFO 13192 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-05-04 17:59:59.772  INFO 13192 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-05-04 17:59:59.822  INFO 13192 --- [main] liquibase.database                       : Set default schema name to PUBLIC
+2023-05-04 17:59:59.952  INFO 13192 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2023-05-04 18:00:00.056  INFO 13192 --- [main] liquibase.changelog                      : Reading resource: database/01-create-tables-and-relations.sql
+2023-05-04 18:00:00.064  INFO 13192 --- [main] liquibase.changelog                      : Reading resource: database/02-insert-startup-data.sql
+2023-05-04 18:00:00.100  INFO 13192 --- [main] liquibase.changelog                      : Reading from PUBLIC.DATABASECHANGELOG
+2023-05-04 18:00:00.151  INFO 13192 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2023-05-04 18:00:00.219  INFO 13192 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-04 18:00:00.264  INFO 13192 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-05-04 18:00:00.411  INFO 13192 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-05-04 18:00:00.526  INFO 13192 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2023-05-04 18:00:01.186  INFO 13192 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-04 18:00:01.195  INFO 13192 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-04 18:00:02.357  INFO 13192 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6e1bd2b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@18a66406, org.springframework.security.web.context.SecurityContextPersistenceFilter@28817763, org.springframework.security.web.header.HeaderWriterFilter@26c84006, org.springframework.security.web.authentication.logout.LogoutFilter@61236349, com.bookstoreapplication.bookstore.auth.JwtAuthenticationFilter@435848de, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6abdead7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4e9b66ab, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@54d3b4fe, org.springframework.security.web.session.SessionManagementFilter@e934485, org.springframework.security.web.access.ExceptionTranslationFilter@65f1bf2c, org.springframework.security.web.access.intercept.AuthorizationFilter@22edca96]
+2023-05-04 18:00:02.881  INFO 13192 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-04 18:00:03.090  INFO 13192 --- [main] c.b.bookstore.BookstoreApplication       : Started BookstoreApplication in 6.122 seconds (JVM running for 6.663)
+2023-05-04 19:01:23.156  WARN 13192 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13m22s567ms299µs400ns).
+2023-05-04 20:45:14.653  WARN 13192 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h24m21s229ms207µs500ns).
+2023-05-04 21:46:40.865  WARN 13192 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=46m25s991ms952µs).

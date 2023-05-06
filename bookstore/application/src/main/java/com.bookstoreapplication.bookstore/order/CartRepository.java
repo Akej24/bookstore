@@ -1,9 +1,11 @@
 package com.bookstoreapplication.bookstore.order;
 
+import java.util.Optional;
+
 interface CartRepository {
 
     void save(Cart cart);
 
-    Cart findByCustomerId(long customerId);
+    Optional<Cart> findByCustomerId(long customerId);
 
 }
