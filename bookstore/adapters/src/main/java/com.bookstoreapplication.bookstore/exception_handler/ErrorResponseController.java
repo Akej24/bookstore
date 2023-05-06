@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.exception_handler;
 
 import com.bookstoreapplication.bookstore.book.exception.BookException;
-import com.bookstoreapplication.bookstore.purchase.exception.OrderException;
+import com.bookstoreapplication.bookstore.order.exception.OrderException;
 import com.bookstoreapplication.bookstore.user.exception.UserException;
 import dev.mccue.json.JsonDecodeException;
 import org.springframework.http.HttpStatus;
