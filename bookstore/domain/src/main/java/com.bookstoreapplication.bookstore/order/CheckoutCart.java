@@ -1,8 +1,10 @@
 package com.bookstoreapplication.bookstore.order;
 
-import com.bookstoreapplication.bookstore.order.exception.MissingDeliveryInCheckoutCartException;
-import com.bookstoreapplication.bookstore.order.exception.MissingPaymentInCheckoutCartException;
+import com.bookstoreapplication.bookstore.order.exception.*;
+import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 class CheckoutCart {
@@ -15,22 +17,34 @@ class CheckoutCart {
         this.cart = cart;
     }
 
-    CheckoutCart updateDelivery(DeliveryDetails deliveryDetails) {
+    CheckoutCart updateDeliveryDetails(DeliveryDetails deliveryDetails) {
         this.deliveryDetails = deliveryDetails;
         return this;
     }
 
-    CheckoutCart updatePayment(PaymentMethod paymentMethod) {
+    CheckoutCart updatePaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
         return this;
     }
 
-    Order order(){
-        if(deliveryDetails == null){
-            throw new MissingDeliveryInCheckoutCartException();
-        } else if(paymentMethod == null){
-            throw new MissingPaymentInCheckoutCartException();
+    boolean hasEnoughDataToPayAndDeliver(){
+        if(paymentMethod == null) {
+             throw new MissingPaymentMethodInCheckoutCartException();
+        } else if(deliveryDetails == null) {
+            throw new MissingDeliveryDetailsInCheckoutCartException();
         }
+        return true;
+    }
+
+    List<OrderDetail> mapToOrderDetails(long orderId){
+        return this.getCart().getCartLines()
+                .stream()
+                .map(line -> new OrderDetail(line, orderId))
+                .toList();
+    }
+
+    Order placeOrder() {
         return new Order(this);
     }
+
 }

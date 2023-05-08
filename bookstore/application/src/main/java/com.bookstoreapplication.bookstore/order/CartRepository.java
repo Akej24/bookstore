@@ -8,4 +8,8 @@ interface CartRepository {
 
     Optional<Cart> findByCustomerId(long customerId);
 
+    boolean existsByCustomerId(long customerId);
+
+
+    void deleteAllByCustomerId(long customerId);
 }

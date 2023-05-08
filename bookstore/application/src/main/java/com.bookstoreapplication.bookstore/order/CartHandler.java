@@ -13,10 +13,10 @@ class CartHandler {
     private final CartRepository cartRepository;
     private final CheckoutCartRepository checkoutCartRepository;
     private final BookProductRepository bookInOrderRepository;
-    private final CustomerRepository customerRepository;
 
     void initializeCart(long customerId, long bookId) {
-        if(cartRepository.findByCustomerId(customerId).isPresent()){
+        if(cartRepository.existsByCustomerId(customerId)){
+            log.warn("Customer has already initialized cart");
             throw new CustomerHasAlreadyInitializedCartException();
         }
         BookProduct bookProduct = findBookById(bookId);

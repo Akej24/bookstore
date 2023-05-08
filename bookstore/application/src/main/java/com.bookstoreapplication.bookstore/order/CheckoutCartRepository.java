@@ -10,4 +10,5 @@ interface CheckoutCartRepository {
 
     boolean existsByCart_CustomerId(long customerId);
 
+    void deleteAllByCustomerId(long customerId);
 }

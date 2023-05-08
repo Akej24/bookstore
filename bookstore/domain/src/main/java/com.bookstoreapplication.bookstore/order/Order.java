@@ -3,45 +3,48 @@ package com.bookstoreapplication.bookstore.order;
 import com.bookstoreapplication.bookstore.order.value_object.*;
 import lombok.*;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Table(name = "orders")
+@Entity
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor
+@AllArgsConstructor
 class Order implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderId;
     private UUID orderNumber;
     private long customerId;
+    @OneToOne
+    @JoinColumn(name = "delivery_details_delivery_id")
+    @AttributeOverride(name = "deliveryId", column = @Column(name = "delivery_id"))
     private DeliveryDetails deliveryDetails;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Payment method cannot be null")
     private PaymentMethod paymentMethod;
-    private PurchaseDate purchaseDate;
-    private PurchaseStatus purchaseStatus;
+    @Embedded
+    private OrderDate orderDate;
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Order status cannot be null")
+    private OrderStatus orderStatus;
+
+    public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
+        this.deliveryDetails = deliveryDetails;
+    }
 
     Order(CheckoutCart checkoutCart) {
-        delegateToPaymentService();
-        updateBooksProductsAmount();
-        notifyDeliveryService();
         orderNumber = UUID.randomUUID();
         customerId = checkoutCart.getCart().getCustomerId();
         deliveryDetails = checkoutCart.getDeliveryDetails();
         paymentMethod = checkoutCart.getPaymentMethod();
-        purchaseDate = new PurchaseDate(LocalDateTime.now());
-        purchaseStatus = PurchaseStatus.INITIALIZED;
-    }
-
-    private void notifyDeliveryService() {
-        //...
-    }
-
-    private void updateBooksProductsAmount() {
-        //communicate to book facade
-    }
-
-    private void delegateToPaymentService() {
-        //...
+        orderDate = new OrderDate(LocalDateTime.now());
+        orderStatus = OrderStatus.INITIALIZED;
     }
 
 }

@@ -2,7 +2,6 @@ package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.order.exception.BookProductNotFoundException;
 import com.bookstoreapplication.bookstore.order.value_object.TotalPrice;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 class Cart implements Serializable {
 
     private long customerId;
@@ -22,13 +21,13 @@ class Cart implements Serializable {
     public Cart(long customerId, BookProduct bookProduct) {
         this.customerId = customerId;
         var cartLines = new ArrayList<CartLine>();
-        cartLines.add(new CartLine(bookProduct));
+        cartLines.add(new CartLine(customerId, bookProduct));
         this.cartLines = cartLines;
         this.totalPrice = calculateTotalPrice();
     }
 
     Cart addProduct(BookProduct bookProduct) {
-        cartLines.add(new CartLine(bookProduct));
+        cartLines.add(new CartLine(customerId, bookProduct));
         this.totalPrice = calculateTotalPrice();
         return this;
     }

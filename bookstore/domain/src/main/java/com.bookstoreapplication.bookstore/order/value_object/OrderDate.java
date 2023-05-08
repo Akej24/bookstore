@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PurchaseDate implements Serializable {
+public class OrderDate implements Serializable {
 
         @NotNull(message = "Purchase date must be not null")
         LocalDateTime purchaseDate;

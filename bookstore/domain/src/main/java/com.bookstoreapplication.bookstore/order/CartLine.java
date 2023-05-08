@@ -9,10 +9,12 @@ import java.io.Serializable;
 @Getter
 class CartLine implements Serializable {
 
+    private final long customerId;
     private final BookProduct bookProduct;
     private BooksAmount amount;
 
-    public CartLine(BookProduct bookProduct) {
+    public CartLine(long customerId, BookProduct bookProduct) {
+        this.customerId = customerId;
         this.bookProduct = bookProduct;
         this.amount = new BooksAmount(1);
     }

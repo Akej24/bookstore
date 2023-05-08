@@ -1,6 +1,8 @@
 package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.book.value_object.*;
+import com.bookstoreapplication.bookstore.order.exception.NotEnoughBooksInMagazineException;
+import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,8 +11,8 @@ import java.io.Serializable;
 @Table(name = "books")
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 class Book implements Serializable {
 
     @Id
@@ -62,6 +64,20 @@ class Book implements Serializable {
             availablePieces = new AvailablePieces(0);
             availabilityStatus = new AvailabilityStatus(false);
         }
+    }
+
+    void decreaseAvailablePieces(BooksAmount booksAmount){
+        int newAvailablePieces = availablePieces.getAvailablePieces() - booksAmount.getBooksAmount();
+        if(newAvailablePieces == 0){
+            toggleStatusIfPiecesZero();
+        }else if(newAvailablePieces < 0 ){
+            throw new NotEnoughBooksInMagazineException();
+        }
+        availablePieces = new AvailablePieces(newAvailablePieces);
+    }
+
+    void toggleStatusIfPiecesZero(){
+        availabilityStatus = new AvailabilityStatus(!availabilityStatus.getAvailabilityStatus());
     }
 
 }
