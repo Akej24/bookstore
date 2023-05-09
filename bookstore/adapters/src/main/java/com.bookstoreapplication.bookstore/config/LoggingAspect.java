@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 class LoggingAspect {
 
     @SuppressWarnings("EmptyMethod")
-    @Pointcut("execution(* com.bookstoreapplication.bookstore..*(..))  " +
-            "&& !execution(* com.bookstoreapplication.bookstore.config..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.auth..*(..))" +
-            "&& !execution(* com.bookstoreapplication.bookstore.exception_handler..*(..))" +
+    @Pointcut("execution(* bookstore..*(..))  " +
+            "&& !execution(* bookstore.config..*(..))" +
+            "&& !execution(* bookstore.auth..*(..))" +
+            "&& !execution(* bookstore.exception_handler..*(..))" +
             "&& !execution(* *..*Config.*(..))" +
             "&& !execution(* *..*Repository.*(..))")
     private void anyPublicMethod(){
