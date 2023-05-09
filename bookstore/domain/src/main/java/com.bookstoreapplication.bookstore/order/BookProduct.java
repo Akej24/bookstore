@@ -15,14 +15,14 @@ class BookProduct {
     @Id
     private long bookId;
     @Embedded
-    private Title title;
+    private BookTitle bookTitle;
     @Embedded
-    private Author author;
+    private BookAuthor bookAuthor;
     @Embedded
     private AvailabilityStatus availabilityStatus;
     @Embedded
     private AvailablePieces availablePieces;
     @Embedded
-    private Price price;
+    private BookPrice bookPrice;
 
 }

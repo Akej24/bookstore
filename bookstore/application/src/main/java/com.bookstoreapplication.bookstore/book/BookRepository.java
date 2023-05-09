@@ -18,6 +18,6 @@ interface BookRepository{
 
     boolean existsByBookId(long bookId);
 
-    boolean existsByTitle_TitleAndAuthor_Author(String title, String author);
+    boolean existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(String title, String author);
 
 }

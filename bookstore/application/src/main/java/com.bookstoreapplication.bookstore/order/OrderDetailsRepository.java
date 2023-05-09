@@ -4,6 +4,6 @@ import java.util.List;
 
 interface OrderDetailsRepository {
 
-    void saveAll(List<OrderDetail> orderDetails);
+    <S extends OrderDetail> List<S> saveAll(Iterable<S> entities);
 
 }

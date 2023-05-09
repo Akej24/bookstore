@@ -26,8 +26,8 @@ class BookHandler {
 
     @Transactional
     public void addBookToDatabase(@Valid BookCommand source){
-        if(bookRepository.existsByTitle_TitleAndAuthor_Author(source.getTitle().getTitle(), source.getAuthor().getAuthor())){
-            log.warn("Book with title: {} and author: {} already exists", source.getTitle().getTitle(), source.getAuthor().getAuthor());
+        if(bookRepository.existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor())){
+            log.warn("Book with title: {} and author: {} already exists", source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor());
             throw new BookWithTitleAndAuthorExistsException();
         }
         bookRepository.save(new Book(source));

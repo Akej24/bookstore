@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Price implements Serializable {
+public class BookPrice implements Serializable {
 
         @DecimalMin(value = "0.0", message = "The minimum value of the price is 0.0")
-        @NotNull(message = "Price must be not null")
-        private BigDecimal price;
+        @NotNull(message = "BookPrice must be not null")
+        private BigDecimal bookPrice;
 
 }

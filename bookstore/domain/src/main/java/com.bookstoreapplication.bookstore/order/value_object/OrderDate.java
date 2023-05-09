@@ -15,6 +15,6 @@ import java.time.LocalDateTime;
 public class OrderDate implements Serializable {
 
         @NotNull(message = "Purchase date must be not null")
-        LocalDateTime purchaseDate;
+        LocalDateTime orderDate;
 
 }

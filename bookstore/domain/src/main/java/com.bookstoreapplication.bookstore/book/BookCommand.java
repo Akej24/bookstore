@@ -11,9 +11,9 @@ import javax.validation.Valid;
 class BookCommand {
 
     @Valid
-    private Title title;
+    private BookTitle bookTitle;
     @Valid
-    private Author author;
+    private BookAuthor bookAuthor;
     @Valid
     private ReleaseDate releaseDate;
     @Valid
@@ -23,6 +23,6 @@ class BookCommand {
     @Valid
     private AvailablePieces availablePieces;
     @Valid
-    private Price price;
+    private BookPrice bookPrice;
 
 }

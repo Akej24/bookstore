@@ -21,13 +21,13 @@ CREATE TABLE users (
 --changeset akej:2
 CREATE TABLE books (
     book_id BIGINT AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
+    book_title VARCHAR(255) NOT NULL,
+    book_author VARCHAR(255) NOT NULL,
     release_date DATE NOT NULL,
     number_of_pages INT NOT NULL,
     availability_status BOOLEAN NOT NULL,
     available_pieces INT NOT NULL,
-    price DECIMAL NOT NULL,
+    book_price DECIMAL NOT NULL,
     created_on DATETIME,
     updated_on DATETIME,
     PRIMARY KEY(book_id)

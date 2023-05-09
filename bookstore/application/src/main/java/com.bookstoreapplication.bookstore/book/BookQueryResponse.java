@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 class BookQueryResponse {
 
     @JsonUnwrapped
-    private Title title;
+    private BookTitle bookTitle;
     @JsonUnwrapped
-    private Author author;
+    private BookAuthor bookAuthor;
     @JsonUnwrapped
     private ReleaseDate releaseDate;
     @JsonUnwrapped
@@ -26,7 +26,7 @@ class BookQueryResponse {
     @JsonUnwrapped
     private AvailablePieces availablePieces;
     @JsonUnwrapped
-    private Price price;
+    private BookPrice bookPrice;
 
     static Set<BookQueryResponse> toResponses(List<Book> sources){
         return sources.stream().map(BookQueryResponse::toResponse).collect(Collectors.toSet());
@@ -34,13 +34,13 @@ class BookQueryResponse {
 
     static BookQueryResponse toResponse(Book source){
         return new BookQueryResponse(
-                source.getTitle(),
-                source.getAuthor(),
+                source.getBookTitle(),
+                source.getBookAuthor(),
                 source.getReleaseDate(),
                 source.getNumberOfPages(),
                 source.getAvailabilityStatus(),
                 source.getAvailablePieces(),
-                source.getPrice());
+                source.getBookPrice());
     }
 
 }

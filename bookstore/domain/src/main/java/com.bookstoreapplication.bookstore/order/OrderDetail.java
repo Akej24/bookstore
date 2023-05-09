@@ -1,8 +1,8 @@
 package com.bookstoreapplication.bookstore.order;
 
-import com.bookstoreapplication.bookstore.book.value_object.Author;
-import com.bookstoreapplication.bookstore.book.value_object.Price;
-import com.bookstoreapplication.bookstore.book.value_object.Title;
+import com.bookstoreapplication.bookstore.book.value_object.BookAuthor;
+import com.bookstoreapplication.bookstore.book.value_object.BookPrice;
+import com.bookstoreapplication.bookstore.book.value_object.BookTitle;
 import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,19 +23,20 @@ class OrderDetail {
     private long orderId;
     private long bookId;
     @Embedded
-    private Title bookTitle;
+    private BookTitle bookTitle;
     @Embedded
-    private Author bookAuthor;
+    private BookAuthor bookAuthor;
     @Embedded
-    private Price bookPrice;
+    private BookPrice bookPrice;
     @Embedded
     private BooksAmount booksAmount;
 
     OrderDetail(CartLine cartLine, long orderId) {
         this.orderId = orderId;
-        this.bookTitle = cartLine.getBookProduct().getTitle();
-        this.bookAuthor = cartLine.getBookProduct().getAuthor();
-        this.bookPrice = cartLine.getBookProduct().getPrice();
+        this.bookId = cartLine.getBookProduct().getBookId();
+        this.bookTitle = cartLine.getBookProduct().getBookTitle();
+        this.bookAuthor = cartLine.getBookProduct().getBookAuthor();
+        this.bookPrice = cartLine.getBookProduct().getBookPrice();
         this.booksAmount = cartLine.getAmount();
     }
 

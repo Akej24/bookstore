@@ -19,9 +19,9 @@ class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
     @Embedded
-    private Title title;
+    private BookTitle bookTitle;
     @Embedded
-    private Author author;
+    private BookAuthor bookAuthor;
     @Embedded
     private ReleaseDate releaseDate;
     @Embedded
@@ -31,30 +31,30 @@ class Book implements Serializable {
     @Embedded
     private AvailablePieces availablePieces;
     @Embedded
-    private Price price;
+    private BookPrice bookPrice;
     @Embedded
     private BookAudit bookAudit;
 
     public Book(BookCommand source) {
-        title = source.getTitle();
-        author = source.getAuthor();
+        bookTitle = source.getBookTitle();
+        bookAuthor = source.getBookAuthor();
         releaseDate = source.getReleaseDate();
         numberOfPages = source.getNumberOfPages();
         availabilityStatus = source.getAvailabilityStatus();
         availablePieces = source.getAvailablePieces();
-        price = source.getPrice();
+        bookPrice = source.getBookPrice();
         this.bookAudit = new BookAudit();
         updateAvailability();
     }
 
     public Book update(BookCommand source){
-        title = source.getTitle();
-        author = source.getAuthor();
+        bookTitle = source.getBookTitle();
+        bookAuthor = source.getBookAuthor();
         releaseDate = source.getReleaseDate();
         numberOfPages = source.getNumberOfPages();
         availabilityStatus = source.getAvailabilityStatus();
         availablePieces = source.getAvailablePieces();
-        price = source.getPrice();
+        bookPrice = source.getBookPrice();
         updateAvailability();
         return this;
     }

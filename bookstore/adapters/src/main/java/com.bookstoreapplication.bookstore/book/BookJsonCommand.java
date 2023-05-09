@@ -15,24 +15,24 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 class BookJsonCommand implements JsonEncodable {
 
-    private Title title;
-    private Author author;
+    private BookTitle bookTitle;
+    private BookAuthor bookAuthor;
     private ReleaseDate releaseDate;
     private NumberOfPages numberOfPages;
     private AvailabilityStatus availabilityStatus;
     private AvailablePieces availablePieces;
-    private Price price;
+    private BookPrice bookPrice;
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @JsonCreator
     public static BookCommand fromJson(Json json) {
         return new BookCommand(
-                JsonDecoder.field(json, "title", title ->
-                        new Title(JsonDecoder.string(title))),
+                JsonDecoder.field(json, "bookTitle", title ->
+                        new BookTitle(JsonDecoder.string(title))),
 
-                JsonDecoder.field(json, "author", author ->
-                        new Author(JsonDecoder.string(author))),
+                JsonDecoder.field(json, "bookAuthor", author ->
+                        new BookAuthor(JsonDecoder.string(author))),
 
                 JsonDecoder.field(json, "releaseDate", releaseDate ->
                         new ReleaseDate(LocalDate.parse(JsonDecoder.string(releaseDate), LOCAL_DATE_FORMATTER))),
@@ -46,21 +46,21 @@ class BookJsonCommand implements JsonEncodable {
                 JsonDecoder.field(json, "availablePieces", availablePieces ->
                         new AvailablePieces(JsonDecoder.int_(availablePieces))),
 
-                JsonDecoder.field(json, "price", price ->
-                        new Price(JsonDecoder.bigDecimal(price)))
+                JsonDecoder.field(json, "bookPrice", price ->
+                        new BookPrice(JsonDecoder.bigDecimal(price)))
         );
     }
 
     @Override
     public Json toJson() {
         return Json.objectBuilder()
-                .put("title", Json.of(title.getTitle()))
-                .put("author", Json.of(author.getAuthor()))
+                .put("bookTitle", Json.of(bookTitle.getBookTitle()))
+                .put("bookAuthor", Json.of(bookAuthor.getBookAuthor()))
                 .put("releaseDate", Json.of(LOCAL_DATE_FORMATTER.format(releaseDate.getReleaseDate())))
                 .put("numberOfPages", Json.of(numberOfPages.getNumberOfPages()))
                 .put("availabilityStatus", Json.of(availabilityStatus.getAvailabilityStatus()))
                 .put("availablePieces", Json.of(availablePieces.getAvailablePieces()))
-                .put("price", Json.of(price.getPrice()))
+                .put("bookPrice", Json.of(bookPrice.getBookPrice()))
                 .build();
     }
 }

@@ -58,7 +58,7 @@ class Cart implements Serializable {
 
     private TotalPrice calculateTotalPrice() {
         return new TotalPrice(cartLines.stream().map( line -> line.getBookProduct()
-                .getPrice().getPrice()
+                .getBookPrice().getBookPrice()
                 .multiply(BigDecimal.valueOf(line.getAmount().getBooksAmount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
