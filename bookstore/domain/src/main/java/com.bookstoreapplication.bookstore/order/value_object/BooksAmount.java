@@ -27,7 +27,7 @@ public class BooksAmount implements Serializable {
     }
 
     public BooksAmount decreaseAmount(){
-        return booksAmount > 0 ? new BooksAmount(booksAmount - 1) : this;
+        return booksAmount > 1 ? new BooksAmount(booksAmount - 1) : this;
     }
 
 }

@@ -29,28 +29,32 @@ class CartController {
     }
 
     @PostMapping("/product")
-    ResponseEntity<?> addProduct(@RequestBody long bookId, HttpServletRequest request){
+    ResponseEntity<?> addProduct(@RequestBody Json json, HttpServletRequest request){
+        long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.addProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/product")
-    ResponseEntity<?> deleteProduct(@RequestBody long bookId, HttpServletRequest request){
+    ResponseEntity<?> deleteProduct(@RequestBody Json json, HttpServletRequest request){
+        long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.deleteProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/product/amount/increase")
-    ResponseEntity<?> increaseProductAmount(@RequestBody long bookId, HttpServletRequest request){
+    @PatchMapping("/product/increase")
+    ResponseEntity<?> increaseProductAmount(@RequestBody Json json, HttpServletRequest request){
+        long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.increaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/product/amount/decrease")
-    ResponseEntity<?> decreaseProductAmount(@RequestBody long bookId, HttpServletRequest request){
+    @PatchMapping("/product/decrease")
+    ResponseEntity<?> decreaseProductAmount(@RequestBody Json json, HttpServletRequest request){
+        long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.decreaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();

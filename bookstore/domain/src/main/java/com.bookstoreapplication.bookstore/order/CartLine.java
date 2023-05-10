@@ -2,12 +2,14 @@ package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.order.exception.NotEnoughBooksInMagazineException;
 import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.Embedded;
 import java.io.Serializable;
 
 @Getter
+@AllArgsConstructor
 class CartLine implements Serializable {
 
     private final long customerId;

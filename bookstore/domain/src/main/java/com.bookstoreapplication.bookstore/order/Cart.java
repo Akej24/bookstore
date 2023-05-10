@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
@@ -38,22 +39,30 @@ class Cart implements Serializable {
         return this;
     }
 
-    Cart increaseProductAmount(BookProduct bookProduct){
-        cartLines.stream()
-                .filter(cartLine -> cartLine.getBookProduct().equals(bookProduct))
-                .findFirst()
-                .ifPresentOrElse(CartLine::increaseAmount, BookProductNotFoundException::new);
-        this.totalPrice = calculateTotalPrice();
-        return this;
+    Cart increaseProductAmount(BookProduct bookProduct) {
+        Optional<CartLine> cartLineOptional = cartLines.stream()
+                .filter(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())
+                .findFirst();
+        if (cartLineOptional.isPresent()) {
+            cartLineOptional.get().increaseAmount();
+            this.totalPrice = calculateTotalPrice();
+            return this;
+        } else {
+            throw new BookProductNotFoundException();
+        }
     }
 
     Cart decreaseProductAmount(BookProduct bookProduct){
-        cartLines.stream()
-                .filter(cartLine -> cartLine.getBookProduct().equals(bookProduct))
-                .findFirst()
-                .ifPresentOrElse(CartLine::decreaseAmount, BookProductNotFoundException::new);
-        this.totalPrice = calculateTotalPrice();
-        return this;
+        Optional<CartLine> cartLineOptional = cartLines.stream()
+                .filter(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())
+                .findFirst();
+        if (cartLineOptional.isPresent()) {
+            cartLineOptional.get().decreaseAmount();
+            this.totalPrice = calculateTotalPrice();
+            return this;
+        } else {
+            throw new BookProductNotFoundException();
+        }
     }
 
     private TotalPrice calculateTotalPrice() {
