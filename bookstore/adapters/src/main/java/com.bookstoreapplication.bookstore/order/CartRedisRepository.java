@@ -14,7 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 class CartRedisRepository implements CartRepository {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
 
     private String getRedisKey(long customerId) {
@@ -74,6 +74,7 @@ class CartRedisRepository implements CartRepository {
             rootNode.set("cartLines", cartLinesNode);
 
             rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
+            System.out.println(objectMapper.writeValueAsString(rootNode));
             return objectMapper.writeValueAsString(rootNode);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to serialize cart");
