@@ -2,6 +2,8 @@ package com.bookstoreapplication.bookstore.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -49,9 +51,40 @@ class CartRedisRepository implements CartRepository {
         redisTemplate.delete(key);
     }
 
-    private byte[] serialize(Object object) {
+    private String serialize(Object object) {
         try {
-            return objectMapper.writeValueAsBytes(object);
+            if (object instanceof Cart cart) {
+
+                ObjectNode rootNode = objectMapper.createObjectNode();
+                rootNode.put("customerId", cart.getCustomerId());
+
+                ArrayNode cartLinesNode = objectMapper.createArrayNode();
+                for (CartLine cartLine : cart.getCartLines()) {
+                    ObjectNode cartLineNode = objectMapper.createObjectNode();
+
+                    ObjectNode bookProductNode = objectMapper.createObjectNode();
+                    bookProductNode.put("bookId", cartLine.getBookProduct().getBookId());
+                    bookProductNode.put("bookTitle", cartLine.getBookProduct().getBookTitle().getBookTitle());
+                    bookProductNode.put("bookAuthor", cartLine.getBookProduct().getBookAuthor().getBookAuthor());
+                    bookProductNode.put("availabilityStatus", cartLine.getBookProduct().getAvailabilityStatus().getAvailabilityStatus());
+                    bookProductNode.put("availablePieces", cartLine.getBookProduct().getAvailablePieces().getAvailablePieces());
+                    bookProductNode.put("bookPrice", cartLine.getBookProduct().getBookPrice().getBookPrice());
+                    cartLineNode.set("bookProduct", bookProductNode);
+
+                    ObjectNode amountNode = objectMapper.createObjectNode();
+                    amountNode.put("booksAmount", cartLine.getAmount().getBooksAmount());
+                    cartLineNode.set("amount", amountNode);
+
+                    cartLinesNode.add(cartLineNode);
+                }
+                rootNode.set("cartLines", cartLinesNode);
+
+                rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
+
+                return objectMapper.writeValueAsString(rootNode);
+            } else {
+                throw new RuntimeException("Object is not of type Cart");
+            }
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to serialize object", e);
         }
@@ -64,4 +97,5 @@ class CartRedisRepository implements CartRepository {
             throw new RuntimeException("Unable to deserialize object", e);
         }
     }
+
 }

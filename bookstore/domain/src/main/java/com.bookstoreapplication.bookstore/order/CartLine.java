@@ -4,6 +4,7 @@ import com.bookstoreapplication.bookstore.order.exception.NotEnoughBooksInMagazi
 import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
 import lombok.Getter;
 
+import javax.persistence.Embedded;
 import java.io.Serializable;
 
 @Getter

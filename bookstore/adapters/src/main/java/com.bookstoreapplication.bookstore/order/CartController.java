@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.auth.JwtService;
+import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,8 @@ class CartController {
     private final JwtService jwtService;
 
     @PostMapping("")
-    ResponseEntity<?> initializeCart(@RequestBody long bookId, HttpServletRequest request){
+    ResponseEntity<?> initializeCart(@RequestBody Json json, HttpServletRequest request){
+        long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.initializeCart(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
