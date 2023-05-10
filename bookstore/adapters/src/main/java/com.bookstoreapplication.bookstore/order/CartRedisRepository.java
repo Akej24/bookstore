@@ -51,42 +51,32 @@ class CartRedisRepository implements CartRepository {
         redisTemplate.delete(key);
     }
 
-    private String serialize(Object object) {
+    private String serialize(Cart cart) {
         try {
-            if (object instanceof Cart cart) {
+            ObjectNode rootNode = objectMapper.createObjectNode();
+            rootNode.put("customerId", cart.getCustomerId());
 
-                ObjectNode rootNode = objectMapper.createObjectNode();
-                rootNode.put("customerId", cart.getCustomerId());
+            ArrayNode cartLinesNode = objectMapper.createArrayNode();
+            for (CartLine cartLine : cart.getCartLines()) {
+                ObjectNode cartLineNode = objectMapper.createObjectNode();
+                ObjectNode bookProductNode = objectMapper.createObjectNode();
+                bookProductNode.put("bookId", cartLine.getBookProduct().getBookId());
+                bookProductNode.put("bookTitle", cartLine.getBookProduct().getBookTitle().getBookTitle());
+                bookProductNode.put("bookAuthor", cartLine.getBookProduct().getBookAuthor().getBookAuthor());
+                bookProductNode.put("availabilityStatus", cartLine.getBookProduct().getAvailabilityStatus().getAvailabilityStatus());
+                bookProductNode.put("availablePieces", cartLine.getBookProduct().getAvailablePieces().getAvailablePieces());
+                bookProductNode.put("bookPrice", cartLine.getBookProduct().getBookPrice().getBookPrice());
 
-                ArrayNode cartLinesNode = objectMapper.createArrayNode();
-                for (CartLine cartLine : cart.getCartLines()) {
-                    ObjectNode cartLineNode = objectMapper.createObjectNode();
-
-                    ObjectNode bookProductNode = objectMapper.createObjectNode();
-                    bookProductNode.put("bookId", cartLine.getBookProduct().getBookId());
-                    bookProductNode.put("bookTitle", cartLine.getBookProduct().getBookTitle().getBookTitle());
-                    bookProductNode.put("bookAuthor", cartLine.getBookProduct().getBookAuthor().getBookAuthor());
-                    bookProductNode.put("availabilityStatus", cartLine.getBookProduct().getAvailabilityStatus().getAvailabilityStatus());
-                    bookProductNode.put("availablePieces", cartLine.getBookProduct().getAvailablePieces().getAvailablePieces());
-                    bookProductNode.put("bookPrice", cartLine.getBookProduct().getBookPrice().getBookPrice());
-                    cartLineNode.set("bookProduct", bookProductNode);
-
-                    ObjectNode amountNode = objectMapper.createObjectNode();
-                    amountNode.put("booksAmount", cartLine.getAmount().getBooksAmount());
-                    cartLineNode.set("amount", amountNode);
-
-                    cartLinesNode.add(cartLineNode);
-                }
-                rootNode.set("cartLines", cartLinesNode);
-
-                rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
-
-                return objectMapper.writeValueAsString(rootNode);
-            } else {
-                throw new RuntimeException("Object is not of type Cart");
+                cartLineNode.set("bookProduct", bookProductNode);
+                cartLineNode.put("amount", cartLine.getAmount().getBooksAmount());
+                cartLinesNode.add(cartLineNode);
             }
+            rootNode.set("cartLines", cartLinesNode);
+
+            rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
+            return objectMapper.writeValueAsString(rootNode);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to serialize object", e);
+            throw new RuntimeException("Unable to serialize cart");
         }
     }
 
