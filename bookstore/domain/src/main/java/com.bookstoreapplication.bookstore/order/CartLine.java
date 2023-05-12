@@ -5,7 +5,6 @@ import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.persistence.Embedded;
 import java.io.Serializable;
 
 @Getter
@@ -30,9 +29,6 @@ class CartLine implements Serializable {
     }
 
     void decreaseAmount() {
-        if(bookProduct.getAvailablePieces().getAvailablePieces().compareTo(amount.getBooksAmount()) < 1){
-            throw new NotEnoughBooksInMagazineException();
-        }
         amount = amount.decreaseAmount();
     }
 

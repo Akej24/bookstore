@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final SecuredUserRepository securedUserRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final UserDetailsService userDetailsService;
     private final JwtManager jwtManager;
@@ -40,7 +42,9 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String username = jwtManager.getUsernameFromToken(jwtFromHeader);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            Object jwtFromRedis = redisTemplate.opsForValue().get(jwtFromHeader);
+            long userId = securedUserRepository.findByUserEmailEmail(username)
+                    .orElseThrow( () -> new UsernameNotFoundException("username not found")).getUserId();
+            String jwtFromRedis = redisTemplate.opsForValue().get("user:" + userId);
             if (jwtManager.validateJwtToken(jwtFromHeader, userDetails) && jwtFromRedis != null) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,

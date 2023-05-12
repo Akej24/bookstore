@@ -4,7 +4,6 @@ import com.bookstoreapplication.bookstore.book.exception.BookException;
 import com.bookstoreapplication.bookstore.order.exception.OrderException;
 import com.bookstoreapplication.bookstore.user.exception.UserException;
 import dev.mccue.json.JsonDecodeException;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,8 +35,7 @@ class ErrorResponseController {
             OrderException.class,
             UserException.class,
             BookException.class,
-            JsonDecodeException.class,
-            ExpiredJwtException.class
+            JsonDecodeException.class
     })
     ResponseEntity<?> handleIllegalArgumentException(RuntimeException exception){
         List<ErrorDto> errors = List.of(ErrorDto.builder()

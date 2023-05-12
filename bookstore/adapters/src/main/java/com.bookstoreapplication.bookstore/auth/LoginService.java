@@ -38,8 +38,8 @@ class LoginService {
         String jwtToken = jwtManager.generateJwtToken(user);
         String userId = String.valueOf(user.getUserId());
 
-        template.opsForValue().set(jwtToken, userId);
-        template.boundValueOps(jwtToken).expire(3600, TimeUnit.SECONDS);
+        template.opsForValue().set("user:" + userId, jwtToken);
+        template.boundValueOps(jwtToken).expire(24, TimeUnit.HOURS);
         log.info("User successfully logged in - created jwt token");
         return jwtToken;
     }
