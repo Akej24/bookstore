@@ -3,6 +3,7 @@ package com.bookstoreapplication.bookstore.order;
 import com.bookstoreapplication.bookstore.book.BookFacade;
 import com.bookstoreapplication.bookstore.delivery.DeliveryFacade;
 import com.bookstoreapplication.bookstore.order.exception.CheckoutCartNotFoundException;
+import com.bookstoreapplication.bookstore.order.exception.NotEnoughDataToPayAndDeliverException;
 import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
 import com.bookstoreapplication.bookstore.payment.PaymentFacade;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,15 @@ import java.util.List;
 @AllArgsConstructor
 class CheckoutCartHandler {
 
+    private final CartHandler cartHandler;
     private final CartRepository cartRepository;
     private final CheckoutCartRepository checkoutCartRepository;
     private final OrderDetailsRepository orderDetailsRepository;
     private final OrderRepository orderRepository;
 
-    void updateDeliveryDetails(long customerId, DeliveryDetails deliveryDetails){
+    void updateAddress(long customerId, Address address){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
-        checkoutCartRepository.save(customerCheckoutCart.updateDeliveryDetails(deliveryDetails));
+        checkoutCartRepository.save(customerCheckoutCart.updateAddress(address));
     }
 
     void updatePaymentMethod(long customerId, PaymentMethod paymentMethod){
@@ -32,26 +34,25 @@ class CheckoutCartHandler {
     }
 
     void order(long customerId){
+        Cart customerCart = cartHandler.findCartByCustomerId(customerId);
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
-        pay(customerCheckoutCart);
-        //...notify when available
+
+        if(customerCheckoutCart.hasEnoughDataToPayAndDeliver()) {
+            PaymentFacade.pay(customerCheckoutCart.getPaymentMethod(), customerCart.getTotalPrice());
+        } else {
+            throw new NotEnoughDataToPayAndDeliverException();
+        }
         Order newOrder = customerCheckoutCart.placeOrder();
-        List<OrderDetail> orderDetails = customerCheckoutCart.mapToOrderDetails(newOrder.getOrderId());
+        orderRepository.save(newOrder);
+
+        List<OrderDetail> orderDetails = customerCart.mapToOrderDetails(newOrder.getOrderId());
+        orderDetailsRepository.saveAll(orderDetails);
 
         BookFacade.updateBooksProductsAmount();
         DeliveryFacade.notifyDeliveryService();
 
-        orderRepository.save(newOrder);
-        orderDetailsRepository.saveAll(orderDetails);
-
         checkoutCartRepository.deleteAllByCustomerId(customerId);
         cartRepository.deleteAllByCustomerId(customerId);
-    }
-
-    private void pay(CheckoutCart customerCheckoutCart){
-        if(customerCheckoutCart.hasEnoughDataToPayAndDeliver()) {
-            PaymentFacade.pay(customerCheckoutCart.getPaymentMethod(), customerCheckoutCart.getCart().getTotalPrice());
-        }
     }
 
     private CheckoutCart findCheckoutCartByCustomerId(long customerId){

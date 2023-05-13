@@ -2,23 +2,23 @@ package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.order.exception.*;
 import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
+@AllArgsConstructor
 class CheckoutCart {
 
-    private final Cart cart;
-    private DeliveryDetails deliveryDetails;
+    private final long cartId;
+    private Address address;
     private PaymentMethod paymentMethod;
 
     CheckoutCart(Cart cart) {
-        this.cart = cart;
+        this.cartId = cart.getCustomerId();
     }
 
-    CheckoutCart updateDeliveryDetails(DeliveryDetails deliveryDetails) {
-        this.deliveryDetails = deliveryDetails;
+    CheckoutCart updateAddress(Address address) {
+        this.address = address;
         return this;
     }
 
@@ -30,17 +30,10 @@ class CheckoutCart {
     boolean hasEnoughDataToPayAndDeliver(){
         if(paymentMethod == null) {
              throw new MissingPaymentMethodInCheckoutCartException();
-        } else if(deliveryDetails == null) {
+        } else if(address == null) {
             throw new MissingDeliveryDetailsInCheckoutCartException();
         }
         return true;
-    }
-
-    List<OrderDetail> mapToOrderDetails(long orderId){
-        return this.getCart().getCartLines()
-                .stream()
-                .map(line -> new OrderDetail(line, orderId))
-                .toList();
     }
 
     Order placeOrder() {

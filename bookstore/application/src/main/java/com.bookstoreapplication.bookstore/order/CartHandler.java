@@ -56,7 +56,7 @@ class CartHandler {
         checkoutCartRepository.save(customerCart.checkout());
     }
 
-    private Cart findCartByCustomerId(long customerId){
+    Cart findCartByCustomerId(long customerId){
         return cartRepository.findByCustomerId(customerId).orElseThrow( () -> {
             log.warn("Customer with id {} does not have any initialized cart", customerId);
             throw new CartNotFoundException();

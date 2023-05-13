@@ -7,6 +7,7 @@ import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 class OrderDetail {
 
     @Id

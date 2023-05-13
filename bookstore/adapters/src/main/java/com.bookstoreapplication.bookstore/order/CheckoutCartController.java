@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.auth.JwtService;
-import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
+import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +15,29 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 @Validated
 @CrossOrigin("http://localhost:3000")
-class CheckoutController {
+class CheckoutCartController {
 
-    private final CheckoutCartHandler cartHandler;
+    private final CheckoutCartHandler checkoutCartHandler;
     private final JwtService jwtService;
 
-    @PatchMapping("/delivery")
-    ResponseEntity<?> updateDeliveryDetails(@RequestBody DeliveryDetails deliveryDetails, HttpServletRequest request){
+    @PatchMapping("/address")
+    ResponseEntity<?> updateAddress(@RequestBody Json json, HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);
-        cartHandler.updateDeliveryDetails(customerId, deliveryDetails);
+        checkoutCartHandler.updateAddress(customerId, AddressJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/payment")
-    ResponseEntity<?> updatePaymentDetails(@RequestBody PaymentMethod paymentMethod, HttpServletRequest request){
+    ResponseEntity<?> updatePaymentDetails(@RequestBody Json json, HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);
-        cartHandler.updatePaymentMethod(customerId, paymentMethod);
+        checkoutCartHandler.updatePaymentMethod(customerId, PaymentMethodJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/order")
     ResponseEntity<?> order(HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);
-        cartHandler.order(customerId);
+        checkoutCartHandler.order(customerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

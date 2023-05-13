@@ -72,6 +72,13 @@ class Cart implements Serializable {
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 
+    List<OrderDetail> mapToOrderDetails(long orderId){
+        return this.getCartLines()
+                .stream()
+                .map(line -> new OrderDetail(line, orderId))
+                .toList();
+    }
+
     CheckoutCart checkout(){
         return new CheckoutCart(this);
     }

@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.auth;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 class SecurityConfig {
 
     /* Configuration prepared to just create endpoints
@@ -23,21 +24,9 @@ class SecurityConfig {
       .antMatchers("/users/1")
       .hasRole("USER") */
 
-    @Qualifier("customAuthenticationEntryPoint")
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
-
-    public SecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-                          JwtAuthenticationFilter jwtAuthenticationFilter,
-                          AuthenticationProvider authenticationProvider,
-                          LogoutHandler logoutHandler) {
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.authenticationProvider = authenticationProvider;
-        this.logoutHandler = logoutHandler;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,10 +46,7 @@ class SecurityConfig {
                 .logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint);
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
 
         return http.build();
     }
