@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Table(name = "orders")
 @Entity
@@ -17,8 +18,7 @@ import java.time.LocalDateTime;
 class Order implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long orderId;
+    private UUID orderId;
     private long customerId;
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Payment method cannot be null")
@@ -30,6 +30,7 @@ class Order implements Serializable {
     private OrderStatus orderStatus;
 
     Order(CheckoutCart checkoutCart) {
+        orderId = UUID.randomUUID();
         customerId = checkoutCart.getCartId();
         paymentMethod = checkoutCart.getPaymentMethod();
         orderDate = new OrderDate(LocalDateTime.now());

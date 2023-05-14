@@ -117,7 +117,7 @@ class CartRedisRepository implements CartRepository {
             BigDecimal totalPrice = rootNode.get("totalPrice").decimalValue();
             return new Cart(customerId, cartLines, new TotalPrice(totalPrice));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to deserialize object");
+            throw new RuntimeException("Unable to deserialize cart");
         }
     }
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Table(name = "order_details")
 @Entity
@@ -22,7 +23,7 @@ class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderDetailId;
-    private long orderId;
+    private UUID orderId;
     private long bookId;
     @Embedded
     private BookTitle bookTitle;
@@ -33,7 +34,7 @@ class OrderDetail {
     @Embedded
     private BooksAmount booksAmount;
 
-    OrderDetail(CartLine cartLine, long orderId) {
+    OrderDetail(CartLine cartLine, UUID orderId) {
         this.orderId = orderId;
         this.bookId = cartLine.getBookProduct().getBookId();
         this.bookTitle = cartLine.getBookProduct().getBookTitle();

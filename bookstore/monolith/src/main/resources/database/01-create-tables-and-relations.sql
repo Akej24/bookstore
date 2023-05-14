@@ -1,4 +1,4 @@
- --liquibase formatted sql
+--liquibase formatted sql
 --changeset akej:1
 CREATE TABLE users (
     user_id BIGINT AUTO_INCREMENT,
@@ -35,7 +35,7 @@ CREATE TABLE books (
 
 --changeset akej:3
 CREATE TABLE orders (
-    order_id BIGINT AUTO_INCREMENT,
+    order_id UUID NOT NULL,
     customer_id BIGINT NOT NULL,
     payment_method VARCHAR(255) NOT NULL,
     order_date DATETIME NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE orders (
 
 CREATE TABLE order_details (
     order_detail_id BIGINT AUTO_INCREMENT,
-    order_id BIGINT NOT NULL,
+    order_id UUID NOT NULL,
     book_id BIGINT NOT NULL,
     book_title VARCHAR(255) NOT NULL,
     book_author VARCHAR(255) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE order_details (
 --changeset akej:4
 CREATE TABLE delivery (
     delivery_id BIGINT AUTO_INCREMENT,
-    order_id BIGINT NOT NULL,
+    order_id UUID NOT NULL,
     order_number BINARY(16) NOT NULL,
     street VARCHAR(255) NOT NULL,
     street_number INTEGER NOT NULL,

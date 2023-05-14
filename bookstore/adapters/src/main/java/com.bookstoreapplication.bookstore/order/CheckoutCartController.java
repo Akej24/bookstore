@@ -34,7 +34,7 @@ class CheckoutCartController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/order")
+    @PostMapping("/order")
     ResponseEntity<?> order(HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);
         checkoutCartHandler.order(customerId);

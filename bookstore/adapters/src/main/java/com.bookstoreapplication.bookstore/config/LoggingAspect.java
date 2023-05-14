@@ -22,8 +22,8 @@ class LoggingAspect {
             "&& !execution(* bookstore.config..*(..))" +
             "&& !execution(* bookstore.auth..*(..))" +
             "&& !execution(* bookstore.exception_handler..*(..))" +
-            "&& !execution(* *..*Config.*(..))" +
-            "&& !execution(* *..*Repository.*(..))")
+            "&& !execution(* *..*Config.*(..))" /*+
+            "&& !execution(* *..*Repository.*(..))"*/)
     private void anyPublicMethod(){
     }
 

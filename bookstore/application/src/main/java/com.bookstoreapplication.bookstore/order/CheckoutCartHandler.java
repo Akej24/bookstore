@@ -22,6 +22,7 @@ class CheckoutCartHandler {
     private final CheckoutCartRepository checkoutCartRepository;
     private final OrderDetailsRepository orderDetailsRepository;
     private final OrderRepository orderRepository;
+    private final PlacedOrderPublisher placedOrderPublisher;
 
     void updateAddress(long customerId, Address address){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
@@ -53,6 +54,8 @@ class CheckoutCartHandler {
 
         checkoutCartRepository.deleteAllByCustomerId(customerId);
         cartRepository.deleteAllByCustomerId(customerId);
+
+        placedOrderPublisher.publishPlacedOrderEvent(customerCart, customerCheckoutCart, newOrder);
     }
 
     private CheckoutCart findCheckoutCartByCustomerId(long customerId){

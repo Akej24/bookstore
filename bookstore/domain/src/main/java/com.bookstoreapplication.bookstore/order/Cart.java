@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
@@ -72,7 +73,7 @@ class Cart implements Serializable {
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
 
-    List<OrderDetail> mapToOrderDetails(long orderId){
+    List<OrderDetail> mapToOrderDetails(UUID orderId){
         return this.getCartLines()
                 .stream()
                 .map(line -> new OrderDetail(line, orderId))
