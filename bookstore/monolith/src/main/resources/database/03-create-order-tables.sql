@@ -1,39 +1,6 @@
 --liquibase formatted sql
 --changeset akej:1
-CREATE TABLE users (
-    user_id BIGINT AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL,
-    encoded_password VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    date_of_birth DATE NOT NULL,
-    role VARCHAR(255) NOT NULL,
-    funds DECIMAL,
-    created_on DATETIME,
-    updated_on DATETIME,
-    last_login DATETIME,
-    locked BOOLEAN,
-    enabled BOOLEAN,
-    PRIMARY KEY(user_id)
-);
 
---changeset akej:2
-CREATE TABLE books (
-    book_id BIGINT AUTO_INCREMENT,
-    book_title VARCHAR(255) NOT NULL,
-    book_author VARCHAR(255) NOT NULL,
-    release_date DATE NOT NULL,
-    number_of_pages INT NOT NULL,
-    availability_status BOOLEAN NOT NULL,
-    available_pieces INT NOT NULL,
-    book_price DECIMAL NOT NULL,
-    created_on DATETIME,
-    updated_on DATETIME,
-    PRIMARY KEY(book_id)
-);
-
---changeset akej:3
 CREATE TABLE orders (
     order_id UUID NOT NULL,
     customer_id BIGINT NOT NULL,
@@ -55,9 +22,9 @@ CREATE TABLE order_details (
     FOREIGN KEY (order_id) REFERENCES orders (order_id)
 );
 
---changeset akej:4
-CREATE TABLE delivery (
-    delivery_id BIGINT AUTO_INCREMENT,
+--changeset akej:2
+CREATE TABLE deliveries (
+    delivery_id BIGINT AUTO_INCREMENT NOT NULL,
     order_id UUID NOT NULL,
     order_number BINARY(16) NOT NULL,
     street VARCHAR(255) NOT NULL,

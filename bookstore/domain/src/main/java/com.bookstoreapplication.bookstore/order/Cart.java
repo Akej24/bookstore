@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.order;
 
 import com.bookstoreapplication.bookstore.order.exception.BookProductNotFoundException;
+import com.bookstoreapplication.bookstore.order.exception.BookProductAlreadyExistsInCartException;
 import com.bookstoreapplication.bookstore.order.value_object.TotalPrice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,9 @@ class Cart implements Serializable {
     }
 
     Cart addProduct(BookProduct bookProduct) {
+        if (cartLines.stream().anyMatch(cartLine -> cartLine.getBookProduct().equals(bookProduct))) {
+            throw new BookProductAlreadyExistsInCartException();
+        }
         cartLines.add(new CartLine(customerId, bookProduct));
         this.totalPrice = calculateTotalPrice();
         return this;
