@@ -46,6 +46,4 @@ class BookWarmup {
                 new BookPrice(BigDecimal.valueOf(39.92))
         ));
     }
-
-
 }
