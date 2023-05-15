@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.auth;
 
+import com.bookstoreapplication.bookstore.auth.exception.InvalidPasswordForGivenEmailException;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 class SecuredUser implements UserDetails, Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
@@ -36,7 +38,7 @@ class SecuredUser implements UserDetails, Serializable {
 
     void checkPasswordsMatch(Password requestPassword, BCryptPasswordEncoder bCryptPasswordEncoder) {
         if(!bCryptPasswordEncoder.matches(requestPassword.getPassword(), encodedPassword.getEncodedPassword())){
-            throw new IllegalArgumentException("Invalid password for user with given e-mail");
+            throw new InvalidPasswordForGivenEmailException();
         }
     }
 

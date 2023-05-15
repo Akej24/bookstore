@@ -16,16 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 class LogoutService implements LogoutHandler {
 
-    private RedisTemplate<String, String> template;
+    private final RedisTemplate<String, String> template;
+    private final JwtService jwtService;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) return;
-        final String jwtToken = authHeader.substring(7);
 
-        template.delete(jwtToken);
-        log.info("Successfully logged out with id {}", template.opsForValue().get(jwtToken));
+        long userId = jwtService.extractUserIdFromRequest(request);
+        template.delete("user:"+userId);
         SecurityContextHolder.clearContext();
+        log.info("Successfully logged out");
     }
 }

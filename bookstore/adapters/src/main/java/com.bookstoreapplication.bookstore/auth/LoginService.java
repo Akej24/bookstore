@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.auth;
 
+import com.bookstoreapplication.bookstore.auth.exception.UserEmailHasNotBeenFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,17 +19,17 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 class LoginService {
 
-    private RedisTemplate<String, String> template;
+    private final JwtManager jwtManager;
+    private final RedisTemplate<String, String> template;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final SecuredUserRepository securedUserRepository;
-    private final JwtManager jwtManager;
 
     String loginUser(@Valid LoginRequest request){
 
         SecuredUser user = securedUserRepository.findByUserEmailEmail(request.getEmail().getEmail()).orElseThrow( () -> {
-            log.warn("Not successfully logged in");
-            throw new IllegalArgumentException("Not successfully logged in");
+            log.warn("User with given e-mail has not been found");
+            throw new UserEmailHasNotBeenFoundException();
         });
         user.checkPasswordsMatch(request.getPassword(), bCryptPasswordEncoder);
 
