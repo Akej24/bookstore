@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.auth;
 
 import java.io.IOException;
 
+import com.bookstoreapplication.bookstore.auth.exception.UsernameNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,10 +40,11 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         final String jwtFromHeader = authHeader.substring(7);
         final String username = jwtManager.getUsernameFromToken(jwtFromHeader);
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             long userId = securedUserRepository.findByUserEmailEmail(username)
-                    .orElseThrow( () -> new UsernameNotFoundException("username not found")).getUserId();
+                    .orElseThrow(UsernameNotFoundException::new).getUserId();
             String jwtFromRedis = redisTemplate.opsForValue().get("user:" + userId);
             if (jwtManager.validateJwtToken(jwtFromHeader, userDetails) && jwtFromRedis != null) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

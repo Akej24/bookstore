@@ -1,5 +1,7 @@
 package com.bookstoreapplication.bookstore.auth;
 
+import com.bookstoreapplication.bookstore.auth.exception.JwtNofFoundInRequestHeaderException;
+import com.bookstoreapplication.bookstore.auth.exception.UserEmailHasNotBeenFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +17,12 @@ public class JwtService {
     public long extractUserIdFromRequest(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("JWT not found in request header");
+            throw new JwtNofFoundInRequestHeaderException();
         }
         String jwt = authHeader.substring(7);
         String email = jwtManager.getUsernameFromToken(jwt);
-        SecuredUser securedUser = securedUserRepository.findByUserEmailEmail(email).orElseThrow( () ->
-            new IllegalArgumentException("User with given email does not exist"));
+        SecuredUser securedUser = securedUserRepository.findByUserEmailEmail(email)
+                .orElseThrow(UserEmailHasNotBeenFoundException::new);
         return securedUser.getUserId();
 
     }

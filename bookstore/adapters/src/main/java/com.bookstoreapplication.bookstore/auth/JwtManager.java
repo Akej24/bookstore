@@ -19,15 +19,12 @@ class JwtManager {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
     public Boolean validateJwtToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
-        Claims claims = extractAllClaims(token);
-        boolean isTokenExpired = claims.getExpiration().before(new Date());
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired);
+        return (username.equals(userDetails.getUsername()));
     }
 
     public String getUsernameFromToken(String token) {
