@@ -6,13 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
 @AllArgsConstructor
 class CartHandler {
 
     private final CartRepository cartRepository;
     private final CheckoutCartRepository checkoutCartRepository;
-    private final BookProductRepository bookInOrderRepository;
+    private final BookProductRepository bookProductRepository;
 
     void initializeCart(long customerId, long bookId) {
         if(cartRepository.existsByCustomerId(customerId)){
@@ -64,7 +63,7 @@ class CartHandler {
     }
 
     private BookProduct findBookById(long bookId) {
-        return bookInOrderRepository.findById(bookId).orElseThrow( () -> {
+        return bookProductRepository.findById(bookId).orElseThrow( () -> {
             log.warn("Book with id {} does not exist", bookId);
             throw new BookProductNotFoundException();
         });
