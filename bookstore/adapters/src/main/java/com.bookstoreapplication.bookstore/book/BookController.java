@@ -24,7 +24,7 @@ class BookController {
 
     @PostMapping("")
     ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
-            bookHandler.addBookToDatabase(BookJsonCommand.fromJson(json));
+            bookHandler.addBook(BookJsonCommand.fromJson(json));
             return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

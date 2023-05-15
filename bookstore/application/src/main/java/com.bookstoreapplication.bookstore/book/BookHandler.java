@@ -25,13 +25,13 @@ class BookHandler {
     private final BookRepository bookRepository;
 
     @Transactional
-    public void addBookToDatabase(@Valid BookCommand source){
+    public void addBook(@Valid BookCommand source){
         if(bookRepository.existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor())){
             log.warn("Book with title: {} and author: {} already exists", source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor());
             throw new BookWithTitleAndAuthorExistsException();
         }
         bookRepository.save(new Book(source));
-        log.info("Successfully added to the database");
+        log.info("Successfully added book to the database");
     }
 
     @Cacheable(cacheNames = "Book")
@@ -81,4 +81,9 @@ class BookHandler {
         }
     }
 
+    int countAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        log.info("All books have been fetched from the database");
+        return books.size();
+    }
 }

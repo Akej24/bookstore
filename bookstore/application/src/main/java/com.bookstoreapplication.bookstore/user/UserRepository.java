@@ -8,6 +8,8 @@ import java.util.Optional;
 
 interface UserRepository {
 
+    List<User> findAll();
+
     List<User> findAllBy(Pageable page);
 
     Optional<User> findByEmail(UserEmail email);

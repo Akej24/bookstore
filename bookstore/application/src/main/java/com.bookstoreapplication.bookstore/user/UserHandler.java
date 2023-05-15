@@ -80,4 +80,10 @@ class UserHandler {
         });
     }
 
+    int countAllUsers(){
+        List<User> users = userRepository.findAll();
+        log.info("All users have been fetched from the database");
+        return users.size();
+    }
+
 }

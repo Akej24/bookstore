@@ -38,11 +38,11 @@ class CheckoutCartHandler {
         Cart customerCart = cartHandler.findCartByCustomerId(customerId);
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
 
-        if(customerCheckoutCart.hasEnoughDataToPayAndDeliver()) {
-            PaymentFacade.pay(customerCheckoutCart.getPaymentMethod(), customerCart.getTotalPrice());
-        } else {
+        if(!customerCheckoutCart.hasEnoughDataToPayAndDeliver()) {
             throw new NotEnoughDataToPayAndDeliverException();
         }
+        PaymentFacade.pay(customerCheckoutCart.getPaymentMethod(), customerCart.getTotalPrice());
+
         Order newOrder = customerCheckoutCart.placeOrder();
         orderRepository.save(newOrder);
 

@@ -112,7 +112,7 @@ class CheckoutCartRedisRepository implements CheckoutCartRepository {
             }
             return new CheckoutCart(customerId,address,PaymentMethod.valueOf(paymentMethod));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to deserialize object", e);
+            throw new RuntimeException("Unable to deserialize checkout cart");
         }
     }
 
