@@ -60,7 +60,6 @@ class BookHandler {
     }
 
     @Transactional
-    @CachePut(cacheNames = "Book")
     public void updateBookById(long bookId, @Valid BookCommand source) {
         Book bookToUpdate = bookRepository.findBookByBookId(bookId);
         bookRepository.save(bookToUpdate.update(source));

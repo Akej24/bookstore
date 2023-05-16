@@ -32,7 +32,7 @@ class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/users$", "/api/v1/login")
+                .antMatchers("/api/v1/users/registration", "/api/v1/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

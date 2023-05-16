@@ -3,6 +3,7 @@ package com.bookstoreapplication.bookstore.order.value_object;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 @Getter
@@ -11,6 +12,7 @@ import javax.persistence.Embeddable;
 @EqualsAndHashCode
 public class Street {
 
+    @NotBlank(message = "Street must be not null")
     private String street;
 
 }

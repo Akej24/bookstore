@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class OrderDate implements Serializable {
 
-        @NotNull(message = "Purchase date must be not null")
-        LocalDateTime orderDate;
+    @NotNull(message = "Purchase date must be not null")
+    LocalDateTime orderDate;
 
 }

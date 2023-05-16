@@ -10,6 +10,6 @@ interface CartRepository {
 
     boolean existsByCustomerId(long customerId);
 
-    void deleteAllByCustomerId(long customerId);
+    void deleteCartByCustomerId(long customerId);
 
 }

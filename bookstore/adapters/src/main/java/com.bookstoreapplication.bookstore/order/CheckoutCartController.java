@@ -41,4 +41,11 @@ class CheckoutCartController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @DeleteMapping("")
+    ResponseEntity<?> cancelCheckoutCart(HttpServletRequest request){
+        long customerId = jwtService.extractUserIdFromRequest(request);
+        checkoutCartHandler.cancelCheckoutCart(customerId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

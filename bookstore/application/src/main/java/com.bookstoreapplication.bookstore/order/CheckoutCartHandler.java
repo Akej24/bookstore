@@ -8,11 +8,15 @@ import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
 import com.bookstoreapplication.bookstore.payment.PaymentFacade;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
+@Validated
 @AllArgsConstructor
 class CheckoutCartHandler {
 
@@ -23,16 +27,27 @@ class CheckoutCartHandler {
     private final OrderRepository orderRepository;
     private final PlacedOrderPublisher placedOrderPublisher;
 
-    void updateAddress(long customerId, Address address){
+    @Transactional
+    @Cacheable(cacheNames = "Address")
+    public void updateAddress(long customerId, @Valid Address address){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
         checkoutCartRepository.save(customerCheckoutCart.updateAddress(address));
     }
 
-    void updatePaymentMethod(long customerId, PaymentMethod paymentMethod){
+    @Transactional
+    @Cacheable(cacheNames = "PaymentMethod")
+    public void updatePaymentMethod(long customerId, @Valid PaymentMethod paymentMethod){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
         checkoutCartRepository.save(customerCheckoutCart.updatePaymentMethod(paymentMethod));
     }
 
+    @Transactional
+    public void cancelCheckoutCart(long customerId) {
+        findCheckoutCartByCustomerId(customerId);
+        checkoutCartRepository.deleteCheckoutCartByCustomerId(customerId);
+    }
+
+    @Transactional
     void order(long customerId){
         Cart customerCart = cartHandler.findCartByCustomerId(customerId);
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
@@ -51,8 +66,8 @@ class CheckoutCartHandler {
         BookFacade.updateBooksProductsAmount();
         DeliveryFacade.notifyDeliveryService();
 
-        checkoutCartRepository.deleteAllByCustomerId(customerId);
-        cartRepository.deleteAllByCustomerId(customerId);
+        checkoutCartRepository.deleteCheckoutCartByCustomerId(customerId);
+        cartRepository.deleteCartByCustomerId(customerId);
 
         placedOrderPublisher.publishPlacedOrderEvent(customerCart, customerCheckoutCart, newOrder);
     }
@@ -63,6 +78,5 @@ class CheckoutCartHandler {
             throw new CheckoutCartNotFoundException();
         });
     }
-
 
 }

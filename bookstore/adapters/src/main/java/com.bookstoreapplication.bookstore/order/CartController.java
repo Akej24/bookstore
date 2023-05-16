@@ -5,7 +5,6 @@ import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api/v1/cart")
 @AllArgsConstructor
-@Validated
 @CrossOrigin("http://localhost:3000")
 class CartController {
 
@@ -26,6 +24,12 @@ class CartController {
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.initializeCart(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("")
+    ResponseEntity<?> getCart(HttpServletRequest request){
+        long customerId = jwtService.extractUserIdFromRequest(request);
+        return new ResponseEntity<>(cartHandler.getCart(customerId), HttpStatus.OK);
     }
 
     @PostMapping("/product")
@@ -41,7 +45,7 @@ class CartController {
         long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.deleteProduct(customerId, bookId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/product/increase")
@@ -49,7 +53,7 @@ class CartController {
         long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.increaseProductAmount(customerId, bookId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping("/product/decrease")
@@ -57,7 +61,7 @@ class CartController {
         long bookId = BookIdJsonCommand.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.decreaseProductAmount(customerId, bookId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/checkout")

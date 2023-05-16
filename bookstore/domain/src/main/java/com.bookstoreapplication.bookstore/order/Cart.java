@@ -30,7 +30,7 @@ class Cart implements Serializable {
     }
 
     Cart addProduct(BookProduct bookProduct) {
-        if (cartLines.stream().anyMatch(cartLine -> cartLine.getBookProduct().equals(bookProduct))) {
+        if (cartLines.stream().anyMatch(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())) {
             throw new BookProductAlreadyExistsInCartException();
         }
         cartLines.add(new CartLine(customerId, bookProduct));

@@ -21,7 +21,7 @@ class UserController {
     private static final int PAGE_SIZE = 10;
     private final UserHandler userHandler;
 
-    @PostMapping
+    @PostMapping("/registration")
     ResponseEntity<?> registerUser(@RequestBody @Valid Json json){
         userHandler.registerUser(UserJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();

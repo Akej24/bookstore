@@ -49,7 +49,7 @@ class CheckoutCartRedisRepository implements CheckoutCartRepository {
     }
 
     @Override
-    public void deleteAllByCustomerId(long customerId) {
+    public void deleteCheckoutCartByCustomerId(long customerId) {
         String key = getRedisKey(customerId);
         redisTemplate.delete(key);
     }

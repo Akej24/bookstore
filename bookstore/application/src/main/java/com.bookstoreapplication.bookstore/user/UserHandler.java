@@ -4,11 +4,8 @@ import com.bookstoreapplication.bookstore.user.exception.EmailTakenException;
 import com.bookstoreapplication.bookstore.user.exception.UserDoesNotExistException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,7 +19,7 @@ import java.util.Set;
 class UserHandler {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final IPasswordEncoder passwordEncoder;
 
     @Transactional
     public void registerUser(@Valid UserCommand source) {
@@ -30,7 +27,7 @@ class UserHandler {
             log.warn("Unsuccessfully registered - email must be not taken");
             throw new EmailTakenException();
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
+        String encodedPassword = passwordEncoder.encode(source.getPassword().getPassword());
         userRepository.save(new User(source, encodedPassword));
         log.info("Successfully registered");
     }
@@ -63,10 +60,9 @@ class UserHandler {
     }
 
     @Transactional
-    @CachePut(cacheNames = "User")
     public UserQueryResponse updateUserById(long userId, @Valid UserUpdateCommand source) {
         User userToUpdate = findUserById(userId);
-        String encodedPassword = bCryptPasswordEncoder.encode(source.getPassword().getPassword());
+        String encodedPassword = passwordEncoder.encode(source.getPassword().getPassword());
         User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
         log.info("The user with id {} has been updated", userId);
         return UserQueryResponse.toResponse(savedUser);

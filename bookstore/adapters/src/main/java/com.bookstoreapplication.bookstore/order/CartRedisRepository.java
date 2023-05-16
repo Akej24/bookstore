@@ -53,7 +53,7 @@ class CartRedisRepository implements CartRepository {
     }
 
     @Override
-    public void deleteAllByCustomerId(long customerId) {
+    public void deleteCartByCustomerId(long customerId) {
         String key = getRedisKey(customerId);
         redisTemplate.delete(key);
     }
