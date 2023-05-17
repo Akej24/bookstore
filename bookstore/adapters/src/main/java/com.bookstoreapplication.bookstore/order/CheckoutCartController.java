@@ -20,6 +20,12 @@ class CheckoutCartController {
     private final CheckoutCartHandler checkoutCartHandler;
     private final JwtService jwtService;
 
+    @GetMapping("")
+    ResponseEntity<?> getCheckoutCart(HttpServletRequest request){
+        long customerId = jwtService.extractUserIdFromRequest(request);
+        return new ResponseEntity<>(checkoutCartHandler.getCheckoutCart(customerId), HttpStatus.OK);
+    }
+
     @PatchMapping("/address")
     ResponseEntity<?> updateAddress(@RequestBody Json json, HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);

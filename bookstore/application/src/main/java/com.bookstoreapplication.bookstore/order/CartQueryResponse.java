@@ -21,7 +21,7 @@ class CartQueryResponse {
 
     static CartQueryResponse toResponse(Cart source) {
         return new CartQueryResponse(
-                CartLineQueryResponse.mapToCartLinesQueryResponse(source.getCartLines()),
+                CartLineQueryResponse.toResponses(source.getCartLines()),
                 source.getTotalPrice()
         );
     }
@@ -35,10 +35,10 @@ class CartQueryResponse {
         @JsonUnwrapped
         private BooksAmount amount;
 
-        static List<CartLineQueryResponse> mapToCartLinesQueryResponse(List<CartLine> cartLines){
+        static List<CartLineQueryResponse> toResponses(List<CartLine> cartLines){
             return cartLines.stream()
                     .map( cartLine -> new CartLineQueryResponse(
-                            BookProductQueryResponse.mapToBookProductQueryResponse(cartLine.getBookProduct()),
+                            BookProductQueryResponse.toResponse(cartLine.getBookProduct()),
                             cartLine.getAmount()))
                     .collect(Collectors.toList());
         }
@@ -59,7 +59,7 @@ class CartQueryResponse {
         @JsonUnwrapped
         private BookPrice bookPrice;
 
-        static BookProductQueryResponse mapToBookProductQueryResponse(BookProduct source){
+        static BookProductQueryResponse toResponse(BookProduct source){
             return new BookProductQueryResponse(
                     source.getBookTitle(),
                     source.getBookAuthor(),

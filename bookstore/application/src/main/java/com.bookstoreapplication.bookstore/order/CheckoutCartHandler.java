@@ -41,6 +41,11 @@ class CheckoutCartHandler {
         checkoutCartRepository.save(customerCheckoutCart.updatePaymentMethod(paymentMethod));
     }
 
+    public CheckoutCartQueryResponse getCheckoutCart(long customerId) {
+        CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
+        return CheckoutCartQueryResponse.toResponse(customerCheckoutCart);
+    }
+
     @Transactional
     public void cancelCheckoutCart(long customerId) {
         findCheckoutCartByCustomerId(customerId);
@@ -78,5 +83,4 @@ class CheckoutCartHandler {
             throw new CheckoutCartNotFoundException();
         });
     }
-
 }
