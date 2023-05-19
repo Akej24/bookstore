@@ -16,7 +16,7 @@
     <bytecodeTargetLevel>
       <module name="adapters" target="17" />
       <module name="application" target="17" />
-      <module name="bookstore" target="17" />
+      <module name="bookstore" target="1.5" />
       <module name="domain" target="17" />
       <module name="monolith" target="17" />
     </bytecodeTargetLevel>

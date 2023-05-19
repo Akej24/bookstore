@@ -4,7 +4,6 @@ import com.bookstoreapplication.bookstore.book.exception.BookDoesNotExistExcepti
 import com.bookstoreapplication.bookstore.book.exception.BookWithTitleAndAuthorExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

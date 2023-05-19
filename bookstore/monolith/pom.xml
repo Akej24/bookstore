@@ -11,18 +11,21 @@
     <groupId>com.bookstoreapplication</groupId>
     <artifactId>monolith</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+        <start-class>com.bookstoreapplication.bookstore.BookstoreApplication</start-class>
+    </properties>
     <name>monolith</name>
     <description>Monolith application to buy books</description>
-    <properties>
-        <java.version>17</java.version>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.bookstoreapplication</groupId>
             <artifactId>adapters</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

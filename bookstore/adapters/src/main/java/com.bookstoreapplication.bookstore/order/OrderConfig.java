@@ -33,4 +33,12 @@ public class OrderConfig {
                 orderJpaRepository,
                 placedOrderPublisher);
     }
+
+    @Bean
+    OrderHandler orderHandler(){
+        return new OrderHandler(
+                orderDetailsJpaRepository,
+                orderJpaRepository
+        );
+    }
 }
