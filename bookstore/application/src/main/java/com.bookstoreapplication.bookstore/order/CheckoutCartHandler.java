@@ -1,16 +1,11 @@
 package com.bookstoreapplication.bookstore.order;
 
-import com.bookstoreapplication.bookstore.book.BookFacade;
-import com.bookstoreapplication.bookstore.delivery.DeliveryFacade;
 import com.bookstoreapplication.bookstore.order.exception.CheckoutCartNotFoundException;
 import com.bookstoreapplication.bookstore.order.exception.NotEnoughDataToPayAndDeliverException;
 import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
-import com.bookstoreapplication.bookstore.payment.PaymentFacade;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 class CheckoutCartHandler {
 
+    private final OrderMQTemplate orderMQTemplate;
     private final CartHandler cartHandler;
     private final CartRepository cartRepository;
     private final CheckoutCartRepository checkoutCartRepository;
@@ -59,19 +55,16 @@ class CheckoutCartHandler {
         Cart customerCart = cartHandler.findCartByCustomerId(customerId);
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
 
-        if(!customerCheckoutCart.hasEnoughDataToPayAndDeliver()) {
-            throw new NotEnoughDataToPayAndDeliverException();
-        }
-        PaymentFacade.pay(customerCheckoutCart.getPaymentMethod(), customerCart.getTotalPrice());
+        if (!customerCheckoutCart.hasEnoughDataToPayAndDeliver()) throw new NotEnoughDataToPayAndDeliverException();
 
         Order newOrder = customerCheckoutCart.placeOrder();
         orderRepository.save(newOrder);
-
         List<OrderDetail> orderDetails = customerCart.mapToOrderDetails(newOrder.getOrderId());
         orderDetailsRepository.saveAll(orderDetails);
 
-        BookFacade.updateBooksProductsAmount();
-        DeliveryFacade.notifyDeliveryService();
+        orderMQTemplate.publishPayment(customerCart, customerCheckoutCart, newOrder.getOrderId());
+        orderMQTemplate.publishBooksDecrement(orderDetails);
+        orderMQTemplate.publishDelivery(newOrder.getOrderId(), customerCheckoutCart.getAddress());
 
         checkoutCartRepository.deleteCheckoutCartByCustomerId(customerId);
         cartRepository.deleteCartByCustomerId(customerId);

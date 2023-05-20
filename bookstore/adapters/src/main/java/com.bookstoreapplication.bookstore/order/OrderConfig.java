@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 public class OrderConfig {
 
+    private final OrderRabbitMQTemplate orderRabbitMQTemplate;
     private final CartRedisRepository cartRedisRepository;
     private final CheckoutCartRedisRepository checkoutCartRedisRepository;
     private final BookProductJpaRepository bookProductJpaRepository;
@@ -26,6 +27,7 @@ public class OrderConfig {
     @Bean
     CheckoutCartHandler checkoutCartHandler(){
         return new CheckoutCartHandler(
+                orderRabbitMQTemplate,
                 cartHandler(),
                 cartRedisRepository,
                 checkoutCartRedisRepository,
