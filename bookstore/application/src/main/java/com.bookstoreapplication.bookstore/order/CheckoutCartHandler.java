@@ -5,7 +5,6 @@ import com.bookstoreapplication.bookstore.order.exception.NotEnoughDataToPayAndD
 import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
@@ -26,14 +25,12 @@ class CheckoutCartHandler {
     private final PlacedOrderPublisher placedOrderPublisher;
 
     @Transactional
-    @Cacheable(cacheNames = "Address")
     public void updateAddress(long customerId, @Valid Address address){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
         checkoutCartRepository.save(customerCheckoutCart.updateAddress(address));
     }
 
     @Transactional
-    @Cacheable(cacheNames = "PaymentMethod")
     public void updatePaymentMethod(long customerId, @Valid PaymentMethod paymentMethod){
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
         checkoutCartRepository.save(customerCheckoutCart.updatePaymentMethod(paymentMethod));

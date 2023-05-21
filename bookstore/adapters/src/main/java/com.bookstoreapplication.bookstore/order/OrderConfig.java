@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @AllArgsConstructor
-public class OrderConfig {
+class OrderConfig {
 
     private final OrderRabbitMQTemplate orderRabbitMQTemplate;
     private final CartRedisRepository cartRedisRepository;
