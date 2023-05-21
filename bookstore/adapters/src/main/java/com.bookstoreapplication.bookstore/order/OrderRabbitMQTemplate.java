@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.order;
 
+import com.bookstoreapplication.bookstore.payment.value_object.ServiceType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -39,7 +40,8 @@ class OrderRabbitMQTemplate implements OrderMQTemplate {
     private String toPaymentJson(Cart cart, CheckoutCart customerCheckoutCart, UUID orderId) {
         try {
             ObjectNode rootNode = objectMapper.createObjectNode();
-            rootNode.put("orderId", orderId.toString());
+            rootNode.put("serviceType", ServiceType.ORDER.toString());
+            rootNode.put("serviceId", orderId.toString());
             rootNode.put("paymentMethod", customerCheckoutCart.getPaymentMethod().toString());
             rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
             return objectMapper.writeValueAsString(rootNode);

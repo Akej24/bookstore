@@ -32,14 +32,12 @@ class UserHandler {
         log.info("Successfully registered");
     }
 
-    @Cacheable(cacheNames = "User")
     public UserQueryResponse getUserById(long userId){
         User user = findUserById(userId);
         log.info("User with id {} has been fetched from the database", userId);
         return UserQueryResponse.toResponse(user);
     }
 
-    @Cacheable(cacheNames = "Users")
     public Set<UserQueryResponse> getAllUsers(PageRequest pageRequest) {
         List<User> users = userRepository.findAllBy(pageRequest);
         log.info("All users have been fetched from the database");

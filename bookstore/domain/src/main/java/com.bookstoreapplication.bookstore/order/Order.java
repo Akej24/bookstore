@@ -14,7 +14,6 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 class Order implements Serializable {
 
     @Id

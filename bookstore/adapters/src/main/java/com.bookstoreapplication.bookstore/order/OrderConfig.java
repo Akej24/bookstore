@@ -39,7 +39,6 @@ class OrderConfig {
     @Bean
     OrderHandler orderHandler(){
         return new OrderHandler(
-                orderDetailsJpaRepository,
                 orderJpaRepository
         );
     }
