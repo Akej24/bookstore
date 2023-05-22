@@ -16,3 +16,6 @@ WORKDIR /opt/app
 COPY --from=builder /opt/app/monolith/target/*.jar /opt/app/*.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
+
+#docker build -t bookstore-app:1.0 .
+
