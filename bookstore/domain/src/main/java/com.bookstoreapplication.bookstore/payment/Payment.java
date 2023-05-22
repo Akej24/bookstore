@@ -45,4 +45,8 @@ class Payment {
         this.totalPrice = totalPrice;
         this.paymentStatus = PaymentStatus.INITIALIZED;
     }
+
+    void updateStatus(PaymentStatus paymentStatus){
+        this.paymentStatus = PaymentStatus.valueOf(paymentStatus.toString());
+    }
 }
