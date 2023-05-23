@@ -11,7 +11,7 @@ services:
     volumes:
       - bookstore-mysql:/var/lib/mysql
     networks:
-      bookstore-network:
+      - bookstore-network
     container_name: mysql
 
   redis:
@@ -22,22 +22,24 @@ services:
     volumes:
       - bookstore-redis:/data
     networks:
-      bookstore-network:
+      - bookstore-network
     container_name: redis
 
   rabbitmq:
     image: rabbitmq:3.12.0-rc.2-management
+    hostname: rabbitmq
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     ports:
+      - "5673:5673"
       - "5672:5672"
       - "15672:15672"
     volumes:
       - bookstore-rabbitmq:/var/lib/rabbitmq
     networks:
-      bookstore-network:
+      - bookstore-network
     container_name: rabbitmq
 
   jenkins:
@@ -48,7 +50,7 @@ services:
     volumes:
       - bookstore-jenkins:/var/jenkins_home
     networks:
-      bookstore-network:
+      - bookstore-network
     container_name: jenkins
 
   app:
@@ -58,18 +60,20 @@ services:
     environment:
       REDIS_URL: redis://redis:6381/0
       MYSQL_HOST: mysql://mysql:3308/bookstore_db
+      SPRING_RABBITMQ_HOST: rabbitmq
     depends_on:
       - mysql
       - redis
       - rabbitmq
       - jenkins
     networks:
-      bookstore-network:
+      - bookstore-network
     container_name: app
-
 
 networks:
   bookstore-network:
+    external:
+      name: bookstore-network
 
 volumes:
   bookstore-mysql:
