@@ -25,7 +25,7 @@ class SecurityConfig {
       .hasRole("USER") */
 
     private static final String[] NO_AUTH_ENDPOINTS = {
-        "/swagger-ui/**",
+            "/swagger-ui/**",
             "/webjars/**",
             "/v2/api-docs",
             "/swagger-resources/**",
