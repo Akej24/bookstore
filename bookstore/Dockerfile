@@ -1,12 +1,7 @@
 FROM eclipse-temurin:17-jdk-alpine as builder
 WORKDIR /opt/app
-COPY monolith/ ./monolith/
-COPY adapters/ ./adapters/
-COPY domain/ ./domain/
-COPY application/ ./application/
-
+COPY monolith/ adapters/ domain/ application/ mvnw pom.xml ./
 COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
 COPY ./monolith/target ./monolith/target
 RUN ./mvnw clean install
