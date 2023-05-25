@@ -1,8 +1,8 @@
 package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.book.value_object.*;
-import com.bookstoreapplication.bookstore.order.exception.NotEnoughBooksInMagazineException;
-import com.bookstoreapplication.bookstore.order.value_object.BooksAmount;
+import com.bookstoreapplication.bookstore.purchase.exception.NotEnoughBooksInMagazineException;
+import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
 import lombok.*;
 
 import javax.persistence.*;

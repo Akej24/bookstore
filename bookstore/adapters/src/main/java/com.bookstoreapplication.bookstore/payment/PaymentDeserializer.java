@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.payment;
 
-import com.bookstoreapplication.bookstore.order.value_object.PaymentMethod;
-import com.bookstoreapplication.bookstore.order.value_object.TotalPrice;
+import com.bookstoreapplication.bookstore.purchase.value_object.PaymentMethod;
+import com.bookstoreapplication.bookstore.purchase.value_object.TotalPrice;
 import com.bookstoreapplication.bookstore.payment.value_object.ServiceType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

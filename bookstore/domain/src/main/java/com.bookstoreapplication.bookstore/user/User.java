@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
-import com.bookstoreapplication.bookstore.order.value_object.Funds;
+import com.bookstoreapplication.bookstore.purchase.value_object.Funds;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
