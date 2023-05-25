@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "orders")
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 class Order implements Serializable {
 

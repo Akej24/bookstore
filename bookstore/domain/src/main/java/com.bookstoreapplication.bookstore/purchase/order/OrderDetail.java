@@ -6,10 +6,7 @@ import com.bookstoreapplication.bookstore.book.value_object.BookTitle;
 import com.bookstoreapplication.bookstore.purchase.cart.Cart;
 import com.bookstoreapplication.bookstore.purchase.cart.CartLine;
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @Table(name = "order_details")
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 public class OrderDetail {
