@@ -44,7 +44,7 @@ public class CheckoutCartHandler {
 
     public CheckoutCartQueryResponse getCheckoutCart(long customerId) {
         CheckoutCart customerCheckoutCart = findCheckoutCartByCustomerId(customerId);
-        return CheckoutCartQueryResponse.toResponse(customerCheckoutCart);
+        return CheckoutCartQueryResponse.from(customerCheckoutCart);
     }
 
     @Transactional

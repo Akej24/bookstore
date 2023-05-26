@@ -19,6 +19,7 @@ import java.io.UncheckedIOException;
 
 @Configuration
 class JsonModuleConfig {
+
     @Bean
     public Module jsonModuleSerializer() {
         var module = new SimpleModule();
@@ -36,6 +37,7 @@ class JsonModuleConfig {
                 }
             }
         });
+
         module.addDeserializer(Json.class, new StdDeserializer<>(Json.class) {
             private Json deserializeTree(JsonNode tree) {
                 if (tree.isTextual()) {

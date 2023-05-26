@@ -23,7 +23,6 @@ public class BooksDecrementJsonConverter {
         try {
             ObjectNode rootNode = objectMapper.createObjectNode();
             ArrayNode arrayNode = objectMapper.createArrayNode();
-
             for (OrderDetail orderDetail : orderDetails) {
                 ObjectNode bookWithAmountNode = objectMapper.createObjectNode();
                 bookWithAmountNode.put("bookId", orderDetail.getBookId());
@@ -52,5 +51,4 @@ public class BooksDecrementJsonConverter {
             throw new RuntimeException("Unable to write from json books decrement message");
         }
     }
-
 }

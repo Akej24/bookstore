@@ -6,6 +6,7 @@ import com.bookstoreapplication.bookstore.purchase.cart.Cart;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.Address;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.CheckoutCart;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,6 +25,7 @@ class OrderRabbitMQTemplate implements OrderMQTemplate {
     private final BooksDecrementJsonConverter booksDecrementJsonConverter;
     private final PaymentJsonConverter paymentJsonConverter;
     private final RabbitTemplate rabbitTemplate;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void publishPayment(Cart cart, CheckoutCart customerCheckoutCart, UUID orderId) {
