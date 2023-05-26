@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
 class UserJsonQueryResponse {
 
     @JsonUnwrapped
-    private UserEmail email;
+    private final UserEmail email;
     @JsonUnwrapped
-    private Username username;
+    private final Username username;
     @JsonUnwrapped
-    private FirstName firstName;
+    private final FirstName firstName;
     @JsonUnwrapped
-    private LastName lastName;
+    private final LastName lastName;
     @JsonUnwrapped
-    private DateOfBirth dateOfBirth;
+    private final DateOfBirth dateOfBirth;
     @JsonUnwrapped
-    private Funds funds;
+    private final Funds funds;
 
     static List<UserJsonQueryResponse> from(List<UserQueryResponse> sources){
         return sources.stream().map(UserJsonQueryResponse::from).collect(Collectors.toList());

@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class OrderJsonQueryResponse {
 
-    private UUID orderId;
-    private PaymentMethod paymentMethod;
+    private final UUID orderId;
+    private final PaymentMethod paymentMethod;
     @JsonUnwrapped
-    private OrderDate orderDate;
-    private OrderStatus orderStatus;
+    private final OrderDate orderDate;
+    private final OrderStatus orderStatus;
 
     static List<OrderJsonQueryResponse> from(List<OrderQueryResponse> sources){
         return sources.stream().map(OrderJsonQueryResponse::from).collect(Collectors.toList());

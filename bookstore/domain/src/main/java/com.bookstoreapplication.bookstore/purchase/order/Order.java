@@ -29,7 +29,8 @@ class Order implements Serializable {
     @NotNull(message = "Order status cannot be null")
     private OrderStatus orderStatus;
 
-    Order(CheckoutCart checkoutCart) {
+    private Order(CheckoutCart checkoutCart) {
+        checkoutCart.checkEnoughDataToPayAndDeliver();
         orderId = UUID.randomUUID();
         customerId = checkoutCart.getCartId();
         paymentMethod = checkoutCart.getPaymentMethod();
@@ -37,4 +38,7 @@ class Order implements Serializable {
         orderStatus = OrderStatus.INITIALIZED;
     }
 
+    static Order from(CheckoutCart source){
+        return new Order(source);
+    }
 }

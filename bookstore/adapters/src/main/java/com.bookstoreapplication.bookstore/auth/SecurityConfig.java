@@ -3,7 +3,6 @@ package com.bookstoreapplication.bookstore.auth;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,7 +44,6 @@ class SecurityConfig {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-//                .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -58,5 +56,4 @@ class SecurityConfig {
 
         return http.build();
     }
-
 }

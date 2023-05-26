@@ -44,5 +44,4 @@ class LoginService {
         log.info("User successfully logged in - created jwt token");
         return jwtToken;
     }
-
 }

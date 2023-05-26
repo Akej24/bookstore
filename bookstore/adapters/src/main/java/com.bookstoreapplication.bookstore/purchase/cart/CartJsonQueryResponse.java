@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 class CartJsonQueryResponse {
 
     @JsonUnwrapped
-    private List<CartLineJsonQueryResponse> cartLines;
+    private final List<CartLineJsonQueryResponse> cartLines;
     @JsonUnwrapped
-    private TotalPrice totalPrice;
+    private final TotalPrice totalPrice;
 
     static CartJsonQueryResponse from(CartQueryResponse source) {
         return new CartJsonQueryResponse(
@@ -32,9 +32,9 @@ class CartJsonQueryResponse {
     static class CartLineJsonQueryResponse{
 
         @JsonUnwrapped
-        private BookProductJsonQueryResponse bookProduct;
+        private final BookProductJsonQueryResponse bookProduct;
         @JsonUnwrapped
-        private BooksAmount amount;
+        private final BooksAmount amount;
 
         static List<CartLineJsonQueryResponse> from(List<CartQueryResponse.CartLineQueryResponse> sources){
             return sources.stream()
@@ -50,15 +50,15 @@ class CartJsonQueryResponse {
     static class BookProductJsonQueryResponse{
 
         @JsonUnwrapped
-        private BookTitle bookTitle;
+        private final BookTitle bookTitle;
         @JsonUnwrapped
-        private BookAuthor bookAuthor;
+        private final BookAuthor bookAuthor;
         @JsonUnwrapped
-        private AvailabilityStatus availabilityStatus;
+        private final AvailabilityStatus availabilityStatus;
         @JsonUnwrapped
-        private AvailablePieces availablePieces;
+        private final AvailablePieces availablePieces;
         @JsonUnwrapped
-        private BookPrice bookPrice;
+        private final BookPrice bookPrice;
 
         static BookProductJsonQueryResponse from(CartQueryResponse.BookProductQueryResponse source){
             return new BookProductJsonQueryResponse(

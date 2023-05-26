@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class CartQueryResponse {
 
-    private List<CartLineQueryResponse> cartLines;
-    private TotalPrice totalPrice;
+    private final List<CartLineQueryResponse> cartLines;
+    private final TotalPrice totalPrice;
 
     static CartQueryResponse toResponse(Cart source) {
         return new CartQueryResponse(
@@ -28,8 +28,8 @@ class CartQueryResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class CartLineQueryResponse{
 
-        private BookProductQueryResponse bookProduct;
-        private BooksAmount amount;
+        private final BookProductQueryResponse bookProduct;
+        private final BooksAmount amount;
 
         static List<CartLineQueryResponse> toResponses(List<CartLine> cartLines){
             return cartLines.stream()
@@ -44,11 +44,11 @@ class CartQueryResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class BookProductQueryResponse{
 
-        private BookTitle bookTitle;
-        private BookAuthor bookAuthor;
-        private AvailabilityStatus availabilityStatus;
-        private AvailablePieces availablePieces;
-        private BookPrice bookPrice;
+        private final BookTitle bookTitle;
+        private final BookAuthor bookAuthor;
+        private final AvailabilityStatus availabilityStatus;
+        private final AvailablePieces availablePieces;
+        private final BookPrice bookPrice;
 
         static BookProductQueryResponse toResponse(BookProduct source){
             return new BookProductQueryResponse(

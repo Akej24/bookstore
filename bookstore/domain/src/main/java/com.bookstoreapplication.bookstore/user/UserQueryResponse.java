@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class UserQueryResponse {
 
-    private UserEmail email;
-    private Username username;
-    private FirstName firstName;
-    private LastName lastName;
-    private DateOfBirth dateOfBirth;
-    private Funds funds;
+    private final UserEmail email;
+    private final Username username;
+    private final FirstName firstName;
+    private final LastName lastName;
+    private final DateOfBirth dateOfBirth;
+    private final Funds funds;
 
     static List<UserQueryResponse> from(List<User> sources){
         return sources.stream()

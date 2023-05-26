@@ -1,6 +1,7 @@
 package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.book.value_object.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,16 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 class BookQueryResponse {
 
-    private BookTitle bookTitle;
-    private BookAuthor bookAuthor;
-    private ReleaseDate releaseDate;
-    private NumberOfPages numberOfPages;
-    private AvailabilityStatus availabilityStatus;
-    private AvailablePieces availablePieces;
-    private BookPrice bookPrice;
+    private final BookTitle bookTitle;
+    private final BookAuthor bookAuthor;
+    private final ReleaseDate releaseDate;
+    private final NumberOfPages numberOfPages;
+    private final AvailabilityStatus availabilityStatus;
+    private final AvailablePieces availablePieces;
+    private final BookPrice bookPrice;
 
     static List<BookQueryResponse> from(List<Book> sources){
         return sources.stream()

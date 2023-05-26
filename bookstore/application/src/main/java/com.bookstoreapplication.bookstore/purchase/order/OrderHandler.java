@@ -4,13 +4,11 @@ import com.bookstoreapplication.bookstore.purchase.cart.Cart;
 import com.bookstoreapplication.bookstore.purchase.cart.CartHandler;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.CheckoutCart;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.CheckoutCartHandler;
-import com.bookstoreapplication.bookstore.purchase.exception.NotEnoughDataToPayAndDeliverException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @AllArgsConstructor
@@ -28,9 +26,7 @@ class OrderHandler {
         Cart customerCart = cartHandler.findCartByCustomerId(customerId);
         CheckoutCart customerCheckoutCart = checkoutCartHandler.findCheckoutCartByCustomerId(customerId);
 
-        if (!customerCheckoutCart.hasEnoughDataToPayAndDeliver()) throw new NotEnoughDataToPayAndDeliverException();
-
-        Order newOrder = new Order(customerCheckoutCart);
+        Order newOrder = Order.from(customerCheckoutCart);
         orderRepository.save(newOrder);
         List<OrderDetail> orderDetails = OrderDetail.mapFromCart(newOrder.getOrderId(), customerCart);
         orderDetailsRepository.saveAll(orderDetails);

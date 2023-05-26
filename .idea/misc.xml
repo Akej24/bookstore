@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="com.bookstoreapplication.bookstore.auth.JwtManager" method="generateJwtToken" />
+    <pattern value="com.bookstoreapplication.bookstore.auth.JwtManager" />
+    <pattern value="com.bookstoreapplication.bookstore.auth.JwtManager" method="validateJwtToken" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>

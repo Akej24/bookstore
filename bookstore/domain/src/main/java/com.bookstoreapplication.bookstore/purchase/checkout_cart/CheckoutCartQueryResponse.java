@@ -16,8 +16,8 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class CheckoutCartQueryResponse {
 
-    private AddressQueryResponse address;
-    private PaymentMethod paymentMethod;
+    private final AddressQueryResponse address;
+    private final PaymentMethod paymentMethod;
 
     static CheckoutCartQueryResponse from(CheckoutCart source) {
         return new CheckoutCartQueryResponse(
@@ -30,13 +30,13 @@ class CheckoutCartQueryResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class AddressQueryResponse{
 
-        private FirstName firstName;
-        private LastName lastName;
-        private PhoneNumber phoneNumber;
-        private Street street;
-        private StreetNumber streetNumber;
-        private ZipCode zipCode;
-        private City city;
+        private final FirstName firstName;
+        private final LastName lastName;
+        private final PhoneNumber phoneNumber;
+        private final Street street;
+        private final StreetNumber streetNumber;
+        private final ZipCode zipCode;
+        private final City city;
 
         static AddressQueryResponse from(Address source){
             return new AddressQueryResponse(

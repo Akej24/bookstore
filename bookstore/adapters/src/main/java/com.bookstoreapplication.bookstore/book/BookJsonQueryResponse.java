@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.book.value_object.*;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,23 +10,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 class BookJsonQueryResponse {
 
     @JsonUnwrapped
-    private BookTitle bookTitle;
+    private final BookTitle bookTitle;
     @JsonUnwrapped
-    private BookAuthor bookAuthor;
+    private final BookAuthor bookAuthor;
     @JsonUnwrapped
-    private ReleaseDate releaseDate;
+    private final ReleaseDate releaseDate;
     @JsonUnwrapped
-    private NumberOfPages numberOfPages;
+    private final NumberOfPages numberOfPages;
     @JsonUnwrapped
-    private AvailabilityStatus availabilityStatus;
+    private final AvailabilityStatus availabilityStatus;
     @JsonUnwrapped
-    private AvailablePieces availablePieces;
+    private final AvailablePieces availablePieces;
     @JsonUnwrapped
-    private BookPrice bookPrice;
+    private final BookPrice bookPrice;
 
     static List<BookJsonQueryResponse> from(List<BookQueryResponse> sources) {
         return sources.stream()

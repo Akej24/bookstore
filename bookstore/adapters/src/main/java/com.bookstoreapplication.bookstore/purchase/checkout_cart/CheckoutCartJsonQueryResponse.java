@@ -14,11 +14,11 @@ import lombok.Getter;
 class CheckoutCartJsonQueryResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private AddressJsonQueryResponse address;
+    private final AddressJsonQueryResponse address;
 
     @JsonUnwrapped
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private PaymentMethod paymentMethod;
+    private final PaymentMethod paymentMethod;
 
     static CheckoutCartJsonQueryResponse from(CheckoutCartQueryResponse source) {
         return new CheckoutCartJsonQueryResponse(
@@ -32,19 +32,19 @@ class CheckoutCartJsonQueryResponse {
     static class AddressJsonQueryResponse{
 
         @JsonUnwrapped
-        private FirstName firstName;
+        private final FirstName firstName;
         @JsonUnwrapped
-        private LastName lastName;
+        private final LastName lastName;
         @JsonUnwrapped
-        private PhoneNumber phoneNumber;
+        private final PhoneNumber phoneNumber;
         @JsonUnwrapped
-        private Street street;
+        private final Street street;
         @JsonUnwrapped
-        private StreetNumber streetNumber;
+        private final StreetNumber streetNumber;
         @JsonUnwrapped
-        private ZipCode zipCode;
+        private final ZipCode zipCode;
         @JsonUnwrapped
-        private City city;
+        private final City city;
 
         static AddressJsonQueryResponse from(CheckoutCartQueryResponse.AddressQueryResponse source){
             return new AddressJsonQueryResponse(

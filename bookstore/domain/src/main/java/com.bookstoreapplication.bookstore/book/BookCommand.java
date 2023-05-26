@@ -2,7 +2,6 @@ package com.bookstoreapplication.bookstore.book;
 
 import com.bookstoreapplication.bookstore.book.value_object.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.Valid;

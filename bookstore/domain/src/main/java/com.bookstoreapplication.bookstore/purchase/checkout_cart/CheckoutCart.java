@@ -28,13 +28,14 @@ public class CheckoutCart {
         return this;
     }
 
-    public boolean hasEnoughDataToPayAndDeliver(){
-        if(paymentMethod == null) {
-             throw new MissingPaymentMethodInCheckoutCartException();
+    public void checkEnoughDataToPayAndDeliver(){
+        if(paymentMethod == null && address == null) {
+            throw new NotEnoughDataToPayAndDeliverException();
+        } else if(paymentMethod == null) {
+            throw new MissingPaymentMethodInCheckoutCartException();
         } else if(address == null) {
             throw new MissingDeliveryDetailsInCheckoutCartException();
         }
-        return true;
     }
 
 }
