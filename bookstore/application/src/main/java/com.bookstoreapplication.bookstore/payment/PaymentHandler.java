@@ -7,24 +7,20 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
-class PaymentService {
+class PaymentHandler {
 
     private final PaymentRepository paymentRepository;
-    private final IPaymentDeserializer IPaymentDeserializer;
 
     @RabbitListener(queues = "payment")
-    void receivePaymentFromQueue(String jsonPayment) throws InterruptedException {
-        Payment newPayment = IPaymentDeserializer.fromJson(jsonPayment);
-
-        //Payment transaction imitation
+    void registerNewPayment(Payment newPayment) throws InterruptedException {
+        // Payment transaction imitation
         Thread.sleep(3000);
         System.out.println("Paying... [3sec]");
         newPayment.updateStatus(PaymentStatus.SUCCEED);
         if (newPayment.getTotalPrice().getTotalPrice().compareTo(BigDecimal.ZERO) < 0){
             newPayment.updateStatus(PaymentStatus.REJECTED);
         }
-        //Payment transaction imitation
         paymentRepository.save(newPayment);
+        // Payment transaction imitation
     }
-
 }

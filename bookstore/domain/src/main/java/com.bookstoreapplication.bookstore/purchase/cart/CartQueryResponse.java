@@ -1,0 +1,63 @@
+package com.bookstoreapplication.bookstore.purchase.cart;
+
+import com.bookstoreapplication.bookstore.book.value_object.*;
+import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
+import com.bookstoreapplication.bookstore.purchase.value_object.TotalPrice;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+class CartQueryResponse {
+
+    private List<CartLineQueryResponse> cartLines;
+    private TotalPrice totalPrice;
+
+    static CartQueryResponse toResponse(Cart source) {
+        return new CartQueryResponse(
+                CartLineQueryResponse.toResponses(source.getCartLines()),
+                source.getTotalPrice()
+        );
+    }
+
+    @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    static class CartLineQueryResponse{
+
+        private BookProductQueryResponse bookProduct;
+        private BooksAmount amount;
+
+        static List<CartLineQueryResponse> toResponses(List<CartLine> cartLines){
+            return cartLines.stream()
+                    .map( cartLine -> new CartLineQueryResponse(
+                            BookProductQueryResponse.toResponse(cartLine.getBookProduct()),
+                            cartLine.getAmount()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    static class BookProductQueryResponse{
+
+        private BookTitle bookTitle;
+        private BookAuthor bookAuthor;
+        private AvailabilityStatus availabilityStatus;
+        private AvailablePieces availablePieces;
+        private BookPrice bookPrice;
+
+        static BookProductQueryResponse toResponse(BookProduct source){
+            return new BookProductQueryResponse(
+                    source.getBookTitle(),
+                    source.getBookAuthor(),
+                    source.getAvailabilityStatus(),
+                    source.getAvailablePieces(),
+                    source.getBookPrice()
+            );
+        }
+    }
+}

@@ -4,6 +4,7 @@ import com.bookstoreapplication.bookstore.book.value_object.*;
 import com.bookstoreapplication.bookstore.purchase.value_object.BooksAmount;
 import com.bookstoreapplication.bookstore.purchase.value_object.TotalPrice;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,42 +12,42 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@AllArgsConstructor
-class CartQueryResponse {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+class CartJsonQueryResponse {
 
     @JsonUnwrapped
-    private List<CartLineQueryResponse> cartLines;
+    private List<CartLineJsonQueryResponse> cartLines;
     @JsonUnwrapped
     private TotalPrice totalPrice;
 
-    static CartQueryResponse toResponse(Cart source) {
-        return new CartQueryResponse(
-                CartLineQueryResponse.toResponses(source.getCartLines()),
+    static CartJsonQueryResponse from(CartQueryResponse source) {
+        return new CartJsonQueryResponse(
+                CartLineJsonQueryResponse.from(source.getCartLines()),
                 source.getTotalPrice()
         );
     }
 
     @Getter
-    @AllArgsConstructor
-    static class CartLineQueryResponse{
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    static class CartLineJsonQueryResponse{
 
         @JsonUnwrapped
-        private BookProductQueryResponse bookProduct;
+        private BookProductJsonQueryResponse bookProduct;
         @JsonUnwrapped
         private BooksAmount amount;
 
-        static List<CartLineQueryResponse> toResponses(List<CartLine> cartLines){
-            return cartLines.stream()
-                    .map( cartLine -> new CartLineQueryResponse(
-                            BookProductQueryResponse.toResponse(cartLine.getBookProduct()),
-                            cartLine.getAmount()))
+        static List<CartLineJsonQueryResponse> from(List<CartQueryResponse.CartLineQueryResponse> sources){
+            return sources.stream()
+                    .map( source -> new CartLineJsonQueryResponse(
+                            BookProductJsonQueryResponse.from(source.getBookProduct()),
+                            source.getAmount()))
                     .collect(Collectors.toList());
         }
     }
 
     @Getter
-    @AllArgsConstructor
-    static class BookProductQueryResponse{
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    static class BookProductJsonQueryResponse{
 
         @JsonUnwrapped
         private BookTitle bookTitle;
@@ -59,8 +60,8 @@ class CartQueryResponse {
         @JsonUnwrapped
         private BookPrice bookPrice;
 
-        static BookProductQueryResponse toResponse(BookProduct source){
-            return new BookProductQueryResponse(
+        static BookProductJsonQueryResponse from(CartQueryResponse.BookProductQueryResponse source){
+            return new BookProductJsonQueryResponse(
                     source.getBookTitle(),
                     source.getBookAuthor(),
                     source.getAvailabilityStatus(),
@@ -68,6 +69,5 @@ class CartQueryResponse {
                     source.getBookPrice()
             );
         }
-
     }
 }

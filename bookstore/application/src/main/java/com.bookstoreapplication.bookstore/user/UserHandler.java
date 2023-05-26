@@ -4,7 +4,6 @@ import com.bookstoreapplication.bookstore.user.exception.EmailTakenException;
 import com.bookstoreapplication.bookstore.user.exception.UserDoesNotExistException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -35,13 +34,13 @@ class UserHandler {
     public UserQueryResponse getUserById(long userId){
         User user = findUserById(userId);
         log.info("User with id {} has been fetched from the database", userId);
-        return UserQueryResponse.toResponse(user);
+        return UserQueryResponse.from(user);
     }
 
-    public Set<UserQueryResponse> getAllUsers(PageRequest pageRequest) {
+    public List<UserQueryResponse> getAllUsers(PageRequest pageRequest) {
         List<User> users = userRepository.findAllBy(pageRequest);
         log.info("All users have been fetched from the database");
-        return UserQueryResponse.toResponses(users);
+        return UserQueryResponse.from(users);
     }
 
     @Transactional
@@ -63,7 +62,7 @@ class UserHandler {
         String encodedPassword = passwordEncoder.encode(source.getPassword().getPassword());
         User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
         log.info("The user with id {} has been updated", userId);
-        return UserQueryResponse.toResponse(savedUser);
+        return UserQueryResponse.from(savedUser);
     }
 
     public User findUserById(Long userId) {

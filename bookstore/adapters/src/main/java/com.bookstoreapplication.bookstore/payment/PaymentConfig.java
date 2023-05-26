@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Configuration;
 class PaymentConfig {
 
     private final PaymentJpaRepository paymentJpaRepository;
-    private final PaymentDeserializer paymentDeserializer;
 
     @Bean
-    PaymentService paymentService(){
-        return new PaymentService(
-                paymentJpaRepository,
-                paymentDeserializer
+    PaymentHandler paymentService(){
+        return new PaymentHandler(
+                paymentJpaRepository
         );
     }
 

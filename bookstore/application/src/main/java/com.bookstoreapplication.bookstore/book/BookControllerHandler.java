@@ -36,7 +36,7 @@ class BookControllerHandler {
 
     @Cacheable(cacheNames = "Book")
     public BookQueryResponse getBookById(long bookId){
-        BookQueryResponse book = BookQueryResponse.toResponse(bookSharedHandler.findBookById(bookId));
+        BookQueryResponse book = BookQueryResponse.from(bookSharedHandler.findBookById(bookId));
         log.info("Successively fetch a book with id {} from the database", bookId);
         return book;
     }
@@ -45,7 +45,7 @@ class BookControllerHandler {
     public List<BookQueryResponse> getAllBooks(Specification<Book> specification, Pageable pageable) {
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
         log.info("All books have been fetched from the database");
-        return BookQueryResponse.toResponses(books);
+        return BookQueryResponse.from(books);
     }
 
     @Transactional

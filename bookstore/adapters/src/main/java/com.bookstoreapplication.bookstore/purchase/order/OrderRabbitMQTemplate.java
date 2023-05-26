@@ -1,7 +1,7 @@
 package com.bookstoreapplication.bookstore.purchase.order;
 
 import com.bookstoreapplication.bookstore.book.BooksDecrementJsonConverter;
-import com.bookstoreapplication.bookstore.payment.value_object.ServiceType;
+import com.bookstoreapplication.bookstore.payment.PaymentJsonConverter;
 import com.bookstoreapplication.bookstore.purchase.cart.Cart;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.Address;
 import com.bookstoreapplication.bookstore.purchase.checkout_cart.CheckoutCart;
@@ -22,11 +22,12 @@ class OrderRabbitMQTemplate implements OrderMQTemplate {
     private static final String ROUTING_KEY_BOOKS_DECREMENT = "books_decrement";
     private static final String ROUTING_KEY_DELIVERY = "delivery";
     private final BooksDecrementJsonConverter booksDecrementJsonConverter;
+    private final PaymentJsonConverter paymentJsonConverter;
     private final RabbitTemplate rabbitTemplate;
 
     @Override
     public void publishPayment(Cart cart, CheckoutCart customerCheckoutCart, UUID orderId) {
-        rabbitTemplate.convertAndSend(ROUTING_KEY_PAYMENT, toPaymentJson(cart, customerCheckoutCart, orderId));
+        rabbitTemplate.convertAndSend(ROUTING_KEY_PAYMENT, paymentJsonConverter.toJson(cart, customerCheckoutCart, orderId));
     }
 
     @Override
@@ -37,19 +38,6 @@ class OrderRabbitMQTemplate implements OrderMQTemplate {
     @Override
     public void publishDelivery(UUID orderId, Address address) {
         rabbitTemplate.convertAndSend(ROUTING_KEY_DELIVERY, toDeliveryJson(orderId, address));
-    }
-
-    private String toPaymentJson(Cart cart, CheckoutCart customerCheckoutCart, UUID orderId) {
-        try {
-            ObjectNode rootNode = objectMapper.createObjectNode();
-            rootNode.put("serviceType", ServiceType.ORDER.toString());
-            rootNode.put("serviceId", orderId.toString());
-            rootNode.put("paymentMethod", customerCheckoutCart.getPaymentMethod().toString());
-            rootNode.put("totalPrice", cart.getTotalPrice().getTotalPrice());
-            return objectMapper.writeValueAsString(rootNode);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to serialize payment message");
-        }
     }
 
     private String toDeliveryJson(UUID orderId, Address address) {

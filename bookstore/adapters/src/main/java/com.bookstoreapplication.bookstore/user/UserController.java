@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,14 +28,16 @@ class UserController {
     }
 
     @GetMapping("/{userId}")
-    ResponseEntity<UserQueryResponse> getUserById(@PathVariable long userId){
-        return new ResponseEntity<>(userHandler.getUserById(userId), HttpStatus.OK);
+    ResponseEntity<UserJsonQueryResponse> getUserById(@PathVariable long userId){
+        UserJsonQueryResponse jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
+        return new ResponseEntity<>(jsonUser, HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<Set<UserQueryResponse>> getAllUsers(@RequestParam(required = false) int page){
+    ResponseEntity<List<UserJsonQueryResponse>> getAllUsers(@RequestParam(required = false) int page){
         page = page>=0 ? page : 0;
-        return new ResponseEntity<>(userHandler.getAllUsers(PageRequest.of(page, PAGE_SIZE)), HttpStatus.OK);
+        List<UserJsonQueryResponse> jsonUsers = UserJsonQueryResponse.from(userHandler.getAllUsers(PageRequest.of(page, PAGE_SIZE)));
+        return new ResponseEntity<>(jsonUsers, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")

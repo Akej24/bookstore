@@ -19,11 +19,13 @@ class BookQueryResponse {
     private AvailablePieces availablePieces;
     private BookPrice bookPrice;
 
-    static List<BookQueryResponse> toResponses(List<Book> sources){
-        return sources.stream().map(BookQueryResponse::toResponse).collect(Collectors.toList());
+    static List<BookQueryResponse> from(List<Book> sources){
+        return sources.stream()
+                .map(BookQueryResponse::from)
+                .collect(Collectors.toList());
     }
 
-    static BookQueryResponse toResponse(Book source){
+    static BookQueryResponse from(Book source){
         return new BookQueryResponse(
                 source.getBookTitle(),
                 source.getBookAuthor(),

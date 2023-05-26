@@ -13,6 +13,9 @@ class UserConfig {
 
     @Bean
     public UserHandler userHandler(){
-        return new UserHandler(userJpaRepository, userBCryptPasswordEncoder);
+        return new UserHandler(
+                userJpaRepository,
+                userBCryptPasswordEncoder
+        );
     }
 }

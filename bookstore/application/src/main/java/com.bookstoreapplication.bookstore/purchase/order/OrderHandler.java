@@ -46,10 +46,10 @@ class OrderHandler {
     }
 
     @Transactional
-    public Set<OrderQueryResponse> getCustomerOrders(long customerId){
+    public List<OrderQueryResponse> getCustomerOrders(long customerId){
         List<Order> customerOrders = orderRepository.findAllByCustomerId(customerId);
         log.info("All orders for user with id {} has been fetched from database", customerId);
-        return OrderQueryResponse.toResponses(customerOrders);
+        return OrderQueryResponse.from(customerOrders);
     }
 
 }

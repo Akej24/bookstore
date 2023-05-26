@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -28,6 +29,7 @@ class OrderController {
     @GetMapping("")
     ResponseEntity<?> getCustomerOrders(HttpServletRequest request){
         long customerId = jwtService.extractUserIdFromRequest(request);
-        return new ResponseEntity<>(orderHandler.getCustomerOrders(customerId), HttpStatus.OK);
+        List<OrderJsonQueryResponse> jsonOrders = OrderJsonQueryResponse.from(orderHandler.getCustomerOrders(customerId));
+        return new ResponseEntity<>(jsonOrders, HttpStatus.OK);
     }
 }

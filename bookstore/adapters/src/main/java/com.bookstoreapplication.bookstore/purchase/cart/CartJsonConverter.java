@@ -16,11 +16,11 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-class CartJsonConverter {
+public class CartJsonConverter {
 
     private final ObjectMapper objectMapper;
 
-    String toJson(Cart cart) {
+    public String toJson(Cart cart) {
         try {
             ObjectNode rootNode = objectMapper.createObjectNode();
             rootNode.put("customerId", cart.getCustomerId());
@@ -49,7 +49,7 @@ class CartJsonConverter {
         }
     }
 
-    Cart fromJson(String json) {
+    public Cart fromJson(String json) {
         try {
             JsonNode rootNode = objectMapper.readTree(json);
             long customerId = rootNode.get("customerId").asLong();
