@@ -66,7 +66,7 @@ class Book implements Serializable {
         }
     }
 
-    void decreaseAvailablePieces(BooksAmount booksAmount){
+    Book decreaseAvailablePieces(BooksAmount booksAmount){
         int newAvailablePieces = availablePieces.getAvailablePieces() - booksAmount.getBooksAmount();
         if(newAvailablePieces == 0){
             toggleStatusIfPiecesZero();
@@ -74,6 +74,7 @@ class Book implements Serializable {
             throw new NotEnoughBooksInMagazineException();
         }
         availablePieces = new AvailablePieces(newAvailablePieces);
+        return this;
     }
 
     void toggleStatusIfPiecesZero(){

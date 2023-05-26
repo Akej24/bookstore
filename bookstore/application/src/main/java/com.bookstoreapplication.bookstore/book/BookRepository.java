@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.book;
 
+import com.bookstoreapplication.bookstore.purchase.order.OrderDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,6 +16,8 @@ interface BookRepository{
     List<Book> findAll();
 
     <S extends Book> S save(S entity);
+
+    <S extends Book> List<S> saveAll(Iterable<S> entities);
 
     void deleteBookByBookId(long BookId);
 

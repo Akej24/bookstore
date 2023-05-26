@@ -20,7 +20,7 @@ class CartController {
 
     @PostMapping("")
     ResponseEntity<?> initializeCart(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+        long bookId = JsonBookId.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.initializeCart(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -34,7 +34,7 @@ class CartController {
 
     @PostMapping("/product")
     ResponseEntity<?> addProduct(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+        long bookId = JsonBookId.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.addProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -42,7 +42,7 @@ class CartController {
 
     @DeleteMapping("/product")
     ResponseEntity<?> deleteProduct(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+        long bookId = JsonBookId.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.deleteProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -50,7 +50,7 @@ class CartController {
 
     @PatchMapping("/product/increase")
     ResponseEntity<?> increaseProductAmount(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+        long bookId = JsonBookId.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.increaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -58,7 +58,7 @@ class CartController {
 
     @PatchMapping("/product/decrease")
     ResponseEntity<?> decreaseProductAmount(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+        long bookId = JsonBookId.fromJson(json);
         long customerId = jwtService.extractUserIdFromRequest(request);
         cartHandler.decreaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();

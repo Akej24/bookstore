@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 class PaymentService {
@@ -18,7 +17,7 @@ class PaymentService {
         Payment newPayment = IPaymentDeserializer.fromJson(jsonPayment);
 
         //Payment transaction imitation
-        TimeUnit.SECONDS.sleep(3);
+        Thread.sleep(3000);
         System.out.println("Paying... [3sec]");
         newPayment.updateStatus(PaymentStatus.SUCCEED);
         if (newPayment.getTotalPrice().getTotalPrice().compareTo(BigDecimal.ZERO) < 0){

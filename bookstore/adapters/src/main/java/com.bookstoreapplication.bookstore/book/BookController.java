@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.book;
 
 import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -21,6 +22,7 @@ class BookController {
 
     private static final int PAGE_SIZE = 20;
     private final BookHandler bookHandler;
+    private final BooksDecrementJsonConverter booksDecrementJsonConverter;
 
     @PostMapping("")
     ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
@@ -29,12 +31,12 @@ class BookController {
     }
 
     @GetMapping("/{bookId}")
-    ResponseEntity<BookQueryResponse> getBookById(@PathVariable long bookId){
-        return new ResponseEntity<>(bookHandler.getBookById(bookId), HttpStatus.OK);
+    ResponseEntity<BookJsonQueryResponse> getBookById(@PathVariable long bookId){
+        return new ResponseEntity<>(new BookJsonQueryResponse(bookHandler.getBookById(bookId)), HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<Set<BookQueryResponse>> getAllBooks(
+    ResponseEntity<List<BookJsonQueryResponse>> getAllBooks(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
@@ -62,7 +64,7 @@ class BookController {
                         .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
         );
 
-        return new ResponseEntity<>(bookHandler.getAllBooks(specification, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(BookJsonQueryResponse.toList(bookHandler.getAllBooks(specification, pageable)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")
@@ -81,6 +83,12 @@ class BookController {
     ResponseEntity<?> updateBookById(@PathVariable long bookId, @RequestBody Json json){
         bookHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @RabbitListener(queues = "books_decrement")
+    public void decreaseBooksAmount(String json){
+        List<BooksDecrementCommand> booksToDecrement = booksDecrementJsonConverter.fromJson(json);
+        bookHandler.decrementBooksAmount(booksToDecrement);
     }
 
 }

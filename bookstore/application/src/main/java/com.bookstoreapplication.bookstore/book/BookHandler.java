@@ -4,6 +4,7 @@ import com.bookstoreapplication.bookstore.book.exception.BookDoesNotExistExcepti
 import com.bookstoreapplication.bookstore.book.exception.BookWithTitleAndAuthorExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Validated
@@ -39,7 +41,7 @@ class BookHandler {
     }
 
     @Cacheable(cacheNames = "Books")
-    public Set<BookQueryResponse> getAllBooks(Specification<Book> specification, Pageable pageable) {
+    public List<BookQueryResponse> getAllBooks(Specification<Book> specification, Pageable pageable) {
         List<Book> books = bookRepository.findAll(specification, pageable).getContent();
         log.info("All books have been fetched from the database");
         return BookQueryResponse.toResponses(books);
@@ -63,6 +65,17 @@ class BookHandler {
         Book bookToUpdate = bookRepository.findBookByBookId(bookId);
         bookRepository.save(bookToUpdate.update(source));
         log.info("The book with id {} has been updated", bookId);
+    }
+
+    @Transactional
+    public void decrementBooksAmount(List<@Valid BooksDecrementCommand> booksDecrementCommand){
+        List<Book> decrementedBooks = booksDecrementCommand.stream()
+                .map( bookToDecrement -> {
+                    Book book = findBookById(bookToDecrement.getBookId());
+                    return book.decreaseAvailablePieces(bookToDecrement.getBooksAmount());
+                })
+                .collect(Collectors.toList());
+        bookRepository.saveAll(decrementedBooks);
     }
 
     Book findBookById(long bookId) {
