@@ -20,17 +20,17 @@ import java.util.List;
 class BookController {
 
     private static final int PAGE_SIZE = 20;
-    private final BookHandler bookHandler;
+    private final BookControllerHandler bookControllerHandler;
 
     @PostMapping("")
     ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
-            bookHandler.addBook(BookJsonCommand.fromJson(json));
+            bookControllerHandler.addBook(BookJsonCommand.fromJson(json));
             return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{bookId}")
     ResponseEntity<BookJsonQueryResponse> getBookById(@PathVariable long bookId){
-        return new ResponseEntity<>(BookJsonQueryResponse.from(bookHandler.getBookById(bookId)), HttpStatus.OK);
+        return new ResponseEntity<>(BookJsonQueryResponse.from(bookControllerHandler.getBookById(bookId)), HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -61,25 +61,25 @@ class BookController {
                         .and(BookSpecifications.hasAvailablePiecesContainingIgnoreCase(availablePieces))
                         .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
         );
-        List<BookQueryResponse> booksJsonResponse = bookHandler.getAllBooks(specification, pageable);
+        List<BookQueryResponse> booksJsonResponse = bookControllerHandler.getAllBooks(specification, pageable);
         return new ResponseEntity<>(BookJsonQueryResponse.from(booksJsonResponse), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")
     ResponseEntity<?> deleteBookById(@PathVariable long bookId){
-        bookHandler.deleteBook(bookId);
+        bookControllerHandler.deleteBook(bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("")
     ResponseEntity<?> deleteAllBooks(){
-        bookHandler.deleteAllBooks();
+        bookControllerHandler.deleteAllBooks();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{bookId}")
     ResponseEntity<?> updateBookById(@PathVariable long bookId, @RequestBody Json json){
-        bookHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
+        bookControllerHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

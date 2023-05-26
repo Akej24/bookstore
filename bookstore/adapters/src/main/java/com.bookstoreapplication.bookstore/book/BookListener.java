@@ -11,12 +11,12 @@ import java.util.List;
 class BookListener {
 
     private final BooksDecrementJsonConverter booksDecrementJsonConverter;
-    private final BookHandler bookHandler;
+    private final BookListenerHandler bookListenerHandler;
 
     @RabbitListener(queues = "books_decrement")
     public void decreaseBooksAmount(String json){
         List<BooksDecrementCommand> booksToDecrement = booksDecrementJsonConverter.fromJson(json);
-        bookHandler.decrementBooksAmount(booksToDecrement);
+        bookListenerHandler.decrementBooksAmount(booksToDecrement);
     }
 
 }

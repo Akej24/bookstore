@@ -14,12 +14,12 @@ import java.time.Month;
 @AllArgsConstructor
 class BookWarmup {
 
-    private final BookHandler bookHandler;
+    private final BookControllerHandler bookControllerHandler;
 
     @EventListener
     public void insertStartupData(ContextRefreshedEvent ignoredContextRefreshedEvent){
-        if(bookHandler.countAllBooks() < 1) {
-            bookHandler.addBook(new BookCommand(
+        if(bookControllerHandler.countAllBooks() < 1) {
+            bookControllerHandler.addBook(new BookCommand(
                     new BookTitle("Metro 2033"),
                     new BookAuthor("Dmitry Glukhovsky"),
                     new ReleaseDate(LocalDate.of(2002, Month.MARCH, 3)),
@@ -28,7 +28,7 @@ class BookWarmup {
                     new AvailablePieces(8),
                     new BookPrice(BigDecimal.valueOf(35.85))
             ));
-            bookHandler.addBook(new BookCommand(
+            bookControllerHandler.addBook(new BookCommand(
                     new BookTitle("The Magicians' Guild"),
                     new BookAuthor("Trudi Canavan"),
                     new ReleaseDate(LocalDate.of(2001, Month.NOVEMBER, 21)),
@@ -37,7 +37,7 @@ class BookWarmup {
                     new AvailablePieces(12),
                     new BookPrice(BigDecimal.valueOf(28.37))
             ));
-            bookHandler.addBook(new BookCommand(
+            bookControllerHandler.addBook(new BookCommand(
                     new BookTitle("The Witcher: Blood of Elves"),
                     new BookAuthor("Andrzej Sapkowski"),
                     new ReleaseDate(LocalDate.of(1994, Month.JULY, 16)),

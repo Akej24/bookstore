@@ -1,10 +1,8 @@
 package com.bookstoreapplication.bookstore.book;
 
-import com.bookstoreapplication.bookstore.book.exception.BookDoesNotExistException;
 import com.bookstoreapplication.bookstore.book.exception.BookWithTitleAndAuthorExistsException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,20 +11,23 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Validated
 @AllArgsConstructor
-class BookHandler {
+class BookControllerHandler {
 
+    private final BookSharedHandler bookSharedHandler;
     private final BookRepository bookRepository;
 
     @Transactional
     public void addBook(@Valid BookCommand source){
-        if(bookRepository.existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor())){
-            log.warn("Book with title: {} and author: {} already exists", source.getBookTitle().getBookTitle(), source.getBookAuthor().getBookAuthor());
+        if(bookRepository.existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(
+                source.getBookTitle().getBookTitle(),
+                source.getBookAuthor().getBookAuthor())) {
+            log.warn("Book with title: {} and author: {} already exists",
+                    source.getBookTitle().getBookTitle(),
+                    source.getBookAuthor().getBookAuthor());
             throw new BookWithTitleAndAuthorExistsException();
         }
         bookRepository.save(new Book(source));
@@ -35,7 +36,7 @@ class BookHandler {
 
     @Cacheable(cacheNames = "Book")
     public BookQueryResponse getBookById(long bookId){
-        BookQueryResponse book = BookQueryResponse.toResponse(findBookById(bookId));
+        BookQueryResponse book = BookQueryResponse.toResponse(bookSharedHandler.findBookById(bookId));
         log.info("Successively fetch a book with id {} from the database", bookId);
         return book;
     }
@@ -49,7 +50,7 @@ class BookHandler {
 
     @Transactional
     public void deleteBook(long bookId) {
-        existsBookById(bookId);
+        bookSharedHandler.existsBookById(bookId);
         bookRepository.deleteBookByBookId(bookId);
         log.info("The book with id {} was successfully removed from the database", bookId);
     }
@@ -67,28 +68,6 @@ class BookHandler {
         log.info("The book with id {} has been updated", bookId);
     }
 
-    @Transactional
-    public void decrementBooksAmount(List<@Valid BooksDecrementCommand> booksDecrementCommand){
-        List<Book> decrementedBooks = booksDecrementCommand.stream()
-                .map( bookToDecrement -> {
-                    Book book = findBookById(bookToDecrement.getBookId());
-                    return book.decreaseAvailablePieces(bookToDecrement.getBooksAmount());
-                })
-                .collect(Collectors.toList());
-        bookRepository.saveAll(decrementedBooks);
-    }
-
-    Book findBookById(long bookId) {
-        existsBookById(bookId);
-        return bookRepository.findBookByBookId(bookId);
-    }
-
-    void existsBookById(long bookId){
-        if(!bookRepository.existsByBookId(bookId)){
-            log.warn("Book with id {} does not exist", bookId);
-            throw new BookDoesNotExistException();
-        }
-    }
 
     int countAllBooks() {
         List<Book> books = bookRepository.findAll();
