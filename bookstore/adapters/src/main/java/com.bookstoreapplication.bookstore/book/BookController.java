@@ -2,7 +2,6 @@ package com.bookstoreapplication.bookstore.book;
 
 import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +21,6 @@ class BookController {
 
     private static final int PAGE_SIZE = 20;
     private final BookHandler bookHandler;
-    private final BooksDecrementJsonConverter booksDecrementJsonConverter;
 
     @PostMapping("")
     ResponseEntity<?> addBookToDatabase(@RequestBody Json json){
@@ -32,7 +30,7 @@ class BookController {
 
     @GetMapping("/{bookId}")
     ResponseEntity<BookJsonQueryResponse> getBookById(@PathVariable long bookId){
-        return new ResponseEntity<>(new BookJsonQueryResponse(bookHandler.getBookById(bookId)), HttpStatus.OK);
+        return new ResponseEntity<>(BookJsonQueryResponse.from(bookHandler.getBookById(bookId)), HttpStatus.OK);
     }
 
     @GetMapping("")
@@ -63,8 +61,8 @@ class BookController {
                         .and(BookSpecifications.hasAvailablePiecesContainingIgnoreCase(availablePieces))
                         .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
         );
-
-        return new ResponseEntity<>(BookJsonQueryResponse.toList(bookHandler.getAllBooks(specification, pageable)), HttpStatus.OK);
+        List<BookQueryResponse> booksJsonResponse = bookHandler.getAllBooks(specification, pageable);
+        return new ResponseEntity<>(BookJsonQueryResponse.from(booksJsonResponse), HttpStatus.OK);
     }
 
     @DeleteMapping("/{bookId}")
@@ -84,11 +82,4 @@ class BookController {
         bookHandler.updateBookById(bookId, BookJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-    @RabbitListener(queues = "books_decrement")
-    public void decreaseBooksAmount(String json){
-        List<BooksDecrementCommand> booksToDecrement = booksDecrementJsonConverter.fromJson(json);
-        bookHandler.decrementBooksAmount(booksToDecrement);
-    }
-
 }

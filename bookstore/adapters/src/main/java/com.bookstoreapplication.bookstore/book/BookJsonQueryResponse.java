@@ -27,7 +27,7 @@ class BookJsonQueryResponse {
     @JsonUnwrapped
     private BookPrice bookPrice;
 
-    public BookJsonQueryResponse(BookQueryResponse source) {
+    private BookJsonQueryResponse(BookQueryResponse source) {
         this.bookTitle = source.getBookTitle();
         this.bookAuthor = source.getBookAuthor();
         this.releaseDate = source.getReleaseDate();
@@ -37,7 +37,13 @@ class BookJsonQueryResponse {
         this.bookPrice = source.getBookPrice();
     }
 
-    public static List<BookJsonQueryResponse> toList(List<BookQueryResponse> sources) {
-        return sources.stream().map(BookJsonQueryResponse::new).collect(Collectors.toList());
+    static BookJsonQueryResponse from(BookQueryResponse source) {
+        return new BookJsonQueryResponse(source);
+    }
+
+    static List<BookJsonQueryResponse> from(List<BookQueryResponse> sources) {
+        return sources.stream()
+                .map(BookJsonQueryResponse::new)
+                .collect(Collectors.toList());
     }
 }
