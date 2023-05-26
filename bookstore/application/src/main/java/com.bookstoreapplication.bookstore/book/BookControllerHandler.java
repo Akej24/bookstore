@@ -68,7 +68,6 @@ class BookControllerHandler {
         log.info("The book with id {} has been updated", bookId);
     }
 
-
     int countAllBooks() {
         List<Book> books = bookRepository.findAll();
         log.info("All books have been fetched from the database");

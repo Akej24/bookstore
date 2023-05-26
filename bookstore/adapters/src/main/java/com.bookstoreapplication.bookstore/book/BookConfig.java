@@ -11,7 +11,17 @@ class BookConfig {
     private final BookJpaRepository bookJpaRepository;
 
     @Bean
-    public BookControllerHandler bookHandler(){
-        return new BookControllerHandler(bookJpaRepository);
+    public BookSharedHandler bookSharedHandler() {
+        return new BookSharedHandler(bookJpaRepository);
+    }
+
+    @Bean
+    public BookControllerHandler bookControllerHandler() {
+        return new BookControllerHandler(bookSharedHandler(), bookJpaRepository);
+    }
+
+    @Bean
+    public BookListenerHandler bookListenerHandler() {
+        return new BookListenerHandler(bookSharedHandler(), bookJpaRepository);
     }
 }

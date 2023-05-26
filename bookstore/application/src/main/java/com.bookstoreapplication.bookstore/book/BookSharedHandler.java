@@ -21,5 +21,4 @@ class BookSharedHandler {
             throw new BookDoesNotExistException();
         }
     }
-
 }
