@@ -63,7 +63,7 @@ class BookControllerHandler {
 
     @Transactional
     public void updateBookById(long bookId, @Valid BookCommand source) {
-        Book bookToUpdate = bookRepository.findBookByBookId(bookId);
+        Book bookToUpdate = bookSharedHandler.findBookById(bookId);
         bookRepository.save(bookToUpdate.update(source));
         log.info("The book with id {} has been updated", bookId);
     }
