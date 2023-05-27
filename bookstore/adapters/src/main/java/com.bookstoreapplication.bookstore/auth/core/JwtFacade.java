@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import com.bookstoreapplication.bookstore.auth.exception.JwtNofFoundInRequestHeaderException;
 import com.bookstoreapplication.bookstore.auth.exception.UserEmailHasNotBeenFoundException;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class JwtService {
+public class JwtFacade {
 
     private final JwtManager jwtManager;
     private final SecuredUserRepository securedUserRepository;
@@ -19,9 +19,8 @@ public class JwtService {
     public long extractUserIdFromRequest(HttpServletRequest request){
         String jwt = extractJwtFromRequest(request);
         String email = jwtManager.getUsernameFromToken(jwt);
-        SecuredUser securedUser = securedUserRepository.findByUserEmailEmail(email)
-                .orElseThrow(UserEmailHasNotBeenFoundException::new);
-        return securedUser.getUserId();
+        return securedUserRepository.findByUserEmailEmail(email)
+                .orElseThrow(UserEmailHasNotBeenFoundException::new).getUserId();
     }
 
     public List<GrantedAuthority> extractUserRoleFromRequest(HttpServletRequest request){

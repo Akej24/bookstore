@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +15,7 @@ class JwtManager {
 
     private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 
-    public String generateJwtToken(UserDetails userDetails) {
+    public String generateJwt(UserDetails userDetails) {
         Claims claims = Jwts.claims();
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         claims.put("roles", authorities);
@@ -31,11 +31,11 @@ class JwtManager {
         return (username.equals(userDetails.getUsername()));
     }
 
-    public String getUsernameFromToken(String token) {
+    String getUsernameFromToken(String token) {
        return extractAllClaims(token).getSubject();
     }
 
-    public List<GrantedAuthority> getUserRoleFromToken(String token) {
+    List<GrantedAuthority> getUserRoleFromToken(String token) {
         Collection<?> roles = extractAllClaims(token).get("roles", Collection.class);
         return roles.stream()
                 .filter(GrantedAuthority.class::isInstance)
@@ -43,7 +43,7 @@ class JwtManager {
                 .collect(Collectors.toList());
     }
 
-    public static Claims extractAllClaims(String token) {
+    private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 }

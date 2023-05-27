@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

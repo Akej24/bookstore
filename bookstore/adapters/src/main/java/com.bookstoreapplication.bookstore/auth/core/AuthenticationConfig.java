@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

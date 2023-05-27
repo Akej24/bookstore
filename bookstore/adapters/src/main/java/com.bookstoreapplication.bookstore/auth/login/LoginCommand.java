@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.login;
 
 import com.bookstoreapplication.bookstore.user.value_objects.Password;
 import com.bookstoreapplication.bookstore.user.value_objects.UserEmail;

@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 class LogoutService implements LogoutHandler {
 
     private final RedisTemplate<String, String> template;
-    private final JwtService jwtService;
+    private final JwtFacade jwtFacade;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) return;
 
-        long userId = jwtService.extractUserIdFromRequest(request);
+        long userId = jwtFacade.extractUserIdFromRequest(request);
         template.delete("user:"+userId);
         SecurityContextHolder.clearContext();
         log.info("Successfully logged out");

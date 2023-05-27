@@ -1,4 +1,4 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import com.bookstoreapplication.bookstore.auth.exception.InvalidPasswordForGivenEmailException;
 import com.bookstoreapplication.bookstore.user.value_objects.*;

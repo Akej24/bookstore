@@ -1,6 +1,6 @@
 package com.bookstoreapplication.bookstore.purchase.cart;
 
-import com.bookstoreapplication.bookstore.auth.JwtService;
+import com.bookstoreapplication.bookstore.auth.core.JwtFacade;
 import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,19 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 class CartController {
 
     private final CartHandler cartHandler;
-    private final JwtService jwtService;
+    private final JwtFacade jwtFacade;
 
     @PostMapping("")
     ResponseEntity<?> initializeCart(@RequestBody Json json, HttpServletRequest request){
         long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         cartHandler.initializeCart(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("")
     ResponseEntity<?> getCart(HttpServletRequest request){
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         CartJsonQueryResponse jsonCart = CartJsonQueryResponse.from(cartHandler.getCart(customerId));
         return new ResponseEntity<>(jsonCart, HttpStatus.OK);
     }
@@ -36,7 +36,7 @@ class CartController {
     @PostMapping("/product")
     ResponseEntity<?> addProduct(@RequestBody Json json, HttpServletRequest request){
         long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         cartHandler.addProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -44,7 +44,7 @@ class CartController {
     @DeleteMapping("/product")
     ResponseEntity<?> deleteProduct(@RequestBody Json json, HttpServletRequest request){
         long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         cartHandler.deleteProduct(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -52,7 +52,7 @@ class CartController {
     @PatchMapping("/product/increase")
     ResponseEntity<?> increaseProductAmount(@RequestBody Json json, HttpServletRequest request){
         long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         cartHandler.increaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -60,7 +60,7 @@ class CartController {
     @PatchMapping("/product/decrease")
     ResponseEntity<?> decreaseProductAmount(@RequestBody Json json, HttpServletRequest request){
         long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtService.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserIdFromRequest(request);
         cartHandler.decreaseProductAmount(customerId, bookId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

@@ -1,18 +1,21 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.core;
 
 import com.bookstoreapplication.bookstore.auth.exception.UserEmailHasNotBeenFoundException;
-import com.bookstoreapplication.bookstore.auth.login.LoginCommand;
 import com.bookstoreapplication.bookstore.user.value_objects.Password;
 import com.bookstoreapplication.bookstore.user.value_objects.UserEmail;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 
+@Service
 @Slf4j
+@Validated
 @AllArgsConstructor
-public class LoginFacade {
+public class LoginService {
 
     private final SecuredUserRepository securedUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

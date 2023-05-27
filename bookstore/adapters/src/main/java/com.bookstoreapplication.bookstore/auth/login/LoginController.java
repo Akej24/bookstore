@@ -1,5 +1,6 @@
-package com.bookstoreapplication.bookstore.auth;
+package com.bookstoreapplication.bookstore.auth.login;
 
+import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("http://localhost:3000")
 class LoginController {
 
-    private final LoginService loginService;
+    private final LoginHandler loginHandler;
 
     @PostMapping
-    ResponseEntity<?> loginUser(@RequestBody LoginJsonCommand loginJsonCommand) {
-        String jwtToken = loginService.loginUser(loginJsonCommand);
+    ResponseEntity<?> loginUser(@RequestBody Json json) {
+        String jwtToken = loginHandler.loginUser(LoginJsonCommand.fromJson(json));
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + jwtToken);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
