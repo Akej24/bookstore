@@ -25,7 +25,7 @@ class LoginService {
     private final AuthenticationManager authenticationManager;
     private final SecuredUserRepository securedUserRepository;
 
-    String loginUser(@Valid LoginRequest request){
+    String loginUser(@Valid LoginJsonCommand request){
         SecuredUser user = securedUserRepository.findByUserEmailEmail(request.getEmail().getEmail()).orElseThrow( () -> {
             log.warn("User with given e-mail has not been found");
             throw new UserEmailHasNotBeenFoundException();

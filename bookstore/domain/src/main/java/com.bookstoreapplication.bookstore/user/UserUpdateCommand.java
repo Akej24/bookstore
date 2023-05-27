@@ -6,19 +6,12 @@ import lombok.Getter;
 
 import javax.validation.Valid;
 
-@Getter
-@AllArgsConstructor
-class UserUpdateCommand {
+record UserUpdateCommand(
 
-    @Valid
-    private Username username;
-    @Valid
-    private Password password;
-    @Valid
-    private FirstName firstName;
-    @Valid
-    private LastName lastName;
-    @Valid
-    private DateOfBirth dateOfBirth;
+        @Valid Username username,
+        @Valid Password password,
+        @Valid FirstName firstName,
+        @Valid LastName lastName,
+        @Valid DateOfBirth dateOfBirth
 
-}
+) { }

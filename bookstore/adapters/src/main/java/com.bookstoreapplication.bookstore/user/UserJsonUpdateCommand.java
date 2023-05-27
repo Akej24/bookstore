@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import dev.mccue.json.Json;
 import dev.mccue.json.JsonDecoder;
 import dev.mccue.json.JsonEncodable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,14 +13,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 class UserJsonUpdateCommand implements JsonEncodable {
 
-    private Username username;
-    private Password password;
-    private FirstName firstName;
-    private LastName lastName;
-    private DateOfBirth dateOfBirth;
+    private final Username username;
+    private final Password password;
+    private final FirstName firstName;
+    private final LastName lastName;
+    private final DateOfBirth dateOfBirth;
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

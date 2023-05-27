@@ -21,11 +21,11 @@ class UserHandler {
 
     @Transactional
     public void registerUser(@Valid UserCommand source) {
-        if(userRepository.findByEmail(source.getEmail()).isPresent()){
+        if(userRepository.findByEmail(source.email()).isPresent()){
             log.warn("Unsuccessfully registered - email must be not taken");
             throw new EmailTakenException();
         }
-        String encodedPassword = passwordEncoder.encode(source.getPassword().getPassword());
+        String encodedPassword = passwordEncoder.encode(source.password().getPassword());
         userRepository.save(new User(source, encodedPassword));
         log.info("Successfully registered");
     }
@@ -58,7 +58,7 @@ class UserHandler {
     @Transactional
     public UserQueryResponse updateUserById(long userId, @Valid UserUpdateCommand source) {
         User userToUpdate = findUserById(userId);
-        String encodedPassword = passwordEncoder.encode(source.getPassword().getPassword());
+        String encodedPassword = passwordEncoder.encode(source.password().getPassword());
         User savedUser = userRepository.save(userToUpdate.update(source, encodedPassword));
         log.info("The user with id {} has been updated", userId);
         return UserQueryResponse.from(savedUser);

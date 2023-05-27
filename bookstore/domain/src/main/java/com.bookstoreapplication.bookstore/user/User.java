@@ -53,25 +53,25 @@ class User implements Serializable {
     private Enabled enabled;
 
     public User(UserCommand source, String encodedPasswordFormat) {
-        email = source.getEmail();
-        username = source.getUsername();
-        encodedPassword = source.getPassword().toEncodedFormat(encodedPasswordFormat);
-        firstName = source.getFirstName();
-        lastName = source.getLastName();
-        dateOfBirth = source.getDateOfBirth();
+        email = source.email();
+        username = source.username();
+        encodedPassword = source.password().toEncodedFormat(encodedPasswordFormat);
+        firstName = source.firstName();
+        lastName = source.lastName();
+        dateOfBirth = source.dateOfBirth();
         funds = new Funds(BigDecimal.ZERO);
-        role = source.getRole();
+        role = source.role();
         userAudit = new UserAudit();
         locked = new Locked(false);
         enabled = new Enabled(true);
     }
 
     public User update(UserUpdateCommand source, String encodedPasswordFormat){
-        username = source.getUsername();
-        encodedPassword = source.getPassword().toEncodedFormat(encodedPasswordFormat);
-        firstName = source.getFirstName();
-        lastName = source.getLastName();
-        dateOfBirth = source.getDateOfBirth();
+        username = source.username();
+        encodedPassword = source.password().toEncodedFormat(encodedPasswordFormat);
+        firstName = source.firstName();
+        lastName = source.lastName();
+        dateOfBirth = source.dateOfBirth();
         return this;
     }
 

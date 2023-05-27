@@ -23,11 +23,11 @@ class BookControllerHandler {
     @Transactional
     public void addBook(@Valid BookCommand source){
         if(bookRepository.existsByBookTitle_BookTitleAndBookAuthor_BookAuthor(
-                source.getBookTitle().getBookTitle(),
-                source.getBookAuthor().getBookAuthor())) {
+                source.bookTitle().getBookTitle(),
+                source.bookAuthor().getBookAuthor())) {
             log.warn("Book with title: {} and author: {} already exists",
-                    source.getBookTitle().getBookTitle(),
-                    source.getBookAuthor().getBookAuthor());
+                    source.bookTitle().getBookTitle(),
+                    source.bookAuthor().getBookAuthor());
             throw new BookWithTitleAndAuthorExistsException();
         }
         bookRepository.save(new Book(source));

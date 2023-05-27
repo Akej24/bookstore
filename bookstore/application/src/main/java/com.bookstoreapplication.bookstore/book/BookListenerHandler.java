@@ -21,8 +21,8 @@ class BookListenerHandler {
     public void decrementBooksAmount(List<@Valid BooksDecrementCommand> booksDecrementCommand){
         List<Book> decrementedBooks = booksDecrementCommand.stream()
                 .map( bookToDecrement -> {
-                    Book book = bookSharedHandler.findBookById(bookToDecrement.getBookId());
-                    return book.decreaseAvailablePieces(bookToDecrement.getBooksAmount());
+                    Book book = bookSharedHandler.findBookById(bookToDecrement.bookId());
+                    return book.decreaseAvailablePieces(bookToDecrement.booksAmount());
                 })
                 .collect(Collectors.toList());
         bookRepository.saveAll(decrementedBooks);

@@ -36,25 +36,25 @@ class Book implements Serializable {
     private BookAudit bookAudit;
 
     public Book(BookCommand source) {
-        bookTitle = source.getBookTitle();
-        bookAuthor = source.getBookAuthor();
-        releaseDate = source.getReleaseDate();
-        numberOfPages = source.getNumberOfPages();
-        availabilityStatus = source.getAvailabilityStatus();
-        availablePieces = source.getAvailablePieces();
-        bookPrice = source.getBookPrice();
+        bookTitle = source.bookTitle();
+        bookAuthor = source.bookAuthor();
+        releaseDate = source.releaseDate();
+        numberOfPages = source.numberOfPages();
+        availabilityStatus = source.availabilityStatus();
+        availablePieces = source.availablePieces();
+        bookPrice = source.bookPrice();
         this.bookAudit = new BookAudit();
         updateAvailability();
     }
 
     public Book update(BookCommand source){
-        bookTitle = source.getBookTitle();
-        bookAuthor = source.getBookAuthor();
-        releaseDate = source.getReleaseDate();
-        numberOfPages = source.getNumberOfPages();
-        availabilityStatus = source.getAvailabilityStatus();
-        availablePieces = source.getAvailablePieces();
-        bookPrice = source.getBookPrice();
+        bookTitle = source.bookTitle();
+        bookAuthor = source.bookAuthor();
+        releaseDate = source.releaseDate();
+        numberOfPages = source.numberOfPages();
+        availabilityStatus = source.availabilityStatus();
+        availablePieces = source.availablePieces();
+        bookPrice = source.bookPrice();
         updateAvailability();
         return this;
     }

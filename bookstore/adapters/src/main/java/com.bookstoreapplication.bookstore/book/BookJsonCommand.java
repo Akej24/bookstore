@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import dev.mccue.json.Json;
 import dev.mccue.json.JsonDecoder;
 import dev.mccue.json.JsonEncodable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,16 +13,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 class BookJsonCommand implements JsonEncodable {
 
-    private BookTitle bookTitle;
-    private BookAuthor bookAuthor;
-    private ReleaseDate releaseDate;
-    private NumberOfPages numberOfPages;
-    private AvailabilityStatus availabilityStatus;
-    private AvailablePieces availablePieces;
-    private BookPrice bookPrice;
+    private final BookTitle bookTitle;
+    private final BookAuthor bookAuthor;
+    private final ReleaseDate releaseDate;
+    private final NumberOfPages numberOfPages;
+    private final AvailabilityStatus availabilityStatus;
+    private final AvailablePieces availablePieces;
+    private final BookPrice bookPrice;
 
     private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
