@@ -26,7 +26,6 @@ class LoginService {
     private final SecuredUserRepository securedUserRepository;
 
     String loginUser(@Valid LoginRequest request){
-
         SecuredUser user = securedUserRepository.findByUserEmailEmail(request.getEmail().getEmail()).orElseThrow( () -> {
             log.warn("User with given e-mail has not been found");
             throw new UserEmailHasNotBeenFoundException();
@@ -40,7 +39,7 @@ class LoginService {
         String userId = String.valueOf(user.getUserId());
 
         template.opsForValue().set("user:" + userId, jwtToken);
-        template.boundValueOps(jwtToken).expire(24, TimeUnit.HOURS);
+        template.expire("user:" + userId, 24, TimeUnit.HOURS);
         log.info("User successfully logged in - created jwt token");
         return jwtToken;
     }

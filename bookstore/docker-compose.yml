@@ -27,7 +27,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.12.0-rc.2-management
-    hostname: rabbitmq
+    hostname: localhost
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: "guest"

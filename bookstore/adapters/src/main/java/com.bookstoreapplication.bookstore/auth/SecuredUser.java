@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.auth;
 
 import com.bookstoreapplication.bookstore.auth.exception.InvalidPasswordForGivenEmailException;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,10 +20,10 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 class SecuredUser implements UserDetails, Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
     @Embedded
     private UserEmail userEmail;
