@@ -16,14 +16,14 @@ public class JwtFacade {
     private final JwtManager jwtManager;
     private final SecuredUserRepository securedUserRepository;
 
-    public long extractUserIdFromRequest(HttpServletRequest request){
+    public long extractUserId(HttpServletRequest request){
         String jwt = extractJwtFromRequest(request);
         String email = jwtManager.getUsernameFromToken(jwt);
         return securedUserRepository.findByUserEmailEmail(email)
                 .orElseThrow(UserEmailHasNotBeenFoundException::new).getUserId();
     }
 
-    public List<GrantedAuthority> extractUserRoleFromRequest(HttpServletRequest request){
+    public List<GrantedAuthority> extractUserRole(HttpServletRequest request){
         String jwt = extractJwtFromRequest(request);
         return jwtManager.getUserRoleFromToken(jwt);
     }

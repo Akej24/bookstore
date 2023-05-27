@@ -24,7 +24,7 @@ class LogoutService implements LogoutHandler {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) return;
 
-        long userId = jwtFacade.extractUserIdFromRequest(request);
+        long userId = jwtFacade.extractUserId(request);
         template.delete("user:"+userId);
         SecurityContextHolder.clearContext();
         log.info("Successfully logged out");

@@ -21,14 +21,14 @@ class OrderController {
 
     @PostMapping("")
     ResponseEntity<?> order(HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         orderHandler.order(customerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("")
     ResponseEntity<?> getCustomerOrders(HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         List<OrderJsonQueryResponse> jsonOrders = OrderJsonQueryResponse.from(orderHandler.getCustomerOrders(customerId));
         return new ResponseEntity<>(jsonOrders, HttpStatus.OK);
     }

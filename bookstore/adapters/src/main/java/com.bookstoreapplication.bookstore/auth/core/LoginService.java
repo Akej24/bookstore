@@ -21,7 +21,7 @@ public class LoginService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtManager jwtManager;
 
-    public String verifyUserPasswordMatch(@Valid UserEmail email, Password password){
+    public String verifyUserPasswordMatches(@Valid UserEmail email, Password password){
         SecuredUser user = getSecuredUser(email);
         user.checkPasswordsMatch(password, bCryptPasswordEncoder);
         return String.valueOf(user.getUserId());

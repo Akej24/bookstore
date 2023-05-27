@@ -25,7 +25,7 @@ class LoginHandler {
 
     @Transactional
     String loginUser(@Valid LoginCommand request){
-        String userId = loginService.verifyUserPasswordMatch(request.email(), request.password());
+        String userId = loginService.verifyUserPasswordMatches(request.email(), request.password());
         String jwt = loginService.generateJwt(request.email());
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

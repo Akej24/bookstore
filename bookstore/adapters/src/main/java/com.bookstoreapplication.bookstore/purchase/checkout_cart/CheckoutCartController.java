@@ -22,35 +22,35 @@ class CheckoutCartController {
 
     @PostMapping("")
     ResponseEntity<?> checkout(HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.checkout(customerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("")
     ResponseEntity<CheckoutCartJsonQueryResponse> getCheckoutCart(HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         CheckoutCartJsonQueryResponse jsonCheckoutCart = CheckoutCartJsonQueryResponse.from(checkoutCartHandler.getCheckoutCart(customerId));
         return new ResponseEntity<>(jsonCheckoutCart, HttpStatus.OK);
     }
 
     @PatchMapping("/address")
     ResponseEntity<?> updateAddress(@RequestBody Json json, HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.updateAddress(customerId, AddressJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/payment")
     ResponseEntity<?> updatePaymentDetails(@RequestBody Json json, HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.updatePaymentMethod(customerId, PaymentMethodJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("")
     ResponseEntity<?> cancelCheckoutCart(HttpServletRequest request){
-        long customerId = jwtFacade.extractUserIdFromRequest(request);
+        long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.cancelCheckoutCart(customerId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
