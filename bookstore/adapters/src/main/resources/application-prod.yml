@@ -1,5 +1,28 @@
+server.port: 8101
+
 spring:
+
+  #H2 console
   h2.console:
     enabled: false
 
+  #Database
+  datasource:
+    url:
 
+  #RabbitMq
+  rabbitmq:
+    host: localhost
+    username:
+    password:
+    port: 5682
+
+  #Mail
+  mail:
+    host:
+    port: 587
+    username:
+    password:
+    properties.mail.smtp:
+      auth: true
+      starttls: true

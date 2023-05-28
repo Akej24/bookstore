@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,13 +14,34 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 class RabbitMQConfig {
 
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+
+    @Value("${spring.rabbitmq.username}")
+    private String username;
+
+    @Value("${spring.rabbitmq.password}")
+    private String password;
+
+    @Value("${spring.rabbitmq.port}")
+    private Integer port;
+
+    @Value("${bookstore.rabbitmq.routing-keys.payment}")
+    private String paymentRoutingKey;
+
+    @Value("${bookstore.rabbitmq.routing-keys.books-decrement}")
+    private String booksDecrementRoutingKey;
+
+    @Value("${bookstore.rabbitmq.routing-keys.delivery}")
+    private String deliveryRoutingKey;
+
     @Bean
     public ConnectionFactory rabbitConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost("localhost");
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-        connectionFactory.setPort(5672);
+        connectionFactory.setHost(host);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setPort(port);
         return connectionFactory;
     }
 
@@ -32,17 +54,17 @@ class RabbitMQConfig {
 
     @Bean
     public Queue paymentQueue() {
-        return new Queue("payment");
-    }
-
-    @Bean
-    public Queue deliveryQueue() {
-        return new Queue("delivery");
+        return new Queue(paymentRoutingKey);
     }
 
     @Bean
     public Queue booksDecrementQueue() {
-        return new Queue("books_decrement");
+        return new Queue(booksDecrementRoutingKey);
+    }
+
+    @Bean
+    public Queue deliveryQueue() {
+        return new Queue(deliveryRoutingKey);
     }
 
     @Bean

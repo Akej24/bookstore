@@ -1,6 +1,30 @@
+server.port: 8080
+
 spring:
+
+  #H2 console
   h2.console:
     enabled: true
-    path: /api/v1/h2-console/localtest
+    path: /api/v1/h2-console
 
+  #Database
+  datasource:
+    url: jdbc:h2:file:/Users/Aleks/Desktop/bookstore/bookstore/db/bookstore-db
+
+  #RabbitMq
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
+
+  #Mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bookstore.application.akej@gmail.com
+    password: whhzaeshzetyxnka
+    properties.mail.smtp:
+      auth: true
+      starttls: true
 
