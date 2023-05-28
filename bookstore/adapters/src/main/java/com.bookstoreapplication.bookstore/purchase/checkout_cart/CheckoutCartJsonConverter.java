@@ -1,8 +1,7 @@
 package com.bookstoreapplication.bookstore.purchase.checkout_cart;
 
+import com.bookstoreapplication.bookstore.delivery.AddressJsonConverter;
 import com.bookstoreapplication.bookstore.purchase.value_object.*;
-import com.bookstoreapplication.bookstore.user.value_objects.FirstName;
-import com.bookstoreapplication.bookstore.user.value_objects.LastName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,22 +48,7 @@ public class CheckoutCartJsonConverter {
 
             if(rootNode.has("address")) {
                 JsonNode addressNode = rootNode.get("address");
-                String firstName = addressNode.get("firstName").asText();
-                String lastName = addressNode.get("lastName").asText();
-                String phoneNumber = addressNode.get("phoneNumber").asText();
-                String street = addressNode.get("street").asText();
-                Integer streetNumber = addressNode.get("streetNumber").asInt();
-                String zipCode = addressNode.get("zipCode").asText();
-                String city = addressNode.get("city").asText();
-                address = new Address(
-                        new FirstName(firstName),
-                        new LastName(lastName),
-                        new PhoneNumber(phoneNumber),
-                        new Street(street),
-                        new StreetNumber(streetNumber),
-                        new ZipCode(zipCode),
-                        new City(city)
-                );
+                address = AddressJsonConverter.extractAddress(addressNode);
             }
             if(rootNode.has("paymentMethod")){
                 paymentMethod = rootNode.get("paymentMethod").asText();

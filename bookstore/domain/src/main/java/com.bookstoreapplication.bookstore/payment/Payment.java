@@ -37,7 +37,11 @@ class Payment {
     @NotNull(message = "Payment status cannot be null")
     private PaymentStatus paymentStatus;
 
-    Payment(ServiceType serviceType, UUID serviceId, PaymentMethod paymentMethod, TotalPrice totalPrice) {
+    Payment(ServiceType serviceType,
+            UUID serviceId,
+            PaymentMethod paymentMethod,
+            TotalPrice totalPrice
+    ) {
         this.paymentId = UUID.randomUUID();
         this.serviceType = serviceType;
         this.serviceId = serviceId;
