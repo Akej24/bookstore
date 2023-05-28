@@ -1,6 +1,6 @@
 spring:
   h2.console:
     enabled: true
-    path: /console
+    path: /api/v1/h2-console/fdsf
 
 

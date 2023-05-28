@@ -2,6 +2,8 @@ package com.bookstoreapplication.bookstore.user;
 import com.bookstoreapplication.bookstore.user.value_objects.*;
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,12 @@ import java.time.Month;
 class UserWarmup {
 
     private final UserHandler userHandler;
+//    @Value("${spring.h2.console.path}")
+//    private String p;
 
     @EventListener
     public void insertStartupData(ContextRefreshedEvent ignoredContextRefreshedEvent) {
+//        System.out.println(p);
         if (userHandler.countAllUsers() < 1) {
             userHandler.registerUser(new UserCommand(
                     new UserEmail("user@test.com"),

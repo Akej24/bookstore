@@ -28,6 +28,8 @@ class SecurityConfig {
             "/api/v1/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
+            "/api/v1/h2-console",
+            "/api/v1/h2-console/**",
             "/api/v1/login",
             "/api/v1/users/registration"
     };
