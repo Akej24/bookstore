@@ -10,6 +10,11 @@ spring:
   datasource:
     url:
 
+  #Redis
+  redis:
+    host:
+    port: 6385
+
   #RabbitMq
   rabbitmq:
     host: localhost

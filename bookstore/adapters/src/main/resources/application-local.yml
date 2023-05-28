@@ -11,6 +11,11 @@ spring:
   datasource:
     url: jdbc:h2:file:/Users/Aleks/Desktop/bookstore/bookstore/db/bookstore-db
 
+  #Redis
+  redis:
+    host: localhost
+    port: 6379
+
   #RabbitMq
   rabbitmq:
     host: localhost
