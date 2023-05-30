@@ -30,7 +30,7 @@ class CheckoutCartController {
     @GetMapping("")
     ResponseEntity<CheckoutCartJsonQueryResponse> getCheckoutCart(HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);
-        CheckoutCartJsonQueryResponse jsonCheckoutCart = CheckoutCartJsonQueryResponse.from(checkoutCartHandler.getCheckoutCart(customerId));
+        var jsonCheckoutCart = CheckoutCartJsonQueryResponse.from(checkoutCartHandler.getCheckoutCart(customerId));
         return new ResponseEntity<>(jsonCheckoutCart, HttpStatus.OK);
     }
 

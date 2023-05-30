@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.exception_handler;
 
 import com.bookstoreapplication.bookstore.auth.exception.AuthenticationException;
 import com.bookstoreapplication.bookstore.book.exception.BookException;
+import com.bookstoreapplication.bookstore.delivery.exception.DeliveryException;
 import com.bookstoreapplication.bookstore.purchase.exception.OrderException;
 import com.bookstoreapplication.bookstore.user.exception.UserException;
 import dev.mccue.json.JsonDecodeException;
@@ -36,6 +37,7 @@ class ErrorResponseController {
             OrderException.class,
             UserException.class,
             BookException.class,
+            DeliveryException.class,
             AuthenticationException.class,
             JsonDecodeException.class
     })

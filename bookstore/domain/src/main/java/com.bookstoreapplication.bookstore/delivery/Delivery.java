@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.delivery;
 
+import com.bookstoreapplication.bookstore.delivery.exception.NotSendDeliveryException;
 import com.bookstoreapplication.bookstore.delivery.value_object.DeliveryMethod;
 import com.bookstoreapplication.bookstore.delivery.value_object.DeliveryStatus;
 import com.bookstoreapplication.bookstore.delivery.value_object.ReceiveDate;
@@ -41,27 +42,28 @@ class Delivery implements Serializable {
     @Embedded
     private ReceiveDate receiveDate;
 
-    private Delivery(UUID orderId, Address address) {
-        this.orderId = orderId;
+    private Delivery(DeliveryCommand deliveryCommand) {
+        this.orderId = deliveryCommand.orderId();
         this.deliveryNumber = UUID.randomUUID();
         this.deliveryMethod = DeliveryMethod.COURIER;
-        this.address = address;
+        this.address = deliveryCommand.address();
         this.deliveryStatus = DeliveryStatus.PREPARE;
     }
 
-    static Delivery from(UUID orderId, Address address){
-        return new Delivery(orderId, address);
+    static Delivery from(DeliveryCommand deliveryCommand){
+        return new Delivery(deliveryCommand);
     }
 
-    Delivery markSend() {
+    Delivery markSent() {
         this.deliveryStatus = DeliveryStatus.SEND;
         this.sendDate = new SendDate(LocalDateTime.now());
         return this;
     }
 
-//    Delivery markReceived() {
-//        this.receiveDate = new ReceiveDate(LocalDateTime.now());
-//        this.deliveryStatus = DeliveryStatus.RECEIVED;
-//        return this;
-//    }
+    Delivery markReceived() {
+        if (sendDate == null) throw new NotSendDeliveryException();
+        this.receiveDate = new ReceiveDate(LocalDateTime.now());
+        this.deliveryStatus = DeliveryStatus.RECEIVED;
+        return this;
+    }
 }

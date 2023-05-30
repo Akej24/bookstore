@@ -29,7 +29,7 @@ class UserController {
 
     @GetMapping("/{userId}")
     ResponseEntity<UserJsonQueryResponse> getUserById(@PathVariable long userId){
-        UserJsonQueryResponse jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
+        var jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
         return new ResponseEntity<>(jsonUser, HttpStatus.OK);
     }
 

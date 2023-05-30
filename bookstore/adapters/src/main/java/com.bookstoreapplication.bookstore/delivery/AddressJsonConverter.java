@@ -43,11 +43,10 @@ public class AddressJsonConverter {
     DeliveryCommand fromJson(String jsonDelivery) {
         try {
             JsonNode rootNode = objectMapper.readTree(jsonDelivery);
-            long orderId = rootNode.get("orderId").asLong();
-
+            String orderId = rootNode.get("orderId").asText();
             Address address = extractAddress(rootNode);
 
-            return new DeliveryCommand(orderId, address);
+            return new DeliveryCommand(UUID.fromString(orderId), address);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to deserialize delivery message");
         }
