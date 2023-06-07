@@ -13,7 +13,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class BookTitle implements Serializable{
 
-    @NotBlank(message = "BookTitle must not be blank")
+    @NotBlank(message = "Book title must not be blank")
     private String bookTitle;
 
 }

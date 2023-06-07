@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 public class BookPrice implements Serializable {
 
-        @DecimalMin(value = "0.0", message = "The minimum value of the price is 0.0")
-        @NotNull(message = "BookPrice must be not null")
+        @DecimalMin(value = "0.00", message = "The minimum value of the price is 0.00")
+        @NotNull(message = "Book price must be not null")
         private BigDecimal bookPrice;
 
 }
