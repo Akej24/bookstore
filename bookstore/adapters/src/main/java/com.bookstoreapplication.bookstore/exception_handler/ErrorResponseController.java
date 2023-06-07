@@ -54,6 +54,9 @@ class ErrorResponseController {
     private String substringJsonDecodeExceptionMessage(String message) {
         String pattern = "Exception: ";
         int startIndex = message.indexOf(pattern);
+        if(message.contains("expected a ")){
+            return "Invalid request";
+        }
         return message.substring(startIndex + pattern.length());
     }
 
