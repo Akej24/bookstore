@@ -11,6 +11,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,8 +36,15 @@ class BookJsonCommand implements JsonEncodable {
                 JsonDecoder.field(json, "bookAuthor", author ->
                         new BookAuthor(JsonDecoder.string(author))),
 
-                JsonDecoder.field(json, "releaseDate", releaseDate ->
-                        new ReleaseDate(LocalDate.parse(JsonDecoder.string(releaseDate), LOCAL_DATE_FORMATTER))),
+                JsonDecoder.field(json, "releaseDate", releaseDate -> {
+                    LocalDate date;
+                    try {
+                        date = LocalDate.parse(JsonDecoder.string(releaseDate), LOCAL_DATE_FORMATTER);
+                    } catch(DateTimeParseException dateTimeParseException) {
+                        throw new IllegalArgumentException("Invalid release date");
+                    }
+                    return new ReleaseDate(date);
+                }),
 
                 JsonDecoder.field(json, "numberOfPages", numberOfPages ->
                         new NumberOfPages(JsonDecoder.int_(numberOfPages))),

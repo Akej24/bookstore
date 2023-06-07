@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/delivery")
+@RequestMapping("/api/v1/deliveries")
 @AllArgsConstructor
 @CrossOrigin("http://localhost:3000")
 class DeliveryController {
@@ -19,7 +19,7 @@ class DeliveryController {
     private final JwtFacade jwtFacade;
     private final DeliveryHandler deliveryHandler;
 
-    @GetMapping("")
+    @GetMapping("/number")
     ResponseEntity<?> getDeliveryByOrderNumber(HttpServletRequest request, @RequestBody UUID orderNumber){
         jwtFacade.extractUserId(request);
         //TODO request

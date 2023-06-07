@@ -25,7 +25,7 @@ class ErrorResponseController {
         Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
 
         List<ErrorDto> errors = violations.stream()
-                .map(violation -> new ErrorDto(getFieldName(violation), violation.getMessage()))
+                .map(violation -> new ErrorDto(getConstraintViolationField(violation), violation.getMessage()))
                 .collect(Collectors.toList());
 
         ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
@@ -41,15 +41,23 @@ class ErrorResponseController {
             AuthenticationException.class,
             JsonDecodeException.class
     })
-    ResponseEntity<?> handleIllegalArgumentException(RuntimeException exception){
+    ResponseEntity<?> handleBadRequestException(RuntimeException exception){
         List<ErrorDto> errors = List.of(ErrorDto.builder()
-                .message((exception instanceof JsonDecodeException) ? "invalid json" : exception.getMessage())
+                .message((exception instanceof JsonDecodeException)
+                        ? substringJsonDecodeExceptionMessage(exception.getMessage())
+                        : exception.getMessage())
                 .build());
         ErrorResponse errorResponse = ErrorResponse.builder().errors(errors).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    private String getFieldName(ConstraintViolation<?> violation) {
+    private String substringJsonDecodeExceptionMessage(String message) {
+        String pattern = "Exception: ";
+        int startIndex = message.indexOf(pattern);
+        return message.substring(startIndex + pattern.length());
+    }
+
+    private String getConstraintViolationField(ConstraintViolation<?> violation) {
         String[] propertyPath = violation.getPropertyPath().toString().split("\\.");
         return propertyPath.length > 0 ? propertyPath[propertyPath.length - 1] : "unknown";
     }
