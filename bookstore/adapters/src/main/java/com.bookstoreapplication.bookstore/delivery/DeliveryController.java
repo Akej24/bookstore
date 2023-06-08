@@ -13,7 +13,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/deliveries")
 @AllArgsConstructor
-@CrossOrigin("http://localhost:3000")
 class DeliveryController {
 
     private final JwtFacade jwtFacade;

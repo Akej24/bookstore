@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api/v1/cart")
 @AllArgsConstructor
-@CrossOrigin("http://localhost:3000")
 class CartController {
 
     private final CartHandler cartHandler;

@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/books")
 @AllArgsConstructor
-@CrossOrigin("http://localhost:3000")
 class BookController {
 
     private static final int PAGE_SIZE = 20;

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1/checkoutcart")
 @AllArgsConstructor
 @Validated
-@CrossOrigin("http://localhost:3000")
 class CheckoutCartController {
 
     private final CheckoutCartHandler checkoutCartHandler;

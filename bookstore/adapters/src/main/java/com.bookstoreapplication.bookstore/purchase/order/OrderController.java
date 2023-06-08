@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/order")
 @AllArgsConstructor
-@CrossOrigin("http://localhost:3000")
 class OrderController {
 
     private final OrderHandler orderHandler;

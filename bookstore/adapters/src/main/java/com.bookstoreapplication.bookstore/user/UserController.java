@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
 @Validated
-@CrossOrigin("http://localhost:3000")
 class UserController {
 
     private static final int PAGE_SIZE = 10;

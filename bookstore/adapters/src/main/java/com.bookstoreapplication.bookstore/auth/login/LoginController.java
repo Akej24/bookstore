@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping( "/api/v1/login")
 @AllArgsConstructor
-@CrossOrigin("http://localhost:3000")
 class LoginController {
 
     private final LoginHandler loginHandler;
