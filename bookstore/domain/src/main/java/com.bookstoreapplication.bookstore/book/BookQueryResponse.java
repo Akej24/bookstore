@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class BookQueryResponse {
 
+    private final long bookId;
     private final BookTitle bookTitle;
     private final BookAuthor bookAuthor;
     private final ReleaseDate releaseDate;
@@ -28,6 +29,7 @@ class BookQueryResponse {
 
     static BookQueryResponse from(Book source){
         return new BookQueryResponse(
+                source.getBookId(),
                 source.getBookTitle(),
                 source.getBookAuthor(),
                 source.getReleaseDate(),

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class BookJsonQueryResponse {
 
+    private final long bookId;
     @JsonUnwrapped
     private final BookTitle bookTitle;
     @JsonUnwrapped
@@ -36,6 +37,7 @@ class BookJsonQueryResponse {
 
     static BookJsonQueryResponse from(BookQueryResponse source) {
         return new BookJsonQueryResponse(
+                source.getBookId(),
                 source.getBookTitle(),
                 source.getBookAuthor(),
                 source.getReleaseDate(),

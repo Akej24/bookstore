@@ -52,8 +52,7 @@ public class AddressJsonConverter {
         }
     }
 
-    public static Address extractAddress(JsonNode rootNode) {
-        JsonNode addressNode = rootNode.get("address");
+    public static Address extractAddress(JsonNode addressNode) {
         String firstName = addressNode.get("firstName").asText();
         String lastName = addressNode.get("lastName").asText();
         String phoneNumber = addressNode.get("phoneNumber").asText();
