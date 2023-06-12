@@ -44,6 +44,7 @@ class CartQueryResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class BookProductQueryResponse{
 
+        private final long bookId;
         private final BookTitle bookTitle;
         private final BookAuthor bookAuthor;
         private final AvailabilityStatus availabilityStatus;
@@ -52,6 +53,7 @@ class CartQueryResponse {
 
         static BookProductQueryResponse toResponse(BookProduct source){
             return new BookProductQueryResponse(
+                    source.getBookId(),
                     source.getBookTitle(),
                     source.getBookAuthor(),
                     source.getAvailabilityStatus(),

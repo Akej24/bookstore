@@ -49,6 +49,7 @@ class CartJsonQueryResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     static class BookProductJsonQueryResponse{
 
+        private final long bookId;
         @JsonUnwrapped
         private final BookTitle bookTitle;
         @JsonUnwrapped
@@ -62,6 +63,7 @@ class CartJsonQueryResponse {
 
         static BookProductJsonQueryResponse from(CartQueryResponse.BookProductQueryResponse source){
             return new BookProductJsonQueryResponse(
+                    source.getBookId(),
                     source.getBookTitle(),
                     source.getBookAuthor(),
                     source.getAvailabilityStatus(),
