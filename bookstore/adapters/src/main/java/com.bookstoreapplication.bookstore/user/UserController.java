@@ -1,5 +1,6 @@
 package com.bookstoreapplication.bookstore.user;
 
+import com.bookstoreapplication.bookstore.auth.core.JwtFacade;
 import dev.mccue.json.Json;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 class UserController {
 
     private static final int PAGE_SIZE = 10;
+    private final JwtFacade jwtFacade;
     private final UserHandler userHandler;
 
     @PostMapping("/registration")
@@ -28,6 +31,13 @@ class UserController {
 
     @GetMapping("/{userId}")
     ResponseEntity<UserJsonQueryResponse> getUserById(@PathVariable long userId){
+        var jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
+        return new ResponseEntity<>(jsonUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/account")
+    ResponseEntity<UserJsonQueryResponse> getUserById(HttpServletRequest request){
+        long userId = jwtFacade.extractUserId(request);
         var jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
         return new ResponseEntity<>(jsonUser, HttpStatus.OK);
     }
@@ -51,9 +61,16 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/{userId}")
-    ResponseEntity<UserQueryResponse> updateUserById(@PathVariable long userId, @RequestBody Json json){
-        return new ResponseEntity<>(userHandler.updateUserById(userId, UserJsonUpdateCommand.fromJson(json)), HttpStatus.OK);
+    @PatchMapping("/account")
+    ResponseEntity<?> updateUserById(HttpServletRequest request, @RequestBody Json json){
+        long userId = jwtFacade.extractUserId(request);
+        userHandler.updateUserById(userId, UserJsonUpdateCommand.fromJson(json));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PatchMapping("/{userId}")
+    ResponseEntity<UserQueryResponse> updateUserById(@PathVariable long userId, @RequestBody Json json){
+        userHandler.updateUserById(userId, UserJsonUpdateCommand.fromJson(json));
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

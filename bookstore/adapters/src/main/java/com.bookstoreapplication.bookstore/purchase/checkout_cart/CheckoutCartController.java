@@ -21,7 +21,6 @@ class CheckoutCartController {
 
     @PostMapping("")
     ResponseEntity<?> checkout(HttpServletRequest request){
-        System.out.println("fsdfsd");
         long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.checkout(customerId);
         return ResponseEntity.status(HttpStatus.CREATED).build();

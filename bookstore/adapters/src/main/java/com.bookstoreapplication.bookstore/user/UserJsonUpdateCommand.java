@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-class UserJsonUpdateCommand implements JsonEncodable {
+class   UserJsonUpdateCommand implements JsonEncodable {
 
     private final Username username;
     private final Password password;
