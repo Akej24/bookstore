@@ -11,6 +11,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -40,9 +41,15 @@ class   UserJsonUpdateCommand implements JsonEncodable {
                 JsonDecoder.field(json, "lastName", lastName ->
                         new LastName(JsonDecoder.string(lastName))),
 
-                JsonDecoder.field(json, "dateOfBirth", dateOfBirth ->
-                        new DateOfBirth(LocalDate.parse(JsonDecoder.string(dateOfBirth), LOCAL_DATE_FORMATTER)))
-
+                JsonDecoder.field(json, "dateOfBirth", dateOfBirth -> {
+                    LocalDate date;
+                    try {
+                        date = LocalDate.parse(JsonDecoder.string(dateOfBirth), LOCAL_DATE_FORMATTER);
+                    } catch(DateTimeParseException dateTimeParseException) {
+                        throw new IllegalArgumentException("Invalid date of birth");
+                    }
+                    return new DateOfBirth(date);
+                })
         );
     }
 
