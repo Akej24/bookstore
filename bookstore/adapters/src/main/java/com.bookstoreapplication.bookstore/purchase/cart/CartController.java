@@ -17,14 +17,6 @@ class CartController {
     private final CartHandler cartHandler;
     private final JwtFacade jwtFacade;
 
-    @PostMapping("")
-    ResponseEntity<?> initializeCart(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
-        long customerId = jwtFacade.extractUserId(request);
-        cartHandler.initializeCart(customerId, bookId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @GetMapping("")
     ResponseEntity<?> getCart(HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);
@@ -40,11 +32,10 @@ class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/product")
-    ResponseEntity<?> deleteProduct(@RequestBody Json json, HttpServletRequest request){
-        long bookId = BookIdJsonCommand.fromJson(json);
+    @DeleteMapping("/product/{productId}")
+    ResponseEntity<?> deleteProduct(@PathVariable long productId, HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);
-        cartHandler.deleteProduct(customerId, bookId);
+        cartHandler.deleteProduct(customerId, productId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

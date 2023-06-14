@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 public class ZipCode {
 
     @NotBlank(message = "Zip code must be not blank")
-    @Pattern(regexp="^[0-9]{2}-[0-9]{3}$")
+    @Pattern(regexp="^[0-9]{2}-[0-9]{3}$", message = "Invalid zip code format")
     private String zipCode;
 
 }

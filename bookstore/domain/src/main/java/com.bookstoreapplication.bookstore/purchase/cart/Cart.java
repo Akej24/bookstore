@@ -2,6 +2,7 @@ package com.bookstoreapplication.bookstore.purchase.cart;
 
 import com.bookstoreapplication.bookstore.purchase.exception.BookProductNotFoundException;
 import com.bookstoreapplication.bookstore.purchase.exception.BookProductAlreadyExistsInCartException;
+import com.bookstoreapplication.bookstore.purchase.exception.NotEnoughBooksInMagazineException;
 import com.bookstoreapplication.bookstore.purchase.value_object.TotalPrice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,9 @@ public class Cart implements Serializable {
     private TotalPrice totalPrice;
 
     public Cart(long customerId, BookProduct bookProduct) {
+        if (bookProduct.getAvailablePieces().getAvailablePieces() < 1) {
+            throw new NotEnoughBooksInMagazineException();
+        }
         this.customerId = customerId;
         var cartLines = new ArrayList<CartLine>();
         cartLines.add(new CartLine(customerId, bookProduct));
@@ -31,6 +35,8 @@ public class Cart implements Serializable {
     Cart addProduct(BookProduct bookProduct) {
         if (cartLines.stream().anyMatch(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())) {
             throw new BookProductAlreadyExistsInCartException();
+        } else if (bookProduct.getAvailablePieces().getAvailablePieces() < 1) {
+            throw new NotEnoughBooksInMagazineException();
         }
         cartLines.add(new CartLine(customerId, bookProduct));
         this.totalPrice = calculateTotalPrice();

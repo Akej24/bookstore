@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 @Embeddable
 @Getter
@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 public class PhoneNumber {
 
     @NotBlank(message = "Phone number must be not blank")
-    @Size(min = 9, max = 9)
+    @Pattern(regexp = "[1-9]{9}", message = "Phone number can only contain 9 digits from 1 to 9")
     private String phoneNumber;
 
 }

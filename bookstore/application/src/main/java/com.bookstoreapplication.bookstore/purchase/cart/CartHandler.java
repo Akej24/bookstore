@@ -12,16 +12,6 @@ public class CartHandler {
     private final CartRepository cartRepository;
     private final BookProductRepository bookProductRepository;
 
-    @Transactional
-    public void initializeCart(long customerId, long bookId) {
-        if(cartRepository.existsByCustomerId(customerId)){
-            log.warn("Customer has already initialized cart");
-            throw new CustomerHasAlreadyInitializedCartException();
-        }
-        BookProduct bookProduct = findBookById(bookId);
-        cartRepository.save(new Cart(customerId, bookProduct));
-    }
-
     public CartQueryResponse getCart(long customerId) {
         Cart customerCart = findCartByCustomerId(customerId);
         return CartQueryResponse.toResponse(customerCart);
@@ -30,8 +20,12 @@ public class CartHandler {
     @Transactional
     public void addProduct(long customerId, long bookId) {
         BookProduct bookProduct = findBookById(bookId);
-        Cart customerCart = findCartByCustomerId(customerId);
-        cartRepository.save(customerCart.addProduct(bookProduct));
+        if(cartRepository.existsByCustomerId(customerId)){
+            Cart customerCart = findCartByCustomerId(customerId);
+            cartRepository.save(customerCart.addProduct(bookProduct));
+        } else {
+            cartRepository.save(new Cart(customerId, bookProduct));
+        }
     }
 
     @Transactional

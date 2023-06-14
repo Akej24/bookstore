@@ -6,29 +6,25 @@ import com.bookstoreapplication.bookstore.user.value_objects.LastName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.validation.Valid;
 
 @Getter
+@Validated
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
 
-    @Embedded
-    private FirstName firstName;
-    @Embedded
-    private LastName lastName;
-    @Embedded
-    private PhoneNumber phoneNumber;
-    @Embedded
-    private Street street;
-    @Embedded
-    private StreetNumber streetNumber;
-    @Embedded
-    private ZipCode zipCode;
-    @Embedded
-    private City city;
+    @Valid @Embedded private FirstName firstName;
+    @Valid @Embedded private LastName lastName;
+    @Valid @Embedded private PhoneNumber phoneNumber;
+    @Valid @Embedded private Street street;
+    @Valid @Embedded private StreetNumber streetNumber;
+    @Valid @Embedded private ZipCode zipCode;
+    @Valid @Embedded private City city;
 
 }
