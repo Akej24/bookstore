@@ -17,7 +17,11 @@ class PaymentMethodJsonCommand implements JsonEncodable {
     @JsonCreator
     public static PaymentMethod fromJson(Json json) {
         String paymentMethod = JsonDecoder.field(json, "paymentMethod", JsonDecoder::string);
-        return PaymentMethod.valueOf(paymentMethod);
+        try {
+            return PaymentMethod.valueOf(paymentMethod);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid payment method");
+        }
     }
 
     @Override
