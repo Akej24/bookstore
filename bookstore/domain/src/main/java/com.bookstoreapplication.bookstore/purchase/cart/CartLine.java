@@ -21,6 +21,12 @@ public class CartLine implements Serializable {
         this.amount = new BooksAmount(1);
     }
 
+    public void isAbleToOrder(Integer availablePieces){
+        if(this.getAmount().getBooksAmount() > availablePieces){
+            throw new NotEnoughBooksInMagazineException();
+        }
+    }
+
     void increaseAmount() {
         if(bookProduct.getAvailablePieces().getAvailablePieces().compareTo(amount.getBooksAmount()) < 1){
             throw new NotEnoughBooksInMagazineException();
@@ -31,5 +37,4 @@ public class CartLine implements Serializable {
     void decreaseAmount() {
         amount = amount.decreaseAmount();
     }
-
 }

@@ -59,11 +59,20 @@ public class CartHandler {
         cartRepository.deleteCartByCustomerId(customerId);
     }
 
+    public void areCartLinesAbleToOrder(Cart customerCart){
+        customerCart.getCartLines().forEach(this::isCartLineAbleToOrder);
+    }
+
     public Cart findCartByCustomerId(long customerId){
         return cartRepository.findByCustomerId(customerId).orElseThrow( () -> {
             log.warn("Customer with id {} does not have any initialized cart", customerId);
             throw new CartNotFoundException();
         });
+    }
+
+    private void isCartLineAbleToOrder(CartLine cartLine){
+        BookProduct bookProduct = findBookById(cartLine.getBookProduct().getBookId());
+        cartLine.isAbleToOrder(bookProduct.getAvailablePieces().getAvailablePieces());
     }
 
     private BookProduct findBookById(long bookId) {

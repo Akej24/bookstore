@@ -24,6 +24,7 @@ class OrderHandler {
     @Transactional
     void order(long customerId){
         Cart customerCart = cartHandler.findCartByCustomerId(customerId);
+        cartHandler.areCartLinesAbleToOrder(customerCart);
         CheckoutCart customerCheckoutCart = checkoutCartHandler.findCheckoutCartByCustomerId(customerId);
 
         Order newOrder = Order.from(customerCheckoutCart);
