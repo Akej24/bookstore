@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 class BookController {
 
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 15;
     private final BookControllerHandler bookControllerHandler;
 
     @PostMapping("")
