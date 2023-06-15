@@ -30,9 +30,8 @@ public class CartHandler {
 
     @Transactional
     public void deleteProduct(long customerId, long bookId) {
-        BookProduct bookProduct = findBookById(bookId);
         Cart customerCart = findCartByCustomerId(customerId);
-        Cart cartWithDeletedProduct = customerCart.deleteProduct(bookProduct);
+        Cart cartWithDeletedProduct = customerCart.deleteProduct(bookId);
         if(cartWithDeletedProduct.getCartLines().isEmpty()){
             cartRepository.deleteCartByCustomerId(customerId);
         } else {

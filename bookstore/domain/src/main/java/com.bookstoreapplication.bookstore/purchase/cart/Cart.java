@@ -43,8 +43,8 @@ public class Cart implements Serializable {
         return this;
     }
 
-    Cart deleteProduct(BookProduct bookProduct){
-        cartLines.removeIf(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId());
+    Cart deleteProduct(long bookId){
+        cartLines.removeIf(cartLine -> cartLine.getBookProduct().getBookId() == bookId);
         this.totalPrice = calculateTotalPrice();
         return this;
     }
