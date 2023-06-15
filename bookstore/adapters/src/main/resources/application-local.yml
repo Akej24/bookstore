@@ -31,5 +31,5 @@ spring:
     password: whhzaeshzetyxnka
     properties.mail.smtp:
       auth: true
-      starttls: true
+      starttls.enable: true
 
