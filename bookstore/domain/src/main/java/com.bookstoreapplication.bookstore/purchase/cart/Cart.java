@@ -81,9 +81,4 @@ public class Cart implements Serializable {
                 .multiply(BigDecimal.valueOf(line.getAmount().getBooksAmount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
     }
-
-
-
-
-
 }
