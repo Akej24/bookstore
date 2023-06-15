@@ -12,7 +12,7 @@ class PaymentListener {
     private final PaymentJsonConverter paymentJsonConverter;
     private final PaymentHandler paymentHandler;
 
-    @RabbitListener(queuesToDeclare = @Queue("{bookstore.rabbitmq.routing-keys.payment}"))
+    @RabbitListener(queuesToDeclare = @Queue("${bookstore.rabbitmq.routing-keys.payment}"))
     void receivePaymentFromQueue(String jsonPayment) throws InterruptedException {
         Payment newPayment = paymentJsonConverter.fromJson(jsonPayment);
         paymentHandler.registerNewPayment(newPayment);

@@ -12,8 +12,8 @@ class DeliveryListener {
     private final AddressJsonConverter addressJsonConverter;
     private final DeliveryHandler deliveryHandler;
 
-    @RabbitListener(queuesToDeclare = @Queue("{bookstore.rabbitmq.routing-keys.delivery}"))
-    void receiveDeliveryFromQueue(String jsonDelivery) throws InterruptedException {
+    @RabbitListener(queuesToDeclare = @Queue("${bookstore.rabbitmq.routing-keys.delivery}"))
+    void receiveDeliveryFromQueue(String jsonDelivery) {
         DeliveryCommand deliveryCommand = addressJsonConverter.fromJson(jsonDelivery);
         deliveryHandler.prepareNewDelivery(deliveryCommand);
     }
