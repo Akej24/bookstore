@@ -44,7 +44,7 @@ public class AddressJsonConverter {
         try {
             JsonNode rootNode = objectMapper.readTree(jsonDelivery);
             String orderId = rootNode.get("orderId").asText();
-            Address address = extractAddress(rootNode);
+            Address address = extractAddress(rootNode.get("address"));
 
             return new DeliveryCommand(UUID.fromString(orderId), address);
         } catch (JsonProcessingException e) {
