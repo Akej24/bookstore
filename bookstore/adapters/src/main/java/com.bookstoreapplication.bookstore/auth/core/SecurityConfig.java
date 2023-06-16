@@ -3,6 +3,7 @@ package com.bookstoreapplication.bookstore.auth.core;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,13 +21,6 @@ import java.util.List;
 @EnableWebSecurity
 @AllArgsConstructor
 class SecurityConfig {
-
-    /* Configuration prepared to just create endpoints
-       which are secured by user role (admin,user)
-
-      .authorizeHttpRequests().anyRequest().permitAll().and()
-      .antMatchers("/users/1")
-      .hasRole("USER") */
 
     private static final String[] NO_AUTH_ENDPOINTS = {
             "/api/v1/swagger-ui.html",
@@ -59,23 +53,31 @@ class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors()
-                .and()
+                .and().csrf().disable()
+
                 .authorizeHttpRequests()
-                .antMatchers(NO_AUTH_ENDPOINTS)
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
+                .antMatchers(NO_AUTH_ENDPOINTS).permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/v1/books/{bookId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/books/{bookId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/v1/books").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/books").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/v1/users").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/users").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/v1/users/{userId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/users/{userId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/api/v1/users/{userId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/v1/deliveries/send/{deliveryId}").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/v1/deliveries/receive/{deliveryId}").hasAuthority("ADMIN")
+                .anyRequest().hasAnyAuthority("USER", "ADMIN")
+
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .logout()
                 .logoutUrl("/api/v1/logout")
                 .addLogoutHandler(logoutService)
                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                .and()
-                .csrf().disable()
-                .build();
+                .and().build();
     }
 }
