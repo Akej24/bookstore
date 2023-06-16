@@ -12,7 +12,7 @@ class BookSpecifications {
                 return criteriaBuilder.conjunction();
             } else {
                 return criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%");
+                        criteriaBuilder.lower(root.get("bookTitle")), "%" + title.toLowerCase() + "%");
             }
         };
     }
@@ -23,7 +23,7 @@ class BookSpecifications {
                 return criteriaBuilder.conjunction();
             } else {
                 return criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("author")), "%" + author.toLowerCase() + "%");
+                        criteriaBuilder.lower(root.get("bookAuthor")), "%" + author.toLowerCase() + "%");
             }
         };
     }
@@ -55,7 +55,7 @@ class BookSpecifications {
             if (status == null) {
                 return criteriaBuilder.conjunction();
             } else {
-                return criteriaBuilder.equal(root.get("status"), status);
+                return criteriaBuilder.equal(root.get("availabilityStatus"), status);
             }
         };
     }
@@ -77,7 +77,7 @@ class BookSpecifications {
                 return criteriaBuilder.conjunction();
             } else {
                 return criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("price")), "%" + price.toLowerCase() + "%");
+                        criteriaBuilder.lower(root.get("bookPrice")), "%" + price.toLowerCase() + "%");
             }
         };
     }

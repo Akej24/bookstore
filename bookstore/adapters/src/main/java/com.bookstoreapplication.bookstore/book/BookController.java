@@ -37,13 +37,13 @@ class BookController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false, defaultValue = "releaseDate") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String bookTitle,
+            @RequestParam(required = false) String bookAuthor,
             @RequestParam(required = false) LocalDate releaseDate,
             @RequestParam(required = false) Integer numberOfPages,
-            @RequestParam(required = false) Boolean status,
+            @RequestParam(required = false) Boolean availabilityStatus,
             @RequestParam(required = false) String availablePieces,
-            @RequestParam(required = false) String price
+            @RequestParam(required = false) String bookPrice
             ){
 
         page = page != null && page >= 0 ? page : 0;
@@ -52,13 +52,13 @@ class BookController {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE, sort);
 
         Specification<Book> specification = Specification.where(
-                BookSpecifications.hasTitleContainingIgnoreCase(title)
-                        .and(BookSpecifications.hasAuthorContainingIgnoreCase(author))
+                BookSpecifications.hasTitleContainingIgnoreCase(bookTitle)
+                        .and(BookSpecifications.hasAuthorContainingIgnoreCase(bookAuthor))
                         .and(BookSpecifications.hasReleaseDateAfter(releaseDate))
                         .and(BookSpecifications.hasNumberOfPagesGreaterThanOrEqual(numberOfPages))
-                        .and(BookSpecifications.hasStatus(status))
+                        .and(BookSpecifications.hasStatus(availabilityStatus))
                         .and(BookSpecifications.hasAvailablePiecesContainingIgnoreCase(availablePieces))
-                        .and(BookSpecifications.hasPriceContainingIgnoreCase(price))
+                        .and(BookSpecifications.hasPriceContainingIgnoreCase(bookPrice))
         );
         List<BookQueryResponse> booksJsonResponse = bookControllerHandler.getAllBooks(specification, pageable);
         return new ResponseEntity<>(BookJsonQueryResponse.from(booksJsonResponse), HttpStatus.OK);
