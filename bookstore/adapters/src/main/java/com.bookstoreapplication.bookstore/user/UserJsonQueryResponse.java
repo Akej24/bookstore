@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class UserJsonQueryResponse {
 
+    private final long userId;
     @JsonUnwrapped
     private final UserEmail email;
     @JsonUnwrapped
@@ -33,6 +34,7 @@ class UserJsonQueryResponse {
 
     static UserJsonQueryResponse from(UserQueryResponse source){
         return new UserJsonQueryResponse(
+                source.getUserId(),
                 source.getEmail(),
                 source.getUsername(),
                 source.getFirstName(),
@@ -40,6 +42,4 @@ class UserJsonQueryResponse {
                 source.getDateOfBirth(),
                 source.getFunds());
     }
-
-
 }

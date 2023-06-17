@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class UserQueryResponse {
 
+    private final long userId;
     private final UserEmail email;
     private final Username username;
     private final FirstName firstName;
@@ -28,6 +29,7 @@ class UserQueryResponse {
 
     static UserQueryResponse from(User source){
         return new UserQueryResponse(
+                source.getUserId(),
                 source.getEmail(),
                 source.getUsername(),
                 source.getFirstName(),

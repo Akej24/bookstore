@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 @Validated
 class UserController {
@@ -23,13 +23,13 @@ class UserController {
     private final JwtFacade jwtFacade;
     private final UserHandler userHandler;
 
-    @PostMapping("/registration")
+    @PostMapping("/users/registration")
     ResponseEntity<?> registerUser(@RequestBody @Valid Json json){
         userHandler.registerUser(UserJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     ResponseEntity<UserJsonQueryResponse> getUserById(@PathVariable long userId){
         var jsonUser = UserJsonQueryResponse.from(userHandler.getUserById(userId));
         return new ResponseEntity<>(jsonUser, HttpStatus.OK);
@@ -42,20 +42,20 @@ class UserController {
         return new ResponseEntity<>(jsonUser, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/users")
     ResponseEntity<List<UserJsonQueryResponse>> getAllUsers(@RequestParam(required = false) int page){
         page = page>=0 ? page : 0;
         List<UserJsonQueryResponse> jsonUsers = UserJsonQueryResponse.from(userHandler.getAllUsers(PageRequest.of(page, PAGE_SIZE)));
         return new ResponseEntity<>(jsonUsers, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/users/{userId}")
     ResponseEntity<?> deleteUserById(@PathVariable long userId){
         userHandler.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/users")
     ResponseEntity<?> deleteAllUsers(){
         userHandler.deleteAllUsers();
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -68,7 +68,7 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("/{userId}")
+    @PatchMapping("/users/{userId}")
     ResponseEntity<UserQueryResponse> updateUserById(@PathVariable long userId, @RequestBody Json json){
         userHandler.updateUserById(userId, UserJsonUpdateCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.OK).build();
