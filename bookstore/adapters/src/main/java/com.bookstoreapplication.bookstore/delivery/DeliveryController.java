@@ -19,32 +19,28 @@ class DeliveryController {
     private final DeliveryHandler deliveryHandler;
 
     @GetMapping("/number")
-    ResponseEntity<?> getDeliveryByOrderNumber(HttpServletRequest request, @RequestBody UUID orderNumber){
-        jwtFacade.extractUserId(request);
-        //TODO request
+    ResponseEntity<?> getDeliveryByOrderNumber(@RequestBody UUID orderNumber){
         var jsonDelivery = DeliveryJsonQueryResponse
                 .from(deliveryHandler.getDeliveryByOrderNumber(orderNumber));
         return new ResponseEntity<>(jsonDelivery, HttpStatus.OK);
     }
 
     @GetMapping("")
-    ResponseEntity<?> getAllDeliveries(HttpServletRequest request){
-        jwtFacade.extractUserId(request);
-        //TODO request
+    ResponseEntity<?> getAllDeliveries(){
         List<DeliveryJsonQueryResponse> jsonDelivery = DeliveryJsonQueryResponse
                 .from(deliveryHandler.getAllDeliveries());
         return new ResponseEntity<>(jsonDelivery, HttpStatus.OK);
     }
 
-    @PostMapping("/send/{deliveryId}")
-    ResponseEntity<?> markDeliveryAsSend(@PathVariable long deliveryId){
-        deliveryHandler.markDeliveryAsSent(deliveryId);
+    @PostMapping("/send/{deliveryNumber}")
+    ResponseEntity<?> markDeliveryAsSend(@PathVariable UUID deliveryNumber){
+        deliveryHandler.markDeliveryAsSent(deliveryNumber);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/receive/{deliveryId}")
-    ResponseEntity<?> markDeliveryAsReceived(@PathVariable long deliveryId){
-        deliveryHandler.markDeliveryAsReceived(deliveryId);
+    @PostMapping("/receive/{deliveryNumber}")
+    ResponseEntity<?> markDeliveryAsReceived(@PathVariable UUID deliveryNumber){
+        deliveryHandler.markDeliveryAsReceived(deliveryNumber);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

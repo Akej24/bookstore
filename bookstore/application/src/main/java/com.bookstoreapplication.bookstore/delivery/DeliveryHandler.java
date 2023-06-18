@@ -37,8 +37,8 @@ class DeliveryHandler {
     }
 
     @Transactional
-    void markDeliveryAsSent(long deliveryId) {
-        Delivery deliveryToMark = findDeliveryById(deliveryId);
+    void markDeliveryAsSent(UUID deliveryNumber) {
+        Delivery deliveryToMark = findDeliveryById(deliveryNumber);
         Delivery sentDelivery = deliveryToMark.markSent();
         deliveryRepository.save(sentDelivery);
         log.info("Successfully marked delivery with number {} as sent and saved to database",
@@ -46,8 +46,8 @@ class DeliveryHandler {
     }
 
     @Transactional
-    void markDeliveryAsReceived(long deliveryId) {
-        Delivery deliveryToMark = findDeliveryById(deliveryId);
+    void markDeliveryAsReceived(UUID deliveryNumber) {
+        Delivery deliveryToMark = findDeliveryById(deliveryNumber);
         Delivery receivedDelivery = deliveryToMark.markReceived();
         deliveryRepository.save(receivedDelivery);
         log.info("Successfully marked delivery with number {} as received and saved to database",
@@ -61,9 +61,9 @@ class DeliveryHandler {
         });
     }
 
-    private Delivery findDeliveryById(long deliveryId) {
-        return deliveryRepository.findByDeliveryId(deliveryId).orElseThrow( () -> {
-            log.warn("Delivery with id {} has not been found", deliveryId);
+    private Delivery findDeliveryById(UUID deliveryNumber) {
+        return deliveryRepository.findByDeliveryNumber(deliveryNumber).orElseThrow( () -> {
+            log.warn("Delivery with id {} has not been found", deliveryNumber);
             throw new DeliveryNotFoundException();
         });
     }

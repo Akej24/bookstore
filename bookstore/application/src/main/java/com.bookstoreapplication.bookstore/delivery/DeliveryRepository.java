@@ -12,6 +12,6 @@ interface DeliveryRepository {
 
     Optional<Delivery> findByOrderId(UUID orderId);
 
-    Optional<Delivery> findByDeliveryId(long deliveryId);
+    Optional<Delivery> findByDeliveryNumber(UUID deliveryNumber);
 
 }

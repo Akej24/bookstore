@@ -1,5 +1,7 @@
 package com.bookstoreapplication.bookstore.delivery;
 
+import com.bookstoreapplication.bookstore.delivery.exception.DeliveryAlreadyReceivedException;
+import com.bookstoreapplication.bookstore.delivery.exception.DeliveryAlreadySendException;
 import com.bookstoreapplication.bookstore.delivery.exception.NotSendDeliveryException;
 import com.bookstoreapplication.bookstore.delivery.value_object.DeliveryMethod;
 import com.bookstoreapplication.bookstore.delivery.value_object.DeliveryStatus;
@@ -55,6 +57,8 @@ class Delivery implements Serializable {
     }
 
     Delivery markSent() {
+        if(sendDate != null ) throw new DeliveryAlreadySendException();
+        if(receiveDate != null) throw new DeliveryAlreadyReceivedException();
         this.deliveryStatus = DeliveryStatus.SEND;
         this.sendDate = new SendDate(LocalDateTime.now());
         return this;
@@ -62,6 +66,7 @@ class Delivery implements Serializable {
 
     Delivery markReceived() {
         if (sendDate == null) throw new NotSendDeliveryException();
+        if(receiveDate != null) throw new DeliveryAlreadyReceivedException();
         this.receiveDate = new ReceiveDate(LocalDateTime.now());
         this.deliveryStatus = DeliveryStatus.RECEIVED;
         return this;

@@ -66,9 +66,20 @@ services:
       - redis
       - rabbitmq
       - jenkins
+      - react
     networks:
       - bookstore-network
     container_name: app
+
+  react:
+    image: bookstore-app-frontend:1.0
+    hostname: localhost
+    restart: always
+    ports:
+      - "3002:3000"
+    networks:
+      - bookstore-network
+    container_name: react
 
 networks:
   bookstore-network:
