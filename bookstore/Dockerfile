@@ -16,7 +16,6 @@ COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
 
 #Build app
-COPY ./monolith/target ./monolith/target
 RUN ./mvnw clean install
 
 #Use jre image to deploy
