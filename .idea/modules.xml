@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bookstore/adapters/adapters.iml" filepath="$PROJECT_DIR$/bookstore/adapters/adapters.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookstore/application/application.iml" filepath="$PROJECT_DIR$/bookstore/application/application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookstore/bookstore.iml" filepath="$PROJECT_DIR$/bookstore/bookstore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookstore/domain/domain.iml" filepath="$PROJECT_DIR$/bookstore/domain/domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bookstore/monolith/monolith.iml" filepath="$PROJECT_DIR$/bookstore/monolith/monolith.iml" />
+    </modules>
+  </component>
+</project>
