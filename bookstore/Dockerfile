@@ -12,6 +12,7 @@ COPY application/ ./application/
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
+RUN chmod +x mvnw
 #Download all dependencies
 RUN ./mvnw dependency:go-offline
 
@@ -23,7 +24,7 @@ FROM eclipse-temurin:17-jre-alpine as deployer
 WORKDIR /opt/app
 
 #Copy and run .jar
-COPY --from=builder /opt/app/monolith/target/*.jar /opt/app/*.jar
+COPY --from=builder /opt/app/monolith/target/monolith-0.0.1-SNAPSHOT.jar /opt/app/monolith-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
 
