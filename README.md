@@ -1,10 +1,11 @@
 # Bookstore app
 
-Bookstore application is an app created in Java with Spring Boot. As user u can register your accounts, 
+Bookstore application is an app created in Java with Spring Boot based on monolith architecture. As user u can register your accounts, 
 login, create and scroll books, add them to cart, checkout, order and see order summaries. As administrator, 
 you can also manage deliveries status and delete users accounts. Application also contains simple frontend created
-in React.js available at https://github.com/Akej24/bookstore-frontend Application is also containerized
-with docker, so if you want to launch it visit this link: https://hub.docker.com/r/akej24/bookstore-app for more information
+in React.js and is containerized with docker. Visit the following links for more information: <br/><br/>
+https://hub.docker.com/r/akej24/bookstore-app (Docker)<br/>
+https://github.com/Akej24/bookstore-frontend (Frontend)
 
 The application was created based on the following technologies:
 - Java
