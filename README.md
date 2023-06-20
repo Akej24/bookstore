@@ -1,14 +1,15 @@
 # Bookstore app
 
-The online bookstore is a project based on Java and the Spring Boot framework.
-There are 2 accounts with user and admin roles. 
-As a user, you can browse books, add books to the cart, order them and edit your account details. 
-As an administrator, you can add books to databases and view available users. 
+Bookstore application is an app created in Java with Spring Boot. As user u can register your accounts, 
+login, create and scroll books, add them to cart, checkout, order and see order summaries. As administrator, 
+you can also manage deliveries status and delete users accounts. Application also contains simple frontend created
+in React.js available at https://github.com/Akej24/bookstore-frontend
 
 The application was created based on the following technologies:
 - Java
 - Spring Boot
 - Spring Security
+- Spring Mail
 - JPA (Hibernate)
 - H2 database
 - Redis
@@ -16,12 +17,11 @@ The application was created based on the following technologies:
 - Liquibase
 - AOP
 
-
 Some libraries used for this project:
 - Slf4j
 - Lombok
-- Swagger
+- OpenAPI
 - Passay
 - Jwt
 - Ehcache
-- Json (dev.mccue)
+- Jackson/Json (dev.mccue)
