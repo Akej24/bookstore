@@ -16,9 +16,10 @@ services:
 
   redis:
     image: redis:7.0
+    hostname: localhost
     restart: always
     ports:
-      - "6381:6379"
+      - "6379:6379"
     volumes:
       - bookstore-redis:/data
     networks:
@@ -42,35 +43,6 @@ services:
       - bookstore-network
     container_name: rabbitmq
 
-  jenkins:
-    image: jenkins/jenkins:latest-jdk17
-    restart: always
-    ports:
-      - "8090:8080"
-    volumes:
-      - bookstore-jenkins:/var/jenkins_home
-    networks:
-      - bookstore-network
-    container_name: jenkins
-
-  app:
-    image: bookstore-app:1.0
-    ports:
-      - "8082:8080"
-    environment:
-      REDIS_URL: redis://redis:6381/0
-      MYSQL_HOST: mysql://mysql:3308/bookstore_db
-      SPRING_RABBITMQ_HOST: rabbitmq
-    depends_on:
-      - mysql
-      - redis
-      - rabbitmq
-      - jenkins
-      - react
-    networks:
-      - bookstore-network
-    container_name: app
-
   react:
     image: bookstore-app-frontend:1.0
     hostname: localhost
@@ -81,6 +53,24 @@ services:
       - bookstore-network
     container_name: react
 
+  app:
+    image: bookstore-app:1.0
+    ports:
+      - "8082:8080"
+    environment:
+      REDIS_URL: redis://redis:6381/0
+      MYSQL_HOST: mysql://mysql:3308/bookstore_db
+      SPRING_REDIS_HOST: redis
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+      - react
+    networks:
+      - bookstore-network
+    container_name: app
+
 networks:
   bookstore-network:
     external:
@@ -90,6 +80,5 @@ volumes:
   bookstore-mysql:
   bookstore-redis:
   bookstore-rabbitmq:
-  bookstore-jenkins:
 
 #docker-compose up

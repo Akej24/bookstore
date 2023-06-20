@@ -7,11 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae0da005-0018-49f5-aeac-97b331916970" name="Changes" comment="added cors to railway">
+    <list default="true" id="ae0da005-0018-49f5-aeac-97b331916970" name="Changes" comment="added localhost:3002 cors, removed mysql dependency, removed chmod from dockerfile and changed docker-compose redis exported port to 6381">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore/adapters/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore/adapters/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore/adapters/src/main/java/com.bookstoreapplication.bookstore/auth/core/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore/adapters/src/main/java/com.bookstoreapplication.bookstore/auth/core/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookstore/adapters/src/main/java/com.bookstoreapplication.bookstore/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore/adapters/src/main/java/com.bookstoreapplication.bookstore/config/RedisConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookstore/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bookstore/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -418,14 +418,8 @@
       <workItem from="1687048587389" duration="1045000" />
       <workItem from="1687086743256" duration="8548000" />
       <workItem from="1687173386392" duration="7869000" />
-      <workItem from="1687205084806" duration="9668000" />
-    </task>
-    <task id="LOCAL-00164" summary="fixed jwt expiration and fixed docker-compose rabbitmq connection">
-      <created>1685188932467</created>
-      <option name="number" value="00164" />
-      <option name="presentableId" value="LOCAL-00164" />
-      <option name="project" value="LOCAL" />
-      <updated>1685188932467</updated>
+      <workItem from="1687205084806" duration="12198000" />
+      <workItem from="1687257008099" duration="2006000" />
     </task>
     <task id="LOCAL-00165" summary="added role claim to jwt">
       <created>1685205613626</created>
@@ -763,7 +757,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687181608024</updated>
     </task>
-    <option name="localTasksCounter" value="213" />
+    <task id="LOCAL-00213" summary="added localhost:3002 cors, removed mysql dependency, removed chmod from dockerfile and changed docker-compose redis exported port to 6381">
+      <created>1687219197821</created>
+      <option name="number" value="00213" />
+      <option name="presentableId" value="LOCAL-00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1687219197822</updated>
+    </task>
+    <option name="localTasksCounter" value="214" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -798,7 +799,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed validation messages for book" />
     <MESSAGE value="fixed response for user registration" />
     <MESSAGE value="configured cors for localhost:3000" />
     <MESSAGE value="fixed json address node conversion fromJson bug and added bookId to bookResponse" />
@@ -823,7 +823,8 @@
     <MESSAGE value="Prepared to deploy" />
     <MESSAGE value="Prepared to deploy v2.0" />
     <MESSAGE value="added cors to railway" />
-    <option name="LAST_COMMIT_MESSAGE" value="added cors to railway" />
+    <MESSAGE value="added localhost:3002 cors, removed mysql dependency, removed chmod from dockerfile and changed docker-compose redis exported port to 6381" />
+    <option name="LAST_COMMIT_MESSAGE" value="added localhost:3002 cors, removed mysql dependency, removed chmod from dockerfile and changed docker-compose redis exported port to 6381" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
