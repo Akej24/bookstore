@@ -58,7 +58,6 @@ class Delivery implements Serializable {
 
     Delivery markSent() {
         if(sendDate != null ) throw new DeliveryAlreadySendException();
-        if(receiveDate != null) throw new DeliveryAlreadyReceivedException();
         this.deliveryStatus = DeliveryStatus.SEND;
         this.sendDate = new SendDate(LocalDateTime.now());
         return this;

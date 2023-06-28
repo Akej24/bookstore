@@ -5,7 +5,7 @@ import com.bookstoreapplication.bookstore.purchase.checkout_cart.Address;
 import javax.validation.Valid;
 import java.util.UUID;
 
-record DeliveryCommand(
+record  DeliveryCommand(
 
         @Valid UUID orderId,
         @Valid Address address
