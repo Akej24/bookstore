@@ -55,7 +55,7 @@ class User implements Serializable {
     public User(UserCommand source, String encodedPasswordFormat) {
         email = source.email();
         username = source.username();
-        encodedPassword = source.password().toEncodedFormat(encodedPasswordFormat);
+        encodedPassword = source.password().fromEncodedFormat(encodedPasswordFormat);
         firstName = source.firstName();
         lastName = source.lastName();
         dateOfBirth = source.dateOfBirth();
@@ -68,7 +68,7 @@ class User implements Serializable {
 
     public User update(UserUpdateCommand source, String encodedPasswordFormat){
         username = source.username();
-        encodedPassword = source.password().toEncodedFormat(encodedPasswordFormat);
+        encodedPassword = source.password().fromEncodedFormat(encodedPasswordFormat);
         firstName = source.firstName();
         lastName = source.lastName();
         dateOfBirth = source.dateOfBirth();

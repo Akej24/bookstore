@@ -22,9 +22,7 @@ public class Cart implements Serializable {
     private TotalPrice totalPrice;
 
     public Cart(long customerId, BookProduct bookProduct) {
-        if (bookProduct.getAvailablePieces().getAvailablePieces() < 1) {
-            throw new NotEnoughBooksInMagazineException();
-        }
+        checkBookIsAvailableToAdd(bookProduct);
         this.customerId = customerId;
         var cartLines = new ArrayList<CartLine>();
         cartLines.add(new CartLine(customerId, bookProduct));
@@ -35,9 +33,8 @@ public class Cart implements Serializable {
     Cart addProduct(BookProduct bookProduct) {
         if (cartLines.stream().anyMatch(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())) {
             throw new BookProductAlreadyExistsInCartException();
-        } else if (bookProduct.getAvailablePieces().getAvailablePieces() < 1) {
-            throw new NotEnoughBooksInMagazineException();
         }
+        checkBookIsAvailableToAdd(bookProduct);
         cartLines.add(new CartLine(customerId, bookProduct));
         this.totalPrice = calculateTotalPrice();
         return this;
@@ -50,9 +47,7 @@ public class Cart implements Serializable {
     }
 
     Cart increaseProductAmount(BookProduct bookProduct) {
-        Optional<CartLine> cartLineOptional = cartLines.stream()
-                .filter(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())
-                .findFirst();
+        Optional<CartLine> cartLineOptional = findBookProductInCartLines(bookProduct);
         if (cartLineOptional.isPresent()) {
             cartLineOptional.get().increaseAmount();
             this.totalPrice = calculateTotalPrice();
@@ -63,15 +58,25 @@ public class Cart implements Serializable {
     }
 
     Cart decreaseProductAmount(BookProduct bookProduct){
-        Optional<CartLine> cartLineOptional = cartLines.stream()
-                .filter(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())
-                .findFirst();
+        Optional<CartLine> cartLineOptional = findBookProductInCartLines(bookProduct);
         if (cartLineOptional.isPresent()) {
             cartLineOptional.get().decreaseAmount();
             this.totalPrice = calculateTotalPrice();
             return this;
         } else {
             throw new BookProductNotFoundException();
+        }
+    }
+
+    private Optional<CartLine> findBookProductInCartLines(BookProduct bookProduct) {
+        return cartLines.stream()
+                .filter(cartLine -> cartLine.getBookProduct().getBookId() == bookProduct.getBookId())
+                .findFirst();
+    }
+
+    private static void checkBookIsAvailableToAdd(BookProduct bookProduct) {
+        if (bookProduct.getAvailablePieces().getAvailablePieces() < 1 || !bookProduct.getAvailabilityStatus().getAvailabilityStatus()) {
+            throw new NotEnoughBooksInMagazineException();
         }
     }
 
