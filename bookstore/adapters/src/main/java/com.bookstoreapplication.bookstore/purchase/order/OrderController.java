@@ -17,7 +17,6 @@ class OrderController {
     private final OrderHandler orderHandler;
     private final JwtFacade jwtFacade;
 
-
     @PostMapping("")
     ResponseEntity<?> order(HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);

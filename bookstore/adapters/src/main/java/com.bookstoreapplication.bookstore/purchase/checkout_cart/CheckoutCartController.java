@@ -33,14 +33,14 @@ class CheckoutCartController {
         return new ResponseEntity<>(jsonCheckoutCart, HttpStatus.OK);
     }
 
-    @PatchMapping("/address")
+    @PutMapping("/address")
     ResponseEntity<?> updateAddress(@RequestBody Json json, HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.updateAddress(customerId, AddressJsonCommand.fromJson(json));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/payment")
+    @PutMapping("/payment")
     ResponseEntity<?> updatePaymentDetails(@RequestBody Json json, HttpServletRequest request){
         long customerId = jwtFacade.extractUserId(request);
         checkoutCartHandler.updatePaymentMethod(customerId, PaymentMethodJsonCommand.fromJson(json));
