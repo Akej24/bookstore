@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@ActiveProfiles(profiles = "integration")
+@ActiveProfiles(profiles = {"integration", "test"})
 @WebMvcTest(CartController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import(com.bookstoreapplication.bookstore.config.JsonModuleConfig.class)
