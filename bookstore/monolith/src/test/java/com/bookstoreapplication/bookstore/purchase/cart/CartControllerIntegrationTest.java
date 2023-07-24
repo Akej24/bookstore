@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(CartController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @Import(com.bookstoreapplication.bookstore.config.JsonModuleConfig.class)
-class CartControllerTest {
+class CartControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
