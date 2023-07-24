@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -17,21 +18,18 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ActiveProfiles(profiles = "integration")
-@Import(com.bookstoreapplication.bookstore.config.JsonModuleConfig.class)
 @WebMvcTest(CartController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Import(com.bookstoreapplication.bookstore.config.JsonModuleConfig.class)
 class CartControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private CartRepository cartRepository;
-    @MockBean
-    private BookProductRepository bookProductRepository;
     @MockBean
     private JwtFacade jwtFacade;
     @MockBean
@@ -40,6 +38,8 @@ class CartControllerIntegrationTest {
     @Test
     @DisplayName("Should pass when successively added product to existing cart")
     void addProduct() throws Exception {
+        var cartRepository = mock(CartRepository.class);
+        var bookProductRepository = mock(BookProductRepository.class);
         when(jwtFacade.extractUserId(any()))
                 .thenReturn(10L);
         when(cartRepository.existsByCustomerId(anyLong()))
@@ -64,7 +64,7 @@ class CartControllerIntegrationTest {
                         new BookPrice(BigDecimal.valueOf(83.74))
                 )));
         mockMvc.perform(post("/api/v1/cart/product")
-                .header("Content-Type", "application/json")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"bookId\":14}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
