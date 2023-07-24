@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 @Configuration
-class JsonModuleConfig {
+public class JsonModuleConfig {
 
     @Bean
     public Module jsonModuleSerializer() {

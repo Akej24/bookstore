@@ -57,7 +57,7 @@ public class Password implements Serializable {
         }
     }
 
-    public EncodedPassword fromEncodedFormat(String encodedFormat){
+    public EncodedPassword toEncoded(String encodedFormat){
         return new EncodedPassword(encodedFormat);
     }
 

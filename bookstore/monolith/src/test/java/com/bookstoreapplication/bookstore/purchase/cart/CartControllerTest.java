@@ -1,28 +1,29 @@
 package com.bookstoreapplication.bookstore.purchase.cart;
 
+import com.bookstoreapplication.bookstore.auth.core.JwtFacade;
 import com.bookstoreapplication.bookstore.book.value_object.*;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+@ActiveProfiles(profiles = "test")
 @WebMvcTest(CartController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@Import(com.bookstoreapplication.bookstore.config.JsonModuleConfig.class)
 class CartControllerTest {
 
     @Autowired
@@ -31,20 +32,18 @@ class CartControllerTest {
     private CartRepository cartRepository;
     @MockBean
     private BookProductRepository bookProductRepository;
-
-    @BeforeEach
-    void setUp() throws Exception {
-//        headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        String authHeader = mockMvc.perform(post("/api/v1/login")
-//                        .content()
-//                .andReturn()
-//                .getResponse()
-//                .getHeader("Authorization");
-    }
+    @MockBean
+    private JwtFacade jwtFacade;
+    @MockBean
+    private CartHandler cartHandler;
 
     @Test
-    void addProduct() {
+    @DisplayName("Should pass when successively added product to existing cart")
+    void addProduct() throws Exception {
+        when(jwtFacade.extractUserId(any()))
+                .thenReturn(10L);
+        when(cartRepository.existsByCustomerId(anyLong()))
+                .thenReturn(true);
         when(cartRepository.findByCustomerId(anyLong()))
                 .thenReturn(Optional.of(new Cart(
                     10, new BookProduct(
@@ -64,6 +63,9 @@ class CartControllerTest {
                         new AvailablePieces(43),
                         new BookPrice(BigDecimal.valueOf(83.74))
                 )));
-//        mockMvc.perform()
+        mockMvc.perform(post("/api/v1/cart/product")
+                .header("Content-Type", "application/json")
+                .content("{\"bookId\":14}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 }

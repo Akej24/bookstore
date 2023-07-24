@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.bookstoreapplication.bookstore.auth.exception.UsernameNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Profile("!test")
 @Component
 @AllArgsConstructor
 class JwtAuthenticationFilter extends OncePerRequestFilter {
