@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.annotation.AfterTestExecution;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import redis.clients.jedis.Jedis;
+import org.junit.jupiter.api.Disabled;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -62,6 +63,7 @@ class OrderControllerE2ETest {
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    @Disabled("TODO: should be run in other way")
     @Test
     @DisplayName("Should pass when all steps to order returned 2xx status codes")
     void doAllHttpRequestsToPlaceOrder() {

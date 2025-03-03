@@ -33,10 +33,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
-    ports:
-      - "5673:5673"
-      - "5672:5672"
-      - "15672:15672"
     volumes:
       - bookstore-rabbitmq:/var/lib/rabbitmq
     networks:
@@ -44,7 +40,9 @@ services:
     container_name: rabbitmq
 
   react:
-    image: bookstore-app-frontend:1.0
+    build:
+      context: ../../bookstore-frontend
+      dockerfile: ../bookstore-frontend/Dockerfile
     hostname: localhost
     restart: always
     ports:
@@ -54,7 +52,9 @@ services:
     container_name: react
 
   app:
-    image: bookstore-app:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8082:8080"
     environment:
@@ -73,8 +73,7 @@ services:
 
 networks:
   bookstore-network:
-    external:
-      name: bookstore-network
+    driver: bridge
 
 volumes:
   bookstore-mysql:
